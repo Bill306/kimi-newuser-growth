@@ -46,20 +46,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .wrap{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
-.topline{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:flex-end;justify-content:space-between}
-.topline .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-.topline h1{font-family:var(--serif);font-weight:900;font-size:clamp(22px,3.2vw,30px);line-height:1.25;margin:2px 0 0;text-wrap:balance}
-.topline h1 em{font-style:normal;color:var(--accent)}
-.topline a{color:var(--fg);text-decoration:none;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:1px}
-.disclaimer{font-size:12px;color:var(--muted);border-left:2px solid var(--offer);padding:2px 10px}
-.stage{display:grid;grid-template-columns:420px minmax(0,1fr);gap:28px;align-items:start}
-@media (max-width:920px){.stage{grid-template-columns:minmax(0,1fr)}}
+.stage{display:flex;justify-content:center;align-items:center;min-height:calc(100vh - 48px)}
 
 /* ================= phone ================= */
-.phone-col{display:flex;flex-direction:column;align-items:center;gap:10px;position:sticky;top:16px}
-@media (max-width:920px){.phone-col{position:static}.phone{height:740px}}
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:12px;position:relative;width:100%}
 .phone-col::before{content:"";position:absolute;inset:40px 30px auto;height:520px;background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 22%,transparent),transparent);filter:blur(30px);z-index:0;pointer-events:none}
-.phone{position:relative;z-index:1;width:min(390px,100%);height:clamp(640px,calc(100vh - 150px),780px);background:var(--surface);border:11px solid var(--frame);border-radius:48px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.phone{position:relative;z-index:1;width:min(390px,100%);height:clamp(620px,calc(100vh - 90px),800px);background:var(--surface);border:11px solid var(--frame);border-radius:48px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
 .status{display:flex;justify-content:space-between;align-items:center;padding:10px 24px 2px;font:600 13px var(--font);font-variant-numeric:tabular-nums}
 .status .isl{width:96px;height:26px;border-radius:14px;background:var(--frame);position:absolute;left:50%;top:8px;transform:translateX(-50%)}
 .status svg{width:46px;height:12px}
@@ -253,58 +245,11 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .demo-note{font-size:11px;color:var(--faint);text-align:center}
 .caption{font-size:12px;color:var(--muted);text-align:center;max-width:390px;position:relative;z-index:1}
 
-/* ================= console ================= */
-.console{display:flex;flex-direction:column;gap:14px;min-width:0}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 17px;display:flex;flex-direction:column;gap:11px;min-width:0}
-.panel h2{margin:0;font:600 10.5px var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
-.panel h2::after{content:"";flex:1;height:1px;background:var(--line)}
-.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:12px;padding:4px;gap:4px}
-@media (max-width:520px){.seg{grid-template-columns:1fr}}
-.seg button{border:none;background:transparent;border-radius:9px;padding:8px 11px;font-size:13px;color:var(--muted);text-align:left}
-.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.08),0 0 0 1px var(--line);font-weight:600}
-.seg small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px}
-.scenes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media (max-width:520px){.scenes{grid-template-columns:1fr}}
-.scene{border:1.5px solid var(--line);border-radius:12px;background:var(--surface);padding:9px 12px;text-align:left;display:flex;flex-direction:column;gap:1px}
-.scene b{font-size:13.5px}
-.scene small{font-size:11px;color:var(--muted)}
-.scene .pr{font:700 10px var(--mono);letter-spacing:.08em;color:var(--accent)}
-.scene[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-2)}
-.note h3{margin:0 0 4px;font-family:var(--serif);font-weight:900;font-size:18px;line-height:1.35}
-.note p{margin:0 0 6px}
-.note ul{margin:0 0 4px;padding-left:18px}
-.note li{margin:2px 0}
-.note .why{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
-.funnel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-@media (max-width:560px){.funnel{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.fstep{border:1px solid var(--line);border-radius:10px;padding:7px 9px;font-size:10px;line-height:1.35;font-family:var(--mono);color:var(--faint);background:var(--surface-2);overflow-wrap:anywhere;min-width:0;transition:all .3s}
-.fstep b{display:block;font-family:var(--font);font-size:12.5px;color:var(--muted);margin-bottom:2px}
-.fstep.hit{border-color:var(--ok);background:var(--ok-soft)}
-.fstep.hit b{color:var(--ok)}
-.fstep.guard.hit{border-color:var(--accent);background:var(--accent-soft)}
-.fstep.guard.hit b{color:var(--accent)}
-.fstep.lost.hit{border-color:var(--warn);background:var(--warn-soft)}
-.fstep.lost.hit b{color:var(--warn)}
-.log{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:11.5px;max-height:240px;overflow:auto;display:flex;flex-direction:column}
-.log li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:1px 8px;padding:5px 0;border-bottom:1px dashed var(--line);animation:rise .25s ease-out}
-.log .ts{color:var(--faint)}
-.log .ev{color:var(--accent);font-weight:600}
-.log .pr{grid-column:2;color:var(--muted);word-break:break-all}
-.empty-log{color:var(--muted);font-size:12px;font-family:var(--font)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="topline">
-    <div>
-      <div class="eyebrow">Kimi · 新用户 7 日会员转化 · 需求 A（P0）可交互原型</div>
-      <h1>注册后<em>直达 Aha</em>：两个问题，一个填好的任务</h1>
-    </div>
-    <a href="index.html">← 返回方案报告</a>
-  </div>
-  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面。生成结果和图表数据均为示意，不是真实数据。「新人首个任务免费」是待实验的假设参数。</div>
-
   <div class="stage">
     <div class="phone-col">
       <div class="phone" id="phone">
@@ -323,27 +268,7 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
         <div class="sheet" id="sheet" hidden></div>
         <div class="toast" id="toast" hidden></div>
       </div>
-      <div class="caption">在手机里点选，按发送键或键盘 <span class="kbd">Enter</span> 推进剧情；右侧可以切换实验组 / 对照组，或重新开始。</div>
-    </div>
-
-    <div class="console">
-      <div class="panel">
-        <h2>实验分组</h2>
-        <div class="seg" role="group" aria-label="实验分组">
-          <button id="vB" aria-pressed="true"></button>
-          <button id="vA" aria-pressed="false"></button>
-        </div>
-        <button class="btn" id="restart" style="align-self:flex-start">↺ 重新开始（模拟一个刚注册的新用户）</button>
-      </div>
-      <div class="panel note" id="note"></div>
-      <div class="panel">
-        <h2>本次会话漏斗</h2>
-        <div class="funnel" id="funnel"></div>
-      </div>
-      <div class="panel">
-        <h2>埋点事件 · 最新在上</h2>
-        <ul class="log" id="log"><li class="empty-log">还没有事件。在手机里操作开始。</li></ul>
-      </div>
+      <div class="caption">概念原型 · 生成结果与数据均为示意 · 按发送键或 <span class="kbd">Enter</span> 继续</div>
     </div>
   </div>
 </div>
@@ -475,15 +400,15 @@ const FUNNELS={
 const SEG={
   1:{B:['实验组：注册后直达 Aha','2 个点选问题 → 输入框预填专属任务 → 按发送出成果'],A:['对照组：现状','注册后进入空白首页，用户自己想问什么']}
 };
-function syncConsole(){
+function syncConsole(){ if(!$('#funnel')) return;
   const seg=SEG[S.scene];
   [['#vB','B'],['#vA','A']].forEach(([id,v])=>{ const b=$(id); b.innerHTML=''; b.append(seg[v][0]); const s=document.createElement('small'); s.textContent=seg[v][1]; b.append(s); b.setAttribute('aria-pressed', S.variant===v); });
   S.fmap={};
   $('#funnel').innerHTML=FUNNELS[S.scene].map(([id,label,ev,evs,cls])=>{ evs.forEach(e=>S.fmap[e]='#'+id); return '<div class="fstep'+(cls?' '+cls:'')+'" id="'+id+'"><b>'+label+'</b>'+ev+'</div>'; }).join('');
 }
-function note(title, body, why){ $('#note').innerHTML='<h2>当前节点 · 设计说明</h2><h3>'+title+'</h3>'+body+(why?'<p class="why">'+why+'</p>':''); }
+function note(title, body, why){ if(!$('#note')) return; $('#note').innerHTML='<h2>当前节点 · 设计说明</h2><h3>'+title+'</h3>'+body+(why?'<p class="why">'+why+'</p>':''); }
 function log(name, props){
-  const ul=$('#log'); const empty=ul.querySelector('.empty-log'); if(empty) empty.remove();
+  const ul=$('#log'); if(!ul) return; const empty=ul.querySelector('.empty-log'); if(empty) empty.remove();
   const li=document.createElement('li');
   const sec=((Date.now()-S.t0)/1000).toFixed(1);
   const p=Object.entries(Object.assign({variant:S.variant}, props||{})).map(([k,v])=>k+'='+v).join('  ');
@@ -492,7 +417,7 @@ function log(name, props){
   ul.prepend(li);
   if(S.fmap[name]) $(S.fmap[name]).classList.add('hit');
 }
-function resetConsole(){ S.t0=Date.now(); $('#log').innerHTML='<li class="empty-log">还没有事件。在手机里操作开始。</li>'; syncConsole(); }
+function resetConsole(){ S.t0=Date.now(); if(!$('#log')) return; $('#log').innerHTML='<li class="empty-log">还没有事件。在手机里操作开始。</li>'; syncConsole(); }
 
 /* ---------- phone helpers ---------- */
 function setQuota(v,label,mode){
@@ -699,10 +624,6 @@ function controlDay1(run){
 }
 
 /* ---------- wiring ---------- */
-function setVariant(v){ S.variant=v; scene1(); }
-$('#vB').onclick=()=>setVariant('B');
-$('#vA').onclick=()=>setVariant('A');
-$('#restart').onclick=()=>scene1();
 mask.onclick=()=>{ const x=sheet.querySelector('.x'); if(x) x.click(); };
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter' || e.isComposing) return;
