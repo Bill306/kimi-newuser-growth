@@ -70,8 +70,6 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .meter{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 8px;background:var(--surface)}
 .meter .bar{width:48px;height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden}
 .meter .bar i{display:block;height:100%;background:var(--ink);transition:width .7s cubic-bezier(.2,.8,.2,1)}
-.meter.low{border-color:var(--offer);color:var(--offer)}
-.meter.low .bar i{background:var(--offer)}
 .meter.gift{border-color:var(--ok);color:var(--ok)}
 .chat{flex:1;overflow-y:auto;padding:6px 16px 10px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
 .u{align-self:flex-end;max-width:84%;background:var(--surface-3);padding:9px 13px;border-radius:18px 18px 6px 18px;animation:rise .3s ease-out}
@@ -87,7 +85,6 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .card h4{margin:0;font-size:14.5px;line-height:1.45}
 .card .sub{font-size:12px;color:var(--muted)}
 .card.tint{background:var(--surface-2);border-color:transparent}
-.card.warn{border-color:color-mix(in srgb,var(--warn) 50%,transparent);background:var(--warn-soft)}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:500;transition:transform .15s,background .15s;display:inline-flex;gap:6px;align-items:center}
 .btn svg.i{width:15px;height:15px}
@@ -186,7 +183,6 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 
 /* rendered deliverables (thumbnail = scaled full render) */
 .mini{transform-origin:top center;pointer-events:none;flex:none}
-.slides{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .slide{aspect-ratio:16/9;border-radius:5px;background:#fff;color:#16181D;border:1px solid #E5E7EC;padding:5px 6px;overflow:hidden;font-size:7.5px;line-height:1.3;position:relative}
 .slide b{display:block;font-size:8px;margin-bottom:3px}
 .slide.cover{background:linear-gradient(140deg,#0F1730,#1F3A8A);color:#fff;border-color:#0F1730}
@@ -195,7 +191,6 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .slide .ln{height:2px;border-radius:1px;background:#D7DAE2;margin-top:3px}
 .slide .ch{position:absolute;right:6px;bottom:6px;display:flex;gap:2px;align-items:flex-end;height:40%}
 .slide .ch i{width:5px;background:#13B5C9;border-radius:1px}
-.slide.ghost{display:grid;place-items:center;color:var(--muted);border-style:dashed;background:var(--surface-2);font-size:10px}
 .rep{display:flex;flex-direction:column;gap:12px;color:#16181D;background:#fff;border-radius:12px;padding:16px;box-shadow:0 8px 24px -14px rgba(0,0,0,.35)}
 .rep .k{font:600 10px var(--mono);letter-spacing:.12em;color:#2C5BFF;text-transform:uppercase}
 .rep h2{font-family:var(--serif);font-weight:900;font-size:19px;line-height:1.35;margin:2px 0 0}
@@ -254,30 +249,9 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .sheet h3{margin:0;font-size:18px;line-height:1.35;text-wrap:balance}
 .sheet .x{position:absolute;right:12px;top:10px;border:none;background:var(--surface-2);width:30px;height:30px;border-radius:50%;font-size:16px;color:var(--muted);display:grid;place-items:center;z-index:2}
 .sheet.doc{background:var(--surface-2);padding-top:14px}
-.opt{border:1.5px solid var(--line);border-radius:14px;padding:11px 13px;text-align:left;background:var(--surface);display:flex;flex-direction:column;gap:3px;width:100%;transition:transform .15s}
-.opt:hover{transform:translateY(-1px)}
-.opt.rec{border-color:var(--offer);background:var(--offer-soft)}
-.opt .t{font-weight:700;font-size:14.5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.opt .t s{color:var(--muted);font-weight:400;font-size:12px}
-.opt .d{font-size:12px;color:var(--muted)}
-.count{font-family:var(--mono);font-size:11px;color:var(--offer)}
-.split{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--surface-3)}
-.split .have{background:var(--ink)}
-.split .need{background:repeating-linear-gradient(45deg,var(--offer) 0 4px,var(--offer-soft) 4px 8px)}
-.legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.plans{width:100%;border-collapse:collapse;font-size:11.5px}
-.plans th,.plans td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
-.plans th{color:var(--muted);font-weight:500}
 .toast{position:absolute;left:50%;top:92px;transform:translateX(-50%);z-index:8;background:var(--ink);color:var(--surface);font-size:12.5px;padding:8px 15px;border-radius:999px;white-space:nowrap;animation:rise .2s ease-out;box-shadow:0 10px 20px -8px rgba(0,0,0,.4)}
-.toast.bad{background:var(--warn);color:#fff}
-.paymethod{display:flex;gap:8px}
-.paymethod label{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:9px;font-size:13px;display:flex;gap:6px;align-items:center}
-.paymethod input{accent-color:var(--ink)}
 .demo-note{font-size:11px;color:var(--faint);text-align:center}
 .caption{font-size:12px;color:var(--muted);text-align:center;max-width:390px;position:relative;z-index:1}
-.doc-icon{width:34px;height:42px;border-radius:5px;background:var(--accent-soft);display:grid;place-items:center;font-size:9.5px;color:var(--accent);font-weight:900;flex:none}
-.docline{display:flex;gap:10px;align-items:center}
-.docline h4{margin:0}
 
 /* ================= console ================= */
 .console{display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -324,12 +298,12 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 <div class="wrap">
   <div class="topline">
     <div>
-      <div class="eyebrow">Kimi · 新用户 7 日会员转化 · 可交互原型</div>
-      <h1><em>P0</em> 注册后直达 Aha ＋ <em>P1</em> 额度触顶的任务续航</h1>
+      <div class="eyebrow">Kimi · 新用户 7 日会员转化 · 需求 A（P0）可交互原型</div>
+      <h1>注册后<em>直达 Aha</em>：两个问题，一个填好的任务</h1>
     </div>
     <a href="index.html">← 返回方案报告</a>
   </div>
-  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面。生成结果和图表数据均为示意，不是真实数据。价格取自 Kimi 帮助中心（2026-10-19 截图）的 Go 套餐 ¥49/月；「新人首个任务免费」「新人首月 ¥19.9」是待实验的假设参数。所有支付均为演示，不会扣款。</div>
+  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面。生成结果和图表数据均为示意，不是真实数据。「新人首个任务免费」是待实验的假设参数。</div>
 
   <div class="stage">
     <div class="phone-col">
@@ -349,21 +323,17 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
         <div class="sheet" id="sheet" hidden></div>
         <div class="toast" id="toast" hidden></div>
       </div>
-      <div class="caption">在手机里点选，按发送键或键盘 <span class="kbd">Enter</span> 推进剧情；右侧可以切换场景和实验组 / 对照组。</div>
+      <div class="caption">在手机里点选，按发送键或键盘 <span class="kbd">Enter</span> 推进剧情；右侧可以切换实验组 / 对照组，或重新开始。</div>
     </div>
 
     <div class="console">
       <div class="panel">
-        <h2>场景</h2>
-        <div class="scenes">
-          <button class="scene" id="s1" aria-pressed="true"><span class="pr">P0 · 第 1 天</span><b>注册 → 第一次 Aha</b><small>2 个问题 → 预填任务 → 成果</small></button>
-          <button class="scene" id="s2" aria-pressed="false"><span class="pr">P1 · 第 3 天</span><b>额度触顶 → 任务续航</b><small>先做一部分 → 再推付费</small></button>
-        </div>
         <h2>实验分组</h2>
         <div class="seg" role="group" aria-label="实验分组">
           <button id="vB" aria-pressed="true"></button>
           <button id="vA" aria-pressed="false"></button>
         </div>
+        <button class="btn" id="restart" style="align-self:flex-start">↺ 重新开始（模拟一个刚注册的新用户）</button>
       </div>
       <div class="panel note" id="note"></div>
       <div class="panel">
@@ -382,7 +352,7 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 (function(){
 const $=s=>document.querySelector(s);
 const phone=$('#phone'), chat=$('#chat'), sheet=$('#sheet'), mask=$('#mask'), toastEl=$('#toast');
-const S={variant:'B', scene:1, quota:100, run:0, t0:Date.now(), offerEnds:Date.now()+(3*86400+23*3600+59*60)*1000, timer:null, fmap:{}, cur:null};
+const S={variant:'B', scene:1, quota:100, run:0, t0:Date.now(), fmap:{}, cur:null};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -500,17 +470,14 @@ function renderThumb(goal,o,title){ return '<div class="mini" style="width:480px
 
 /* ---------- funnels & console ---------- */
 const FUNNELS={
-  1:[['f1','注册完成','signup_complete',['signup_complete']],['f2','答完 2 个问题','onboarding_complete',['onboarding_complete']],['f3','发起首个 Agent 任务','agent_task_start',['agent_task_start']],['f4','Aha：打开成果','aha_reached',['aha_reached']],['f5','问完就走','session_end',['session_end'],'lost']],
-  2:[['f1','付费墙曝光','paywall_impression',['paywall_impression']],['f2','点击升级','paywall_cta_click',['paywall_cta_click']],['f3','支付成功','checkout_success',['checkout_success']],['f4','留下回访理由','draft_saved / remind',['draft_saved','paywall_fallback'],'guard'],['f5','空手离开','paywall_dismiss',['paywall_dismiss'],'lost']]
+  1:[['f1','注册完成','signup_complete',['signup_complete']],['f2','答完 2 个问题','onboarding_complete',['onboarding_complete']],['f3','发起首个 Agent 任务','agent_task_start',['agent_task_start']],['f4','Aha：打开成果','aha_reached',['aha_reached']],['f5','问完就走','session_end',['session_end'],'lost']]
 };
 const SEG={
-  1:{B:['实验组：注册后直达 Aha','2 个点选问题 → 输入框预填专属任务 → 按发送出成果'],A:['对照组：现状','注册后进入空白首页，用户自己想问什么']},
-  2:{B:['实验组：任务续航卡','预估消耗 → 免费先做一部分 → 按任务推荐 + 免费退路'],A:['对照组：现状','新任务提示「额度不足」→ 通用会员页']}
+  1:{B:['实验组：注册后直达 Aha','2 个点选问题 → 输入框预填专属任务 → 按发送出成果'],A:['对照组：现状','注册后进入空白首页，用户自己想问什么']}
 };
 function syncConsole(){
   const seg=SEG[S.scene];
   [['#vB','B'],['#vA','A']].forEach(([id,v])=>{ const b=$(id); b.innerHTML=''; b.append(seg[v][0]); const s=document.createElement('small'); s.textContent=seg[v][1]; b.append(s); b.setAttribute('aria-pressed', S.variant===v); });
-  $('#s1').setAttribute('aria-pressed', S.scene===1); $('#s2').setAttribute('aria-pressed', S.scene===2);
   S.fmap={};
   $('#funnel').innerHTML=FUNNELS[S.scene].map(([id,label,ev,evs,cls])=>{ evs.forEach(e=>S.fmap[e]='#'+id); return '<div class="fstep'+(cls?' '+cls:'')+'" id="'+id+'"><b>'+label+'</b>'+ev+'</div>'; }).join('');
 }
@@ -530,7 +497,7 @@ function resetConsole(){ S.t0=Date.now(); $('#log').innerHTML='<li class="empty-
 /* ---------- phone helpers ---------- */
 function setQuota(v,label,mode){
   S.quota=v; $('#meterBar').style.width=v+'%'; $('#meterLabel').textContent=label||('额度 '+v+'%');
-  $('#meter').classList.toggle('low', v<=20 && !label); $('#meter').classList.toggle('gift', mode==='gift');
+  $('#meter').classList.toggle('gift', mode==='gift');
   $('#meter').hidden=(S.variant==='A');   /* 现状：额度只在 设置→订阅 里能看到 */
 }
 function add(html, cls){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; chat.appendChild(d); chat.scrollTop=chat.scrollHeight; return d; }
@@ -552,7 +519,7 @@ function setInput(text, onSend, opts){
 function toast(t, bad){ toastEl.textContent=t; toastEl.className='toast'+(bad?' bad':''); toastEl.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.hidden=true, 2200); }
 function sugs(html){ const el=$('#sugs'); if(!html){ el.hidden=true; el.innerHTML=''; return el; } el.innerHTML=html; el.hidden=false; return el; }
 function openSheet(html, cls){ sheet.className='sheet'+(cls?' '+cls:''); sheet.innerHTML=html; sheet.hidden=false; mask.hidden=false; sheet.scrollTop=0; }
-function closeSheet(){ sheet.hidden=true; mask.hidden=true; clearInterval(S.timer); }
+function closeSheet(){ sheet.hidden=true; mask.hidden=true; }
 const alive=run=>run===S.run;
 function reset(){ closeSheet(); sugs(''); setInput(''); phone.classList.remove('ob'); chat.innerHTML=''; resetConsole(); }
 
@@ -682,13 +649,14 @@ function afterAha(run){
   const next=(cur.goal==='research'||cur.goal==='learn')?[['ppt','把它做成 PPT'],['doc','每周一给我更新一次']]:[['doc','再改一版'],['research','用同样的方式再做一个']];
   ai('<p>做好了，已经保存在「最近任务」里。接下来可以：</p><div class="row" style="margin-top:6px">'+next.map(n=>'<button class="btn" data-n="'+n[1]+'">'+icon(n[0])+n[1]+'</button>').join('')+'</div>')
     .querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; log('next_action_click',{action:b.dataset.n}); toast('已记下，下次打开时接着做'); });
-  note('P0 · 第一次 Aha','<p>用户第一次看到 Kimi 和普通聊天机器人的区别：<b>一句话 → 一份能直接用的成果</b>。</p><ul><li>结尾给出下一步，成果保存在首页，留下回来的理由</li></ul>','对应指标：Aha 达成率、D1 留存（先行指标）→ Agent 渗透率 → 额度触顶率 → 7 日会员转化率。Aha 的人越多，后面撞墙、进入付费漏斗的人越多，这一段由 P1 任务续航接住。');
-  fastForward(run);
+  note('P0 · 第一次 Aha','<p>用户第一次看到 Kimi 和普通聊天机器人的区别：<b>一句话 → 一份能直接用的成果</b>。</p><ul><li>结尾给出下一步，成果保存在首页，留下回来的理由</li></ul>','对应指标：Aha 达成率、D1 留存（先行指标）→ Agent 渗透率 → 额度触顶率 → 7 日会员转化率。Aha 的人越多，后面撞墙、进入付费漏斗的人越多。');
+  recap(run);
 }
-function fastForward(run){
+function recap(run){
   setTimeout(()=>{ if(!alive(run)) return;
-    const nx=card('<div class="sub">接下来两天，用户又做了 2 次深度研究和 1 份文档，额度剩 12%。（第 3 天以投研用户为例）</div><button class="btn primary" id="ffBtn" style="align-self:flex-start">快进到第 3 天：额度触顶（P1） '+icon('arrow')+'</button>','tint');
-    nx.querySelector('#ffBtn').onclick=()=>scene2();
+    const secs=((Date.now()-S.t0)/1000).toFixed(0);
+    card('<span class="tag green" style="color:var(--ok)">本次体验</span><h4>从注册到拿到第一份成果：'+secs+' 秒（演示已加速）</h4><div class="sub">全程只需要点选 + 按 1 次发送，不用自己想要问什么。</div><button class="btn" id="again" style="align-self:flex-start">换一个身份再试一次 ↺</button>','tint')
+      .querySelector('#again').onclick=()=>scene1();
   }, 600);
 }
 
@@ -726,118 +694,15 @@ function controlDay1(run){
     await sleep(600); if(!alive(run)) return;
     sys('用户得到一个普通回答，然后离开');
     log('session_end',{agent_used:false,queries:1});
-    note('P0 对照组 · 问完就走','<p>回答和普通聊天机器人差不多。用户没接触任何 Agent 能力，后面也就不会撞墙、不会进入付费漏斗。</p>','这是走查观察到的现象，流失比例需要用埋点数据确认。');
-    fastForward(run);
+    note('P0 对照组 · 问完就走','<p>回答和普通聊天机器人差不多。用户没接触任何 Agent 能力，后面也就不会撞墙、不会进入付费漏斗。</p>','这是走查观察到的现象，流失比例需要用埋点数据确认。切回实验组对比。');
   });
-}
-
-/* ================= Scene 2: Day 3, quota wall (P1) ================= */
-const D3SLIDES=['储能双雄','2026 储能格局','宁德时代：电芯与海外'];
-function scene2(){
-  const run=++S.run; S.scene=2; reset(); setQuota(12);
-  sys('第 3 天 · 以投研用户为例');
-  card('<div class="docline"><span class="doc-icon">PDF</span><div><h4>宁德时代 vs 比亚迪：储能业务对比</h4><div class="sub">深度研究 · 18 页 · 2 天前</div></div></div>');
-  ai('<p>欢迎回来。上次的研究报告已保存在这里。</p>');
-  log('home_view',{day:'D3',quota_left:'12%'});
-  note('P1 · 第 3 天 · 撞墙前一刻','<p>用户带着一个<b>有截止时间的真实任务</b>回来：要把研究做成组会 PPT。这是 7 天里付费意愿最高的时刻。</p>','切换右上方的实验组 / 对照组，对比两种处理方式。');
-  setInput('把这份研究做成 12 页 PPT，周五组会要用', ()=>{
-    user('把这份研究做成 12 页 PPT，周五组会要用');
-    log('agent_task_request',{type:'ppt',pages:12});
-    if(S.variant==='A') return control(run); else return treatment(run);
-  });
-}
-
-/* --- Control: current behaviour --- */
-async function control(run){
-  await sleep(600); if(!alive(run)) return;
-  toast('额度不足',true);
-  const c=card('<h4>你的额度已用完</h4><div class="sub">新任务无法开始。升级会员可获得更多额度。</div><div class="row"><button class="btn primary">查看会员</button></div>','warn');
-  log('paywall_impression',{trigger:'quota_insufficient',surface:'toast+inline',task:'ppt',progress:'0/12'});
-  note('P1 对照组 · 现状','<p>帮助中心原文：额度用完时，进行中的任务可以完成，<b>新任务会提示额度不足</b>。</p><ul><li>没告诉用户这个任务需要多少额度、还差多少</li><li>任务一点都没开始，用户手里什么都没有</li><li>会员页是通用的五档对比，跟当前任务没关系</li><li>不付费的话没有任何退路，也没有回来的理由</li></ul>');
-  c.querySelector('button').onclick=()=>{
-    if(!alive(run)) return;
-    log('paywall_cta_click',{target:'plan_page'});
-    openSheet('<button class="x" aria-label="关闭">×</button><h3>会员计划</h3><div class="sub" style="font-size:12px;color:var(--muted)">按 Kimi 帮助中心 2026-10-19 截图整理（节选）</div><div style="overflow-x:auto"><table class="plans"><tr><th></th><th>Go</th><th>Plus</th><th>Pro</th></tr><tr><th>连续包月</th><td>¥49</td><td>¥99</td><td>¥199</td></tr><tr><th>Agent 额度</th><td>更多</td><td>2 倍</td><td>4 倍</td></tr><tr><th>并行任务</th><td>1</td><td>2</td><td>2</td></tr><tr><th>Kimi Code</th><td>—</td><td>支持</td><td>支持</td></tr><tr><th>Agent 集群</th><td>—</td><td>支持</td><td>支持</td></tr></table></div><div class="row"><button class="btn primary" data-p="49">开通 Go ¥49/月</button><button class="btn" data-p="99">Plus ¥99</button></div><div class="demo-note">新用户看到「2 倍额度」「Agent 集群」，很难换算成「我的 PPT 能不能做完」。</div>');
-    log('plan_page_view');
-    sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('paywall_dismiss',{saved_progress:'none'}); ai('<p style="color:var(--faint)">（用户关掉页面离开。任务没开始，也没有留下任何回来的理由。）</p>');
-      note('P1 对照组 · 用户离开','<p>没付费的用户空手离开。这就是现状下转化和留存同时受伤的地方：转化没拿到，用户对产品的最后印象还是一次「被拦住」。</p>'); };
-    sheet.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{ log('paywall_cta_click',{plan:b.dataset.p==='49'?'go':'plus'}); pay(+b.dataset.p, b.dataset.p==='49'?'Go 连续包月':'Plus 连续包月', run, 0); });
-  };
-}
-
-/* --- Treatment: task continuation --- */
-async function treatment(run){
-  await typing(700); if(!alive(run)) return;
-  card('<span class="tag blue">开始前先估一下</span><h4>这份 PPT 预计需要约 30% 额度，你还剩 12%</h4><div class="split"><span class="have" style="width:40%"></span><span class="need" style="width:60%"></span></div><div class="legend"><span>剩余额度能做约 3 页</span><span>还差约 18%</span></div><div class="sub">先用剩下的额度把大纲和前 3 页做出来，你看看效果再决定。</div>','tint');
-  log('quota_precheck_show',{need:'30%',left:'12%'});
-  note('P1 实验组 · 动手前先预估','<p>发任务时先告诉用户<b>这件事要多少额度、还差多少</b>，而不是等用完了才报错。</p>','额度现在按 token 计、只显示百分比，新用户换算不出来。预估卡把百分比翻译成「能做几页」。');
-  await sleep(600); if(!alive(run)) return;
-  const q=[12,8,4,0];
-  const p=await progress([['生成 12 页大纲',''],['第 1 页：封面',''],['第 2 页：2026 储能格局',''],['第 3 页：宁德时代','']],run,{onTick:i=>setQuota(q[Math.min(i,3)]),doneTitle:'大纲 + 前 3 页已完成'});
-  if(!p) return;
-  card('<h4>大纲 + 前 3 页已完成</h4><div class="slides">'+D3SLIDES.map((t,i)=>slideHtml(t,i)).join('')+'<div class="slide ghost">+9 页</div></div><div class="sub">已自动保存到「最近任务」</div>');
-  log('free_preview_done',{pages:'3/12'}); log('draft_saved',{task:'ppt'});
-  await sleep(700); if(!alive(run)) return;
-  openWall(run);
-}
-function fmtLeft(){
-  let s=Math.max(0,Math.floor((S.offerEnds-Date.now())/1000));
-  const d=Math.floor(s/86400); s%=86400; const h=Math.floor(s/3600); s%=3600; const m=Math.floor(s/60); s%=60;
-  return d+' 天 '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-}
-function openWall(run){
-  openSheet('<button class="x" aria-label="关闭">×</button><span class="tag">还差 9 页就完成了</span><h3>继续完成这份 PPT，赶上周五的组会</h3>'+
-  '<button class="opt rec" id="oPay"><span class="tag">推荐 · 新人专享</span><span class="t">开通 Go，首月 ¥19.9 <s>¥49/月</s></span><span class="d">马上续写剩下 9 页，约 2 分钟。按这份 PPT 的消耗估算，一个月的额度还够再做十几份同等任务。</span><span class="count" id="cd">新人价还剩 '+fmtLeft()+'</span></button>'+
-  '<button class="opt" id="oRemind"><span class="t">额度刷新时提醒我继续</span><span class="d">大纲和前 3 页已保存，不会丢。额度刷新后一键接着做。</span></button>'+
-  '<button class="opt" id="oLite"><span class="t">先给我文字版</span><span class="d">用普通对话把剩下 9 页的要点写出来，不含排版。</span></button>'+
-  '<div class="demo-note">首月价、倒计时和「十几份」的估算都是待实验校准的参数</div>');
-  S.timer=setInterval(()=>{ const e=document.getElementById('cd'); if(e) e.textContent='新人价还剩 '+fmtLeft(); },1000);
-  log('paywall_impression',{trigger:'quota_insufficient',surface:'task_sheet',task:'ppt',progress:'3/12',offer:'newbie_19.9'});
-  note('P1 实验组 · 任务续航卡','<ul><li><b>标题讲任务，不讲额度</b>：「还差 9 页」比「额度不足」更像一次推荐</li><li><b>只推一个档位</b>：按当前任务推荐 Go，不让新用户在五档里挑</li><li><b>新人首月价 + 截止时间</b>：和注册 7 天的窗口绑定，制造合理的决策时点</li><li><b>两条免费退路</b>：提醒继续、文字版，保护 D7 留存</li></ul>','护栏：「空手离开」比例必须下降；关闭率和退款率要盯住。');
-  sheet.querySelector('.x').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_dismiss',{saved_progress:'3/12'}); savedDraft(run,false);
-    note('P1 实验组 · 关闭也不是空手离开','<p>即使直接关掉，前 3 页也已经保存在最近任务里。用户下次打开时，首页会显示这个没做完的任务。</p>','这是保护留存的关键：不付费的用户也带走了成果，并且有一个回来的理由。'); };
-  $('#oPay').onclick=()=>{ if(!alive(run)) return; log('paywall_cta_click',{plan:'go',offer:'newbie_first_month'}); pay(19.9,'Go · 新人首月',run,3); };
-  $('#oRemind').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_fallback',{type:'remind_on_refresh'}); savedDraft(run,true); toast('已设置提醒，额度刷新时通知你');
-    note('P1 实验组 · 免费退路：提醒继续','<p>不付费的用户也留下了一个<b>具体的回访理由</b>：一份做了一半、周五要用的 PPT。</p>','对应护栏指标：D7 留存。也可以单独看「提醒触达 → 回访 → 二次撞墙 → 付费」这条延迟转化链路。'); };
-  $('#oLite').onclick=async()=>{ if(!alive(run)) return; closeSheet(); log('paywall_fallback',{type:'lite_text'});
-    await typing(700); if(!alive(run)) return;
-    ai('<p><b>第 4–12 页要点（文字版）</b></p><ul><li>比亚迪：系统集成与成本</li><li>海外订单对比</li><li>技术路线：大电芯 / 长时储能</li><li>盈利能力与价格战</li><li>风险与观察指标 …</li></ul>');
-    savedDraft(run,false);
-    note('P1 实验组 · 免费退路：文字版','<p>用普通对话能力兜底，任务不会卡死。用户拿到了内容，但没拿到排版好的 PPT，这个差距就是会员的价值。</p>'); };
-}
-function savedDraft(run, reminded){
-  const c=card('<div class="docline"><span class="doc-icon">PPT</span><div><h4>储能双雄 · 组会 PPT（3/12 页）</h4><div class="sub">'+(reminded?'已设置提醒 · 额度刷新时通知你':'已保存在最近任务')+'</div></div></div><div class="row"><button class="btn">升级后继续</button></div>');
-  c.querySelector('button').onclick=()=>{ if(!alive(run)) return; log('draft_resume_click'); openWall(run); };
-}
-function pay(amount, plan, run, donePages){
-  openSheet('<button class="x" aria-label="关闭">×</button><h3>确认开通</h3><div class="card tint"><div style="display:flex;justify-content:space-between;font-weight:700"><span>'+plan+'</span><span>¥'+amount+'</span></div><div class="sub">'+(donePages?'次月起 ¥49/月，可随时取消自动续费':'连续包月，可随时取消自动续费')+'</div></div><div class="paymethod"><label><input type="radio" name="pm" checked>微信支付</label><label><input type="radio" name="pm">支付宝</label></div><button class="cta-big" id="payBtn">确认支付 ¥'+amount+'</button><div class="demo-note">演示环境，不会产生真实扣款</div>');
-  log('checkout_show',{plan:plan,amount:amount});
-  sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('checkout_abandon'); if(S.variant==='B') savedDraft(run,false); };
-  $('#payBtn').onclick=async()=>{
-    if(!alive(run)) return;
-    closeSheet(); log('checkout_success',{plan:plan,amount:amount});
-    setQuota(100,'Go 会员 · 100%'); toast('会员已生效');
-    if(S.variant==='B'){
-      note('P1 实验组 · 付费后无缝续写','<p>付费成功后<b>直接接着做</b>，不用用户重新发起任务。从点击到拿到完整 PPT，中间没有断点。</p>','付费后体验决定次月续费，可以把「首月 Agent 任务数」作为续费的先行指标。');
-      log('task_resume',{from:'3/12'});
-      const p=await progress([['第 4–6 页',''],['第 7–9 页',''],['第 10–12 页',''],['排版与配图','']],run,{onTick:i=>setQuota([97,93,90,88][i],'Go 会员 · '+[97,93,90,88][i]+'%'),doneTitle:'12 页全部完成'});
-      if(!p) return;
-      card('<div class="docline"><span class="doc-icon">PPT</span><div><h4>储能双雄 · 组会 PPT</h4><div class="sub">12 页 · 已完成 · 可下载 PPTX</div></div></div>');
-      log('agent_task_done',{type:'ppt'});
-      ai('<p>PPT 已完成。会员额度这个月还很充足，你也可以试试：<b>把 PPT 转成演讲稿</b>，或者<b>设置每周储能行业简报</b>。</p>');
-    } else {
-      note('P1 对照组 · 付费后','<p>付费后用户还得回到对话里<b>重新发起</b>任务。从决定付费到拿到结果，中间多了一次跳转和一次重试。</p>');
-      ai('<p style="color:var(--faint)">（用户回到对话，重新发送一遍 PPT 请求。）</p>');
-    }
-  };
 }
 
 /* ---------- wiring ---------- */
-function setVariant(v){ S.variant=v; (S.scene===2?scene2:scene1)(); }
+function setVariant(v){ S.variant=v; scene1(); }
 $('#vB').onclick=()=>setVariant('B');
 $('#vA').onclick=()=>setVariant('A');
-$('#s1').onclick=()=>scene1();
-$('#s2').onclick=()=>scene2();
+$('#restart').onclick=()=>scene1();
 mask.onclick=()=>{ const x=sheet.querySelector('.x'); if(x) x.click(); };
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter' || e.isComposing) return;
