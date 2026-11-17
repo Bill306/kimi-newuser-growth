@@ -6,210 +6,358 @@
 <title>新用户转化原型</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@600;900&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: phone mock (the product) on the left, experiment console (the PM's view) on the right; stacks below 900px */
+/* Layout: a phone (the product) floats on a dotted "lab bench"; the PM console sits beside it as a notebook. Stacks below 920px. */
 :root{
-  --bg:#ECEFF5; --surface:#FFFFFF; --surface-2:#F4F6FA; --fg:#131926; --muted:#5A6477; --line:#DAE0EA;
-  --accent:#2646D4; --accent-soft:#E5EAFD; --accent-fg:#FFFFFF;
-  --offer:#A8500B; --offer-soft:#FCEFE1;
-  --ok:#1D7448; --ok-soft:#E1F2E8; --warn:#B3261E; --warn-soft:#FBE9E7;
-  --frame:#1B2130; --scrim:rgba(15,20,32,.42);
+  --paper:#F1EFEA; --dot:rgba(24,24,32,.08);
+  --surface:#FFFFFF; --surface-2:#F5F6F8; --surface-3:#ECEEF2;
+  --ink:#0D0F14; --fg:#15171D; --muted:#676D7C; --faint:#A0A5B1; --line:#E6E8ED;
+  --accent:#2C5BFF; --accent-2:#13B5C9; --accent-soft:#EBF0FF; --accent-fg:#FFFFFF;
+  --offer:#C2560C; --offer-soft:#FFF1E4;
+  --ok:#14804A; --ok-soft:#E2F4E9; --warn:#C0352B; --warn-soft:#FCEBE9;
+  --frame:#0B0C10; --scrim:rgba(10,12,18,.46);
+  --shadow:0 40px 80px -30px rgba(18,22,40,.45),0 12px 24px -12px rgba(18,22,40,.25);
   --font:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --serif:"Noto Serif SC","Songti SC",serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0E121A; --surface:#171C27; --surface-2:#1E2432; --fg:#E8ECF4; --muted:#9AA4B8; --line:#2C3446;
-  --accent:#7B93FF; --accent-soft:#232C4D; --accent-fg:#0E121A;
-  --offer:#F0A35C; --offer-soft:#3A2A1A; --ok:#5DC893; --ok-soft:#173326; --warn:#FF8A80; --warn-soft:#3A1E1C;
-  --frame:#000000; --scrim:rgba(0,0,0,.6); color-scheme:dark}}
+  --paper:#0C0E13; --dot:rgba(255,255,255,.06);
+  --surface:#161921; --surface-2:#1D212B; --surface-3:#252A36;
+  --ink:#F2F4F8; --fg:#E9ECF2; --muted:#9AA2B3; --faint:#6C7385; --line:#2A303C;
+  --accent:#7C9BFF; --accent-2:#3FD2E3; --accent-soft:#1F2A4D; --accent-fg:#0C0E13;
+  --offer:#F2A35E; --offer-soft:#3A2715; --ok:#5DCB93; --ok-soft:#14301F; --warn:#FF8A80; --warn-soft:#3A1C1A;
+  --frame:#000; --scrim:rgba(0,0,0,.62); --shadow:0 40px 80px -30px rgba(0,0,0,.8); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E121A; --surface:#171C27; --surface-2:#1E2432; --fg:#E8ECF4; --muted:#9AA4B8; --line:#2C3446;
-  --accent:#7B93FF; --accent-soft:#232C4D; --accent-fg:#0E121A;
-  --offer:#F0A35C; --offer-soft:#3A2A1A; --ok:#5DC893; --ok-soft:#173326; --warn:#FF8A80; --warn-soft:#3A1E1C;
-  --frame:#000000; --scrim:rgba(0,0,0,.6); color-scheme:dark}
+  --paper:#0C0E13; --dot:rgba(255,255,255,.06);
+  --surface:#161921; --surface-2:#1D212B; --surface-3:#252A36;
+  --ink:#F2F4F8; --fg:#E9ECF2; --muted:#9AA2B3; --faint:#6C7385; --line:#2A303C;
+  --accent:#7C9BFF; --accent-2:#3FD2E3; --accent-soft:#1F2A4D; --accent-fg:#0C0E13;
+  --offer:#F2A35E; --offer-soft:#3A2715; --ok:#5DCB93; --ok-soft:#14301F; --warn:#FF8A80; --warn-soft:#3A1C1A;
+  --frame:#000; --scrim:rgba(0,0,0,.62); --shadow:0 40px 80px -30px rgba(0,0,0,.8); color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
-body{background:var(--bg);color:var(--fg);font:14px/1.6 var(--font);
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+body{background:var(--paper);background-image:radial-gradient(var(--dot) 1px,transparent 1.2px);background-size:18px 18px;color:var(--fg);font:14px/1.6 var(--font);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-.topline{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
-.topline h1{font-size:20px;margin:0;text-wrap:balance}
-.topline a{color:var(--accent);text-decoration:none;font-size:13px}
-.disclaimer{font-size:12px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:6px 10px}
-.stage{display:grid;grid-template-columns:400px minmax(0,1fr);gap:24px;align-items:start}
-@media (max-width:900px){.stage{grid-template-columns:minmax(0,1fr)}}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.topline{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:flex-end;justify-content:space-between}
+.topline .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.topline h1{font-family:var(--serif);font-weight:900;font-size:clamp(22px,3.2vw,30px);line-height:1.25;margin:2px 0 0;text-wrap:balance}
+.topline h1 em{font-style:normal;color:var(--accent)}
+.topline a{color:var(--fg);text-decoration:none;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:1px}
+.disclaimer{font-size:12px;color:var(--muted);border-left:2px solid var(--offer);padding:2px 10px}
+.stage{display:grid;grid-template-columns:420px minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:920px){.stage{grid-template-columns:minmax(0,1fr)}}
 
-/* ---------- phone ---------- */
-.phone-col{display:flex;flex-direction:column;align-items:center;gap:8px}
-.phone{position:relative;width:min(380px,100%);height:740px;background:var(--surface);border:10px solid var(--frame);border-radius:40px;overflow:hidden;display:flex;flex-direction:column}
-.ph-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 10px;border-bottom:1px solid var(--line)}
-.brand{font-weight:700;letter-spacing:.06em;font-size:15px}
-.brand small{font-weight:500;color:var(--muted);letter-spacing:0;margin-left:6px;font-size:11px}
-.meter{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.meter .bar{width:64px;height:6px;border-radius:3px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
-.meter .bar i{display:block;height:100%;background:var(--accent);transition:width .6s ease}
+/* ================= phone ================= */
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:10px;position:sticky;top:16px}
+@media (max-width:920px){.phone-col{position:static}.phone{height:740px}}
+.phone-col::before{content:"";position:absolute;inset:40px 30px auto;height:520px;background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 22%,transparent),transparent);filter:blur(30px);z-index:0;pointer-events:none}
+.phone{position:relative;z-index:1;width:min(390px,100%);height:clamp(640px,calc(100vh - 150px),780px);background:var(--surface);border:11px solid var(--frame);border-radius:48px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.status{display:flex;justify-content:space-between;align-items:center;padding:10px 24px 2px;font:600 13px var(--font);font-variant-numeric:tabular-nums}
+.status .isl{width:96px;height:26px;border-radius:14px;background:var(--frame);position:absolute;left:50%;top:8px;transform:translateX(-50%)}
+.status svg{width:46px;height:12px}
+.ph-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 16px 10px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:900;letter-spacing:.04em;font-size:16px}
+.brand .logo{width:26px;height:26px;border-radius:8px;background:var(--ink);color:var(--surface);display:grid;place-items:center;font:900 14px var(--font)}
+.brand small{font-weight:500;color:var(--faint);letter-spacing:0;font-size:11px}
+.meter{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 8px;background:var(--surface)}
+.meter .bar{width:48px;height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden}
+.meter .bar i{display:block;height:100%;background:var(--ink);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.meter.low{border-color:var(--offer);color:var(--offer)}
 .meter.low .bar i{background:var(--offer)}
-.chat{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
-.u{align-self:flex-end;max-width:82%;background:var(--accent-soft);padding:8px 12px;border-radius:14px 14px 4px 14px}
-.ai{align-self:flex-start;max-width:92%;padding:2px 2px}
+.meter.gift{border-color:var(--ok);color:var(--ok)}
+.chat{flex:1;overflow-y:auto;padding:6px 16px 10px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.u{align-self:flex-end;max-width:84%;background:var(--surface-3);padding:9px 13px;border-radius:18px 18px 6px 18px;animation:rise .3s ease-out}
+.ai{align-self:flex-start;max-width:94%;animation:rise .3s ease-out}
 .ai p{margin:0 0 6px}
 .ai ul{margin:0;padding-left:18px}
-.sys{align-self:stretch;text-align:center;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.ai .who{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);margin-bottom:4px}
+.ai .who .logo{width:18px;height:18px;border-radius:6px;background:var(--ink);color:var(--surface);display:grid;place-items:center;font:900 10px var(--font)}
+.sys{align-self:stretch;text-align:center;font-size:11px;color:var(--faint);display:flex;align-items:center;gap:10px}
 .sys::before,.sys::after{content:"";flex:1;height:1px;background:var(--line)}
-.card{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
-.card h4{margin:0;font-size:14px}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{border:1px solid var(--line);border-radius:16px;padding:13px 14px;background:var(--surface);display:flex;flex-direction:column;gap:9px;animation:rise .35s ease-out}
+.card h4{margin:0;font-size:14.5px;line-height:1.45}
 .card .sub{font-size:12px;color:var(--muted)}
-.card.tint{background:var(--surface-2)}
-.card.warn{border-color:var(--warn);background:var(--warn-soft)}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13px}
-.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:500}
-.btn.offer{background:var(--offer);color:var(--surface);border-color:var(--offer);font-weight:500}
+.card.tint{background:var(--surface-2);border-color:transparent}
+.card.warn{border-color:color-mix(in srgb,var(--warn) 50%,transparent);background:var(--warn-soft)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:500;transition:transform .15s,background .15s;display:inline-flex;gap:6px;align-items:center}
+.btn svg.i{width:15px;height:15px}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn.primary{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
-.btn:disabled{opacity:.45;cursor:default}
-.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
-.steps li{display:flex;gap:6px;align-items:center}
-.steps li::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--offer);display:inline-flex;gap:6px;align-items:center}
+.tag.blue{color:var(--accent)}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--ok-soft);color:var(--ok);white-space:nowrap}
+
+/* onboarding */
+.phone.ob .ph-input,.phone.ob .sugs{display:none}
+.ob-screen{flex:1;display:flex;flex-direction:column;gap:14px;padding:4px 2px 4px;animation:rise .35s ease-out}
+.ob-head{display:flex;justify-content:space-between;align-items:center}
+.dots{display:flex;gap:5px}
+.dots i{width:18px;height:4px;border-radius:2px;background:var(--surface-3)}
+.dots i.on{background:var(--ink)}
+.ob-skip{border:none;background:none;color:var(--muted);font-size:12.5px;padding:4px}
+.ob-title{font-family:var(--serif);font-weight:900;font-size:25px;line-height:1.3;margin:4px 0 0;letter-spacing:.01em}
+.ob-title .grad{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ob-sub{margin:0;color:var(--muted);font-size:13px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{display:flex;align-items:center;gap:10px;text-align:left;border:1.5px solid var(--line);border-radius:14px;padding:11px 12px;background:var(--surface);font-size:13.5px;font-weight:500;animation:rise .4s ease-out both;animation-delay:calc(var(--i)*45ms);transition:border-color .15s,background .15s,transform .15s}
+.tile:hover:not(:disabled){transform:translateY(-1px);border-color:var(--faint)}
+.tile .ic{width:32px;height:32px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;color:var(--fg);flex:none;transition:background .15s,color .15s}
+.tile small{display:block;font-weight:400;font-size:11px;color:var(--muted);line-height:1.35}
+.tile[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-2)}
+.tile[aria-pressed="true"] .ic{background:var(--ink);color:var(--surface)}
+.tile:disabled{opacity:.38;cursor:default}
+.tiles.goals{grid-template-columns:1fr}
+.tiles.goals .tile{padding:9px 12px}
+.ob-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-bottom:6px}
+.cta-big{border:none;border-radius:16px;padding:14px;background:var(--ink);color:var(--surface);font-weight:700;font-size:15px;display:flex;justify-content:center;gap:8px;align-items:center;transition:opacity .2s}
+.cta-big:disabled{opacity:.25;cursor:default}
+.ob-note{text-align:center;font-size:11px;color:var(--faint)}
+.preparing{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:13px}
+.orb{width:64px;height:64px;border-radius:50%;background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--accent));animation:spin 1.1s linear infinite;-webkit-mask:radial-gradient(circle,transparent 52%,#000 54%);mask:radial-gradient(circle,transparent 52%,#000 54%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* prefilled task */
+.taskcard{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface);animation:rise .35s ease-out;flex:none}
+.taskcard .hd{display:flex;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.taskcard .cap{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none}
+.taskcard .hd b{display:block;font-size:14px;line-height:1.35}
+.taskcard .hd span{font-size:11.5px;color:var(--muted)}
+.taskcard .bd{padding:10px 14px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.taskcard ul{margin:0;padding-left:16px;font-size:12px;color:var(--muted);flex:1}
+.sugs{display:flex;gap:8px;padding:8px 14px 2px;overflow-x:auto;flex:none;scrollbar-width:none}
+.sugs::-webkit-scrollbar{display:none}
+.sug{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:12px;padding:6px 10px;background:var(--surface);font-size:12px;max-width:230px;text-align:left}
+.sug span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sug svg.i{width:14px;height:14px;color:var(--muted)}
+.sug[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-2)}
+.sugs .lbl{flex:none;align-self:center;font-size:11px;color:var(--faint)}
+.ph-input{padding:8px 12px 18px;display:flex;gap:8px;align-items:flex-end}
+.boxwrap{flex:1;position:relative;border-radius:20px;padding:1.5px;background:var(--line)}
+.boxwrap.prefilled{background:linear-gradient(120deg,var(--accent),var(--accent-2),var(--accent));background-size:200% 200%;animation:flow 3s ease infinite}
+@keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.box{min-height:44px;max-height:132px;overflow-y:auto;border-radius:18.5px;padding:11px 14px;font-size:13.5px;background:var(--surface-2);color:var(--fg);line-height:1.55}
+.boxwrap.prefilled .box{background:var(--surface)}
+.box.empty{color:var(--faint)}
+.box .hint{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:10.5px;color:var(--faint)}
+.kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--surface);color:var(--muted)}
+.send{width:44px;height:44px;border-radius:50%;border:none;background:var(--ink);color:var(--surface);display:grid;place-items:center;flex:none;transition:transform .15s}
+.send svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.send:disabled{background:var(--surface-3);color:var(--faint);cursor:default}
+.send.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 35%,transparent)}50%{box-shadow:0 0 0 9px transparent}}
+
+/* agent progress */
+.work{border:1px solid var(--line);border-radius:18px;padding:13px 14px;background:var(--surface);display:flex;flex-direction:column;gap:10px;animation:rise .35s ease-out;flex:none}
+.work .top{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.work .spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--surface-3);border-top-color:var(--accent);animation:spin .8s linear infinite;flex:none}
+.work.done .spin{border-color:var(--ok);background:var(--ok);animation:none}
+.work .el{margin-left:auto;font:400 10.5px var(--mono);color:var(--faint)}
+.pbar{height:3px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .6s ease}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--faint)}
+.steps li{display:flex;gap:8px;align-items:flex-start}
+.steps li::before{content:"";width:9px;height:9px;margin-top:5px;border-radius:50%;border:1.5px solid var(--line);flex:none}
 .steps li.on{color:var(--fg)}
-.steps li.on::before{border-color:var(--accent);background:var(--accent-soft)}
-.steps li.done::before{background:var(--accent);border-color:var(--accent)}
-.pbar{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
-.pbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .5s ease}
-.doc{display:flex;gap:10px;align-items:center}
-.doc .ic{width:34px;height:42px;border-radius:4px;background:var(--accent-soft);border:1px solid var(--line);display:grid;place-items:center;font-size:10px;color:var(--accent);font-weight:700}
+.steps li.on::before{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.steps li.done{color:var(--muted)}
+.steps li.done::before{background:var(--ok);border-color:var(--ok);box-shadow:none}
+.steps small{display:block;font-size:11px;color:var(--faint)}
+.srcs{display:flex;gap:3px;flex-wrap:wrap;margin-top:4px}
+.srcs i{width:14px;height:14px;border-radius:4px;animation:rise .25s ease-out both}
+
+/* deliverable card */
+.out{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface);animation:rise .4s ease-out;flex:none}
+.out .thumbwrap{background:linear-gradient(160deg,var(--surface-2),var(--surface-3));padding:14px 14px 0;display:flex;justify-content:center;border-bottom:1px solid var(--line);height:160px;overflow:hidden}
+.out .meta{padding:11px 14px 13px;display:flex;flex-direction:column;gap:8px}
+.out .meta b{font-size:14px;line-height:1.4}
+.out .meta span{font-size:11.5px;color:var(--muted)}
+
+/* rendered deliverables (thumbnail = scaled full render) */
+.mini{transform-origin:top center;pointer-events:none;flex:none}
 .slides{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.sl{aspect-ratio:16/9;max-width:100%;border-radius:4px;border:1px solid var(--line);background:var(--surface-2);font-size:8px;line-height:1.25;padding:4px;overflow:hidden;color:var(--fg)}
-.sl b{display:block;font-size:8.5px;margin-bottom:2px}
-.sl.ghost{display:grid;place-items:center;color:var(--muted);border-style:dashed;font-size:10px}
-.split{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line)}
-.split .have{background:var(--accent)}
-.split .need{background:repeating-linear-gradient(45deg,var(--offer) 0 4px,var(--offer-soft) 4px 8px)}
-.legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--surface-2);color:var(--muted)}
-.welcome{margin:auto 0;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;padding:20px 8px}
-.welcome h3{margin:0;font-size:22px;letter-spacing:.08em}
-.welcome p{margin:0;color:var(--muted);font-size:12.5px}
-.ph-input{border-top:1px solid var(--line);padding:10px 12px 14px;display:flex;gap:8px;align-items:flex-end}
-.ph-input .box{flex:1;min-height:40px;border:1px solid var(--line);border-radius:14px;padding:9px 12px;font-size:13px;background:var(--surface-2);color:var(--fg)}
-.ph-input .box.empty{color:var(--muted)}
-.send{width:38px;height:38px;border-radius:50%;border:none;background:var(--accent);color:var(--accent-fg);font-weight:700;font-size:16px;flex:none}
-.send:disabled{background:var(--line);color:var(--muted);cursor:default}
-.send.pulse{animation:pulse 1.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--accent-soft)}50%{box-shadow:0 0 0 7px var(--accent-soft)}}
-.mask{position:absolute;inset:0;background:var(--scrim);z-index:5}
-.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-radius:20px 20px 0 0;padding:18px 16px 20px;display:flex;flex-direction:column;gap:10px;max-height:88%;overflow-y:auto;animation:up .28s ease-out}
-@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
-.sheet h3{margin:0;font-size:17px;text-wrap:balance}
-.sheet .x{position:absolute;right:12px;top:10px;border:none;background:none;font-size:18px;color:var(--muted)}
-.opt{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left;background:var(--surface);display:flex;flex-direction:column;gap:2px;width:100%}
+.slide{aspect-ratio:16/9;border-radius:5px;background:#fff;color:#16181D;border:1px solid #E5E7EC;padding:5px 6px;overflow:hidden;font-size:7.5px;line-height:1.3;position:relative}
+.slide b{display:block;font-size:8px;margin-bottom:3px}
+.slide.cover{background:linear-gradient(140deg,#0F1730,#1F3A8A);color:#fff;border-color:#0F1730}
+.slide.cover b{font-size:9px}
+.slide .bar{height:3px;border-radius:2px;background:#2C5BFF;margin-top:3px}
+.slide .ln{height:2px;border-radius:1px;background:#D7DAE2;margin-top:3px}
+.slide .ch{position:absolute;right:6px;bottom:6px;display:flex;gap:2px;align-items:flex-end;height:40%}
+.slide .ch i{width:5px;background:#13B5C9;border-radius:1px}
+.slide.ghost{display:grid;place-items:center;color:var(--muted);border-style:dashed;background:var(--surface-2);font-size:10px}
+.rep{display:flex;flex-direction:column;gap:12px;color:#16181D;background:#fff;border-radius:12px;padding:16px;box-shadow:0 8px 24px -14px rgba(0,0,0,.35)}
+.rep .k{font:600 10px var(--mono);letter-spacing:.12em;color:#2C5BFF;text-transform:uppercase}
+.rep h2{font-family:var(--serif);font-weight:900;font-size:19px;line-height:1.35;margin:2px 0 0}
+.rep .by{font-size:11px;color:#6A7080}
+.rep .call{background:#F2F5FF;border-left:3px solid #2C5BFF;padding:9px 11px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.6}
+.rep h5{margin:0;font-size:12.5px}
+.rep p{margin:0;font-size:12.5px;line-height:1.7}
+.rep ol{margin:0;padding-left:18px;font-size:12.5px;display:flex;flex-direction:column;gap:5px;line-height:1.55}
+.rep sup{color:#2C5BFF;font-size:9px;margin-left:1px}
+.rep .src{font-size:11px;color:#6A7080;display:flex;flex-direction:column;gap:2px;border-top:1px solid #ECEEF2;padding-top:8px}
+.badge{display:inline-block;font-size:9.5px;font-weight:700;color:#C2560C;background:#FFF1E4;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle;letter-spacing:0}
+.hbars{display:flex;flex-direction:column;gap:6px;font-size:11.5px}
+.hbars .r{display:grid;grid-template-columns:70px 1fr 44px;gap:8px;align-items:center}
+.hbars .t{height:12px;border-radius:3px;background:#ECEEF2;overflow:hidden}
+.hbars .t i{display:block;height:100%;background:linear-gradient(90deg,#2C5BFF,#13B5C9);border-radius:3px;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{width:0}}
+.hbars .v{font-family:var(--mono);font-size:11px;text-align:right;color:#4A5060}
+.bigslide{aspect-ratio:16/9;border-radius:10px;background:linear-gradient(140deg,#0F1730,#1F3A8A);color:#fff;padding:16px 18px;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;position:relative;overflow:hidden}
+.bigslide::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,#13B5C9,transparent 70%);opacity:.7}
+.bigslide b{font-family:var(--serif);font-size:20px;line-height:1.3;position:relative;z-index:1}
+.bigslide span{font-size:11px;opacity:.7;position:relative;z-index:1}
+.grid-slides{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid-slides .slide{font-size:9px;padding:8px 9px}
+.grid-slides .slide b{font-size:10px}
+.xl{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+.xl th{background:#F1F3F7;color:#4A5060;font-weight:600;text-align:left;padding:6px 7px;border:1px solid #E3E6EC}
+.xl td{padding:6px 7px;border:1px solid #E3E6EC}
+.xl td:not(:first-child){font-family:var(--mono);font-size:11px}
+.browser{border-radius:12px;overflow:hidden;border:1px solid #E3E6EC;background:#fff;color:#16181D;box-shadow:0 8px 24px -14px rgba(0,0,0,.35)}
+.browser .chrome{display:flex;gap:6px;align-items:center;padding:7px 10px;background:#F1F3F7;font:11px var(--mono);color:#6A7080}
+.browser .chrome i{width:8px;height:8px;border-radius:50%;background:#D5D8DF}
+.browser .chrome span{margin-left:6px;background:#fff;border-radius:6px;padding:2px 8px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.browser .hero{padding:24px 16px 20px;background:linear-gradient(140deg,#0F1730,#1F3A8A);color:#fff;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.browser .hero::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#13B5C9,transparent 70%);opacity:.6}
+.browser .hero b{font-family:var(--serif);font-size:21px;position:relative;z-index:1}
+.browser .hero p{margin:0;font-size:12px;opacity:.8;position:relative;z-index:1}
+.browser .hero .go{align-self:flex-start;margin-top:6px;background:#fff;color:#0F1730;border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:700;position:relative;z-index:1}
+.browser .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:12px}
+.browser .feats div{border:1px solid #ECEEF2;border-radius:8px;padding:8px;font-size:11px;line-height:1.4}
+.browser .feats div::before{content:"";display:block;width:16px;height:16px;border-radius:5px;background:#EBF0FF;margin-bottom:5px}
+.road{display:flex;flex-direction:column;font-size:12px}
+.road div{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:6px 0 6px 12px;border-left:2px solid #E3E6EC;margin-left:8px;position:relative}
+.road div::before{content:"";position:absolute;left:-6px;top:11px;width:10px;height:10px;border-radius:50%;background:#2C5BFF;border:2px solid #fff}
+.road b{font:600 10.5px var(--mono);color:#2C5BFF}
+.concepts{display:grid;gap:6px}
+.concepts div{background:#F5F6F8;border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.5}
+.concepts b{display:block;font-size:12.5px}
+
+/* sheet (bottom drawer) */
+.mask{position:absolute;inset:0;background:var(--scrim);z-index:5;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-radius:24px 24px 0 0;padding:10px 16px 20px;display:flex;flex-direction:column;gap:11px;max-height:90%;overflow-y:auto;animation:up .32s cubic-bezier(.2,.8,.2,1)}
+.sheet::before{content:"";width:36px;height:4px;border-radius:2px;background:var(--surface-3);align-self:center;flex:none}
+.sheet > *{flex:none}
+@keyframes up{from{transform:translateY(60px);opacity:.3}to{transform:none;opacity:1}}
+.sheet h3{margin:0;font-size:18px;line-height:1.35;text-wrap:balance}
+.sheet .x{position:absolute;right:12px;top:10px;border:none;background:var(--surface-2);width:30px;height:30px;border-radius:50%;font-size:16px;color:var(--muted);display:grid;place-items:center;z-index:2}
+.sheet.doc{background:var(--surface-2);padding-top:14px}
+.opt{border:1.5px solid var(--line);border-radius:14px;padding:11px 13px;text-align:left;background:var(--surface);display:flex;flex-direction:column;gap:3px;width:100%;transition:transform .15s}
+.opt:hover{transform:translateY(-1px)}
 .opt.rec{border-color:var(--offer);background:var(--offer-soft)}
-.opt .t{font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.opt .t{font-weight:700;font-size:14.5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
 .opt .t s{color:var(--muted);font-weight:400;font-size:12px}
 .opt .d{font-size:12px;color:var(--muted)}
-.tag{font-size:10.5px;font-weight:700;color:var(--offer);letter-spacing:.04em}
 .count{font-family:var(--mono);font-size:11px;color:var(--offer)}
+.split{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--surface-3)}
+.split .have{background:var(--ink)}
+.split .need{background:repeating-linear-gradient(45deg,var(--offer) 0 4px,var(--offer-soft) 4px 8px)}
+.legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 .plans{width:100%;border-collapse:collapse;font-size:11.5px}
 .plans th,.plans td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
 .plans th{color:var(--muted);font-weight:500}
-.toast{position:absolute;left:50%;top:64px;transform:translateX(-50%);z-index:8;background:var(--fg);color:var(--surface);font-size:12.5px;padding:7px 14px;border-radius:999px;white-space:nowrap;animation:up .2s ease-out}
-.toast.bad{background:var(--warn);color:var(--surface)}
+.toast{position:absolute;left:50%;top:92px;transform:translateX(-50%);z-index:8;background:var(--ink);color:var(--surface);font-size:12.5px;padding:8px 15px;border-radius:999px;white-space:nowrap;animation:rise .2s ease-out;box-shadow:0 10px 20px -8px rgba(0,0,0,.4)}
+.toast.bad{background:var(--warn);color:#fff}
 .paymethod{display:flex;gap:8px}
-.paymethod label{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:8px;font-size:13px;display:flex;gap:6px;align-items:center}
-.paymethod input{accent-color:var(--accent)}
-.demo-note{font-size:11px;color:var(--muted);text-align:center}
-.caption{font-size:12px;color:var(--muted);text-align:center;max-width:380px}
+.paymethod label{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:9px;font-size:13px;display:flex;gap:6px;align-items:center}
+.paymethod input{accent-color:var(--ink)}
+.demo-note{font-size:11px;color:var(--faint);text-align:center}
+.caption{font-size:12px;color:var(--muted);text-align:center;max-width:390px;position:relative;z-index:1}
+.doc-icon{width:34px;height:42px;border-radius:5px;background:var(--accent-soft);display:grid;place-items:center;font-size:9.5px;color:var(--accent);font-weight:900;flex:none}
+.docline{display:flex;gap:10px;align-items:center}
+.docline h4{margin:0}
 
-/* ---------- console ---------- */
+/* ================= console ================= */
 .console{display:flex;flex-direction:column;gap:14px;min-width:0}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.panel h2{margin:0;font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:500;text-transform:uppercase}
-.seg{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;flex-wrap:wrap}
-.seg button{flex:1;min-width:140px;border:none;background:transparent;border-radius:8px;padding:7px 10px;font-size:13px;color:var(--muted);text-align:left}
-.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 0 0 1px var(--line);font-weight:500}
-.seg small{display:block;font-size:11px;color:var(--muted);font-weight:400}
-.scenes{display:flex;gap:8px;flex-wrap:wrap}
-.scenes .btn{border-radius:8px}
-.note h3{margin:0 0 4px;font-size:15px}
-.note p{margin:0 0 6px;color:var(--fg)}
-.note ul{margin:0;padding-left:18px;color:var(--fg)}
-.note .why{font-size:12.5px;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 17px;display:flex;flex-direction:column;gap:11px;min-width:0}
+.panel h2{margin:0;font:600 10.5px var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.panel h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:12px;padding:4px;gap:4px}
+@media (max-width:520px){.seg{grid-template-columns:1fr}}
+.seg button{border:none;background:transparent;border-radius:9px;padding:8px 11px;font-size:13px;color:var(--muted);text-align:left}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.08),0 0 0 1px var(--line);font-weight:600}
+.seg small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px}
+.scenes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.scenes{grid-template-columns:1fr}}
+.scene{border:1.5px solid var(--line);border-radius:12px;background:var(--surface);padding:9px 12px;text-align:left;display:flex;flex-direction:column;gap:1px}
+.scene b{font-size:13.5px}
+.scene small{font-size:11px;color:var(--muted)}
+.scene .pr{font:700 10px var(--mono);letter-spacing:.08em;color:var(--accent)}
+.scene[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-2)}
+.note h3{margin:0 0 4px;font-family:var(--serif);font-weight:900;font-size:18px;line-height:1.35}
+.note p{margin:0 0 6px}
+.note ul{margin:0 0 4px;padding-left:18px}
+.note li{margin:2px 0}
+.note .why{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
 .funnel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-@media (max-width:520px){.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.fstep{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:10.5px;line-height:1.35;font-family:var(--mono);color:var(--muted);background:var(--surface-2);overflow-wrap:anywhere;min-width:0}
-.fstep b{font-family:var(--font)}
-.fstep b{display:block;font-size:12.5px;color:var(--muted)}
+@media (max-width:560px){.funnel{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fstep{border:1px solid var(--line);border-radius:10px;padding:7px 9px;font-size:10px;line-height:1.35;font-family:var(--mono);color:var(--faint);background:var(--surface-2);overflow-wrap:anywhere;min-width:0;transition:all .3s}
+.fstep b{display:block;font-family:var(--font);font-size:12.5px;color:var(--muted);margin-bottom:2px}
 .fstep.hit{border-color:var(--ok);background:var(--ok-soft)}
 .fstep.hit b{color:var(--ok)}
 .fstep.guard.hit{border-color:var(--accent);background:var(--accent-soft)}
 .fstep.guard.hit b{color:var(--accent)}
-.log{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:11.5px;max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:4px}
-.log li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 8px;padding:4px 0;border-bottom:1px dashed var(--line)}
-.log .ts{color:var(--muted)}
+.fstep.lost.hit{border-color:var(--warn);background:var(--warn-soft)}
+.fstep.lost.hit b{color:var(--warn)}
+.log{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:11.5px;max-height:240px;overflow:auto;display:flex;flex-direction:column}
+.log li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:1px 8px;padding:5px 0;border-bottom:1px dashed var(--line);animation:rise .25s ease-out}
+.log .ts{color:var(--faint)}
 .log .ev{color:var(--accent);font-weight:600}
 .log .pr{grid-column:2;color:var(--muted);word-break:break-all}
 .empty-log{color:var(--muted);font-size:12px;font-family:var(--font)}
-/* ---------- onboarding (P0) ---------- */
-.card.ob{border-color:var(--accent);gap:10px}
-.picks{display:flex;flex-wrap:wrap;gap:6px}
-.pick{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--fg)}
-.pick[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:500}
-.pick:disabled{opacity:.4;cursor:default}
-.has{margin:0;padding-left:18px;font-size:12px;color:var(--muted)}
-.sugs{display:flex;gap:6px;align-items:center;padding:8px 12px 0;overflow-x:auto;border-top:1px solid var(--line);font-size:11px;color:var(--muted);white-space:nowrap;flex:none}
-.sugs .pick{font-size:11.5px;padding:3px 10px;flex:none}
-.sugs + .ph-input{border-top:none}
-.ph-input .box{max-height:120px;overflow-y:auto}
-.ph-input .box.prefilled{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px var(--accent-soft)}
-.kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);border-radius:4px;padding:0 4px;background:var(--surface-2)}
-.scenes .btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:500}
-.fstep.lost.hit{border-color:var(--warn);background:var(--warn-soft)}
-.fstep.lost.hit b{color:var(--warn)}
-.preview h4{margin:0}
-.preview section{border-top:1px solid var(--line);padding-top:8px;font-size:12.5px}
-.preview section b{display:block;margin-bottom:2px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="topline">
-    <h1>新用户转化原型 · P0 注册后直达 Aha ＋ P1 任务续航</h1>
+    <div>
+      <div class="eyebrow">Kimi · 新用户 7 日会员转化 · 可交互原型</div>
+      <h1><em>P0</em> 注册后直达 Aha ＋ <em>P1</em> 额度触顶的任务续航</h1>
+    </div>
     <a href="index.html">← 返回方案报告</a>
   </div>
-  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面，生成结果均为示意。价格取自 Kimi 帮助中心（2026-10-19 截图）的 Go 套餐 ¥49/月；「新人首个任务免费」「新人首月 ¥19.9」是待实验的假设参数。所有支付均为演示，不会扣款。</div>
+  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面。生成结果和图表数据均为示意，不是真实数据。价格取自 Kimi 帮助中心（2026-10-19 截图）的 Go 套餐 ¥49/月；「新人首个任务免费」「新人首月 ¥19.9」是待实验的假设参数。所有支付均为演示，不会扣款。</div>
 
   <div class="stage">
     <div class="phone-col">
       <div class="phone" id="phone">
+        <div class="status"><span>9:41</span><span class="isl"></span><svg viewBox="0 0 46 12" aria-hidden="true"><g fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="28" y="1" width="16" height="10" rx="3" fill="none" stroke="currentColor"/><rect x="30" y="3" width="11" height="6" rx="1.5"/></g></svg></div>
         <div class="ph-top">
-          <div class="brand">KIMI<small>概念原型</small></div>
+          <div class="brand"><span class="logo">K</span>Kimi<small>概念原型</small></div>
           <div class="meter" id="meter"><span id="meterLabel">额度 100%</span><span class="bar"><i id="meterBar" style="width:100%"></i></span></div>
         </div>
         <div class="chat" id="chat" aria-live="polite"></div>
         <div class="sugs" id="sugs" hidden></div>
         <div class="ph-input">
-          <div class="box empty" id="inputBox">给 Kimi 发消息…</div>
-          <button class="send" id="sendBtn" disabled aria-label="发送">↑</button>
+          <div class="boxwrap" id="boxwrap"><div class="box empty" id="inputBox">给 Kimi 发消息…</div></div>
+          <button class="send" id="sendBtn" disabled aria-label="发送"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
         </div>
         <div class="mask" id="mask" hidden></div>
         <div class="sheet" id="sheet" hidden></div>
         <div class="toast" id="toast" hidden></div>
       </div>
-      <div class="caption">在手机里点选、按蓝色发送键（或键盘 <span class="kbd">Enter</span>）推进剧情；右侧可以切换场景和实验组 / 对照组。</div>
+      <div class="caption">在手机里点选，按发送键或键盘 <span class="kbd">Enter</span> 推进剧情；右侧可以切换场景和实验组 / 对照组。</div>
     </div>
 
     <div class="console">
       <div class="panel">
         <h2>场景</h2>
         <div class="scenes">
-          <button class="btn" id="s1" aria-pressed="true">① 第 1 天：注册 → 第一次 Aha（P0）</button>
-          <button class="btn" id="s2" aria-pressed="false">② 第 3 天：额度触顶（P1）</button>
+          <button class="scene" id="s1" aria-pressed="true"><span class="pr">P0 · 第 1 天</span><b>注册 → 第一次 Aha</b><small>2 个问题 → 预填任务 → 成果</small></button>
+          <button class="scene" id="s2" aria-pressed="false"><span class="pr">P1 · 第 3 天</span><b>额度触顶 → 任务续航</b><small>先做一部分 → 再推付费</small></button>
         </div>
         <h2>实验分组</h2>
         <div class="seg" role="group" aria-label="实验分组">
@@ -217,17 +365,14 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
           <button id="vA" aria-pressed="false"></button>
         </div>
       </div>
-
       <div class="panel note" id="note"></div>
-
       <div class="panel">
         <h2>本次会话漏斗</h2>
         <div class="funnel" id="funnel"></div>
       </div>
-
       <div class="panel">
-        <h2>埋点事件（最新在上）</h2>
-        <ul class="log" id="log"><li class="empty-log">还没有事件。点手机里的发送键开始。</li></ul>
+        <h2>埋点事件 · 最新在上</h2>
+        <ul class="log" id="log"><li class="empty-log">还没有事件。在手机里操作开始。</li></ul>
       </div>
     </div>
   </div>
@@ -236,36 +381,130 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <script>
 (function(){
 const $=s=>document.querySelector(s);
-const chat=$('#chat'), sheet=$('#sheet'), mask=$('#mask'), toastEl=$('#toast');
+const phone=$('#phone'), chat=$('#chat'), sheet=$('#sheet'), mask=$('#mask'), toastEl=$('#toast');
 const S={variant:'B', scene:1, quota:100, run:0, t0:Date.now(), offerEnds:Date.now()+(3*86400+23*3600+59*60)*1000, timer:null, fmap:{}, cur:null};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* ---------- P0 data: onboarding questions and prefilled first tasks ---------- */
-const ROLES=[['student','学生'],['finance','投研 / 金融'],['pm','产品 / 运营'],['dev','程序员'],['mkt','市场 / 销售'],['teacher','老师'],['other','其他']];
-const GOALS=[['research','研究一个行业或公司'],['ppt','做 PPT'],['doc','写报告 / 论文'],['sheet','整理数据、做表格'],['web','做网页 / 小工具'],['learn','快速学一个新领域']];
-const CAP={
-  research:{cap:'深度研究',time:'约 3 分钟',ic:'PDF',steps:['拆解问题','检索 42 个来源','交叉核对数据','撰写报告'],meta:'18 页 · 42 个来源',has:['一句话结论','关键数据对比表','每个结论都附来源链接']},
-  ppt:{cap:'PPT',time:'约 2 分钟',ic:'PPT',steps:['生成大纲','设计版式','逐页撰写','排版配图'],meta:'10 页 · 可下载 PPTX',has:['10 页完整版式','每页附讲稿备注','可以接着对话修改']},
-  doc:{cap:'文档',time:'约 2 分钟',ic:'DOC',steps:['确定结构','检索资料','撰写正文','校对格式'],meta:'6 页 · 可导出 Word',has:['完整结构和小标题','引用来源','可导出 Word']},
-  sheet:{cap:'表格',time:'约 1 分钟',ic:'XLS',steps:['确定字段','收集数据','计算与校验','生成图表'],meta:'1 张表 · 2 张图',has:['带公式的明细表','2 张对比图','数据来源说明']},
-  web:{cap:'网站',time:'约 3 分钟',ic:'WEB',steps:['规划页面','生成代码','预览调试','部署上线'],meta:'已部署 · 可分享链接',has:['可直接打开的链接','适配手机','可以接着对话修改']},
-  learn:{cap:'深度研究',time:'约 3 分钟',ic:'PDF',steps:['拆解知识点','检索 30 个来源','由浅入深整理','生成学习路线'],meta:'12 页 · 附 7 天学习路线',has:['核心概念讲解','常见误区','7 天学习路线']}
+/* ---------- icons ---------- */
+const IC={
+  student:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+  finance:'<path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 15l4-4 3 3 5-6"/>',
+  pm:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/>',
+  dev:'<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13 6l-2 12"/>',
+  mkt:'<path d="M4 10v4h3l6 4V6L7 10z"/><path d="M17 9c1.5 1.5 1.5 4.5 0 6"/>',
+  teacher:'<path d="M4 5h7a3 3 0 013 3v11a2 2 0 00-2-2H4z"/><path d="M20 5h-4a2 2 0 00-2 2"/>',
+  other:'<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
+  research:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>',
+  ppt:'<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  doc:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
+  sheet:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/>',
+  web:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>',
+  learn:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.5 10.9V16h7v-2.1A6 6 0 0012 3z"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>'
 };
+const icon=k=>'<svg class="i" viewBox="0 0 24 24" aria-hidden="true">'+IC[k]+'</svg>';
+
+/* ---------- P0 data ---------- */
+const ROLES=[['student','学生','论文、课程、求职'],['finance','投研 / 金融','行业、公司、财报'],['pm','产品 / 运营','竞品、PRD、复盘'],['dev','程序员','选型、文档、工具'],['mkt','市场 / 销售','投放、方案、物料'],['teacher','老师','课件、教案、家校'],['other','其他','生活、兴趣、学习']];
+const GOALS=[['research','研究一个行业或公司','带来源的深度报告'],['ppt','做 PPT','完整版式，可直接用'],['doc','写报告 / 论文','结构完整的文档'],['sheet','整理数据、做表格','表格加图表'],['web','做网页 / 小工具','生成可分享的链接'],['learn','快速学一个新领域','讲义加学习路线']];
+const CAP={
+  research:{cap:'深度研究',time:'约 3 分钟',steps:[['拆解问题','确定要对比的 4 个维度'],['检索资料','正在阅读来源'],['交叉核对','核对关键数据，标记冲突'],['撰写报告','生成结论、图表和引用']],meta:'18 页 · 42 个来源',has:['开头一句话结论','关键数据对比图','每个结论都附来源']},
+  ppt:{cap:'PPT',time:'约 2 分钟',steps:[['生成大纲','按汇报逻辑排 10 页'],['设计版式','选配色和版式'],['逐页撰写','写标题、要点和备注'],['排版配图','生成图表和配图']],meta:'10 页 · 可下载 PPTX',has:['10 页完整版式','每页附讲稿备注','可以接着对话修改']},
+  doc:{cap:'文档',time:'约 2 分钟',steps:[['确定结构','列出章节'],['检索资料','补充事实和引用'],['撰写正文','按章节写作'],['校对格式','统一格式和术语']],meta:'6 页 · 可导出 Word',has:['完整结构和小标题','引用来源','可导出 Word']},
+  sheet:{cap:'表格',time:'约 1 分钟',steps:[['确定字段','设计表头'],['收集数据','填入数据'],['计算校验','加公式并核对'],['生成图表','画对比图']],meta:'1 张表 · 1 张图',has:['带公式的明细表','对比图','数据来源说明']},
+  web:{cap:'网站',time:'约 3 分钟',steps:[['规划页面','确定版块'],['生成代码','写页面和交互'],['预览调试','适配手机'],['部署上线','生成分享链接']],meta:'已部署 · 可分享链接',has:['可直接打开的链接','适配手机','可以接着对话修改']},
+  learn:{cap:'深度研究',time:'约 3 分钟',steps:[['拆解知识点','从入门到进阶排序'],['检索资料','正在阅读来源'],['由浅入深整理','写讲解和例子'],['生成路线','排出 5 天学习计划']],meta:'12 页 · 附学习路线',has:['核心概念讲解','常见误区','5 天学习路线']}
+};
+/* role -> goal -> [short title, prefilled prompt] */
 const P={
-  finance:{research:['宁德时代 vs 比亚迪：储能业务对比','帮我做一份深度研究：宁德时代和比亚迪的储能业务谁更有竞争力？对比出货量、海外订单和毛利率，并标注来源'],ppt:['宁德时代季报汇报 PPT','把宁德时代最新一季财报做成 10 页汇报 PPT，重点讲收入结构、毛利率变化和储能业务'],doc:['储能行业周报','写一份本周储能行业周报：政策、招标价格、龙头公司动态，最后列出下周关注点'],sheet:['储能公司估值对比表','整理 10 家储能产业链公司的估值对比表：市值、PE、PB、营收增速，并做成图表'],web:['持仓收益计算小工具','做一个网页小工具：输入买入价、数量和现价，自动算出收益率和盈亏'],learn:['30 分钟读懂固态电池','我想快速读懂固态电池：技术路线、量产进度、主要玩家，按入门到进阶整理']},
+  finance:{research:['宁德时代 vs 比亚迪：储能业务对比','帮我做一份深度研究：宁德时代和比亚迪的储能业务谁更有竞争力？对比出货量、海外订单和毛利率，并标注来源'],ppt:['宁德时代季报汇报 PPT','把宁德时代最新一季财报做成 10 页汇报 PPT，重点讲收入结构、毛利率变化和储能业务'],doc:['储能行业周报','写一份本周储能行业周报：政策、招标价格、龙头公司动态，最后列出下周关注点'],sheet:['储能公司估值对比表','整理储能产业链主要公司的估值对比表：市值、PE、营收增速，并做成图表'],web:['持仓收益计算器','做一个网页小工具：输入买入价、数量和现价，自动算出收益率和盈亏'],learn:['30 分钟读懂固态电池','我想快速读懂固态电池：技术路线、量产进度、主要玩家，按入门到进阶整理']},
   student:{research:['补贴退坡对新能源车销量的影响','帮我做一份深度研究：新能源汽车补贴退坡对国内销量有什么影响？给出数据和来源，我要写课程论文'],ppt:['课程展示：AI 如何改变就业','帮我做一份 10 页课程展示 PPT，主题是 AI 如何改变就业，要有数据和案例'],doc:['文献综述：生成式 AI 与教育','帮我写一份文献综述：生成式 AI 在教育中的应用，列出主要观点和代表文献'],sheet:['实验数据整理成图表','把我的实验数据整理成表格，算出均值和标准差，并画出对比图'],web:['个人作品集网页','帮我做一个个人作品集网页，展示我的项目经历和联系方式'],learn:['从零读懂机器学习','我想从零读懂机器学习：核心概念、常见算法、怎么入门，整理成一份讲义']},
   pm:{research:['国内 AI 办公助手竞品分析','帮我做一份竞品分析：国内主流 AI 办公助手的功能、定价和用户口碑对比，并标注来源'],ppt:['新功能评审会 PPT','帮我做一份 10 页新功能评审 PPT：背景、目标、方案、指标和排期'],doc:['续费提醒功能 PRD','帮我写一份 PRD：会员到期前的续费提醒功能，包含用户故事、流程和指标'],sheet:['用户反馈分类表','把这周的用户反馈整理成分类表：问题类型、出现次数、严重程度'],web:['活动落地页','帮我做一个活动落地页：标题、亮点介绍、报名按钮'],learn:['读懂用户增长模型','我想快速读懂用户增长：AARRR、留存曲线、增长实验，整理成入门讲义']},
-  dev:{research:['Rust vs Go：后端选型调研','帮我做一份技术调研：后端服务用 Rust 还是 Go？对比性能、生态和招聘难度，并标注来源'],ppt:['技术分享：向量数据库入门','帮我做一份 10 页技术分享 PPT：向量数据库是什么、怎么选型、有哪些坑'],doc:['登录模块接口文档','帮我写一份用户登录模块的接口设计文档，包含请求参数、返回值和错误码'],sheet:['云服务商 GPU 价格对比','对比 5 家云服务商的 GPU 实例价格，整理成表格并画出性价比图'],web:['个人技术博客','帮我做一个个人技术博客网站，首页列出文章，支持深色模式'],learn:['读懂 MCP 协议','我想快速读懂 MCP 协议：解决什么问题、怎么用、有哪些实现，整理成讲义']},
-  mkt:{research:['小红书美妆投放趋势','帮我做一份深度研究：今年小红书美妆赛道的投放趋势和爆款内容特征，并标注来源'],ppt:['新品发布会 PPT','帮我做一份 10 页新品发布会 PPT：用户痛点、产品亮点、价格和上市计划'],doc:['季度营销复盘','帮我写一份季度营销复盘：目标完成情况、渠道表现、问题和下季度计划'],sheet:['竞品价格与卖点对比表','整理 8 个竞品的价格、核心卖点和渠道，做成对比表'],web:['新品预约落地页','帮我做一个新品预约落地页，有倒计时和预约表单'],learn:['读懂私域运营','我想快速读懂私域运营：核心打法、关键指标、常见误区，整理成讲义']},
+  dev:{research:['Rust vs Go：后端选型调研','帮我做一份技术调研：后端服务用 Rust 还是 Go？对比性能、生态和招聘难度，并标注来源'],ppt:['技术分享：向量数据库入门','帮我做一份 10 页技术分享 PPT：向量数据库是什么、怎么选型、有哪些坑'],doc:['登录模块接口文档','帮我写一份用户登录模块的接口设计文档，包含请求参数、返回值和错误码'],sheet:['云服务商 GPU 价格对比','对比几家云服务商的 GPU 实例价格，整理成表格并画出性价比图'],web:['个人技术博客','帮我做一个个人技术博客网站，首页列出文章，支持深色模式'],learn:['读懂 MCP 协议','我想快速读懂 MCP 协议：解决什么问题、怎么用、有哪些实现，整理成讲义']},
+  mkt:{research:['小红书美妆投放趋势','帮我做一份深度研究：今年小红书美妆赛道的投放趋势和爆款内容特征，并标注来源'],ppt:['新品发布会 PPT','帮我做一份 10 页新品发布会 PPT：用户痛点、产品亮点、价格和上市计划'],doc:['季度营销复盘','帮我写一份季度营销复盘：目标完成情况、渠道表现、问题和下季度计划'],sheet:['竞品价格与卖点对比表','整理主要竞品的价格、核心卖点和渠道，做成对比表'],web:['新品预约落地页','帮我做一个新品预约落地页，有倒计时和预约表单'],learn:['读懂私域运营','我想快速读懂私域运营：核心打法、关键指标、常见误区，整理成讲义']},
   teacher:{research:['双减后课外阅读的变化','帮我做一份深度研究：双减之后中小学生课外阅读发生了哪些变化？给出数据和来源'],ppt:['物理课件：牛顿第二定律','帮我做一份高一物理课件：牛顿第二定律，10 页，包含例题和课堂练习'],doc:['家长会发言稿','帮我写一份期中家长会发言稿，讲学习情况、存在的问题和家校配合建议'],sheet:['班级成绩分析表','把班级期中成绩整理成分析表：平均分、分数段分布、进步最大的学生'],web:['课堂随机点名工具','帮我做一个课堂随机点名的网页小工具，可以导入学生名单'],learn:['读懂 AI 辅助教学','我想快速了解 AI 怎么辅助教学：备课、批改、个性化练习，整理成讲义']},
   other:{research:['2026 年值得关注的科技趋势','帮我做一份深度研究：2026 年最值得关注的 5 个科技趋势，每个都给出数据和来源'],ppt:['长文章做成 PPT','帮我把一篇长文章做成 8 页 PPT，提炼观点并配上图示'],doc:['日本关西 5 天旅行攻略','帮我写一份日本关西 5 天旅行攻略：路线、交通、预算和必吃清单'],sheet:['家庭月度预算表','帮我做一张家庭月度预算表，分类统计支出并画出占比图'],web:['个人主页','帮我做一个个人主页网站，介绍我自己和我的爱好'],learn:['快速入门咖啡烘焙','我想快速入门咖啡烘焙：器材、基本原理、新手常见问题，整理成讲义']}
 };
+/* role -> goal -> illustrative deliverable content (all numbers are mock data) */
+const O={
+  finance:{
+    research:{v:'两家打法不同：宁德时代胜在电芯技术和海外大客户，比亚迪胜在系统集成和成本控制。短期看订单，长期看谁先把价格战打成规模优势。',k:['海外订单：宁德时代绑定的海外储能大客户更多，订单能见度更高','成本：比亚迪从电芯到系统垂直一体化，系统报价更有优势','风险：储能电芯价格持续下行，两家的毛利率都在被压缩'],bl:'储能电芯出货份额',b:[['宁德时代',38],['比亚迪',12],['其他',50]],u:'%'},
+    ppt:{k:['收入结构：动力 vs 储能','毛利率变化与原因','储能业务：订单与出货','现金流与资本开支','结论与下季关注点']},
+    doc:{k:[['本周要点','储能招标均价环比继续下行，海外大单数量增加，龙头公司加速出海。'],['公司动态','多家龙头公布海外储能订单，集中在中东和欧洲。'],['下周关注','招标价格是否企稳；碳酸锂价格走势；海外政策变化。']]},
+    sheet:{c:['公司','市值（亿元）','PE','营收增速'],r:[['公司 A','11,200','22.5','+18%'],['公司 B','8,900','19.8','+24%'],['公司 C','1,650','16.2','+31%'],['公司 D','980','25.1','+12%']]},
+    web:{h:'持仓收益计算器',s:'输入买入价、数量和现价，自动算出收益率和盈亏。',k:['支持多只股票','自动汇总总盈亏','数据只存在本机'],url:'calc.kimi.page'},
+    learn:{k:[['它是什么','用固态电解质替代液态电解液，能量密度更高、更不容易起火'],['三条路线','硫化物、氧化物、聚合物，各有量产难点'],['量产进度','半固态已经装车，全固态还需要几年']],d:['基本原理','三条技术路线','产业链与主要玩家','量产时间表','投资观察指标']}},
+  student:{
+    research:{v:'补贴退坡后销量没有断崖下跌：价格战和新车型接住了需求，但低价车型受影响更明显。',k:['退坡当年，车企通过降价消化了大部分补贴减少','中高端车型受影响小，低价车型短期承压','充电设施和二手车残值成为影响购买的新因素'],bl:'退坡前后销量指数',b:[['退坡前',100],['退坡当年',112],['次年',135]],u:''},
+    ppt:{k:['AI 正在改变哪些工作','被替代与被增强的岗位','新出现的职业','大学生该准备什么','总结与讨论']},
+    doc:{k:[['研究背景','生成式 AI 进入课堂，引发关于学习效果和学术诚信的讨论。'],['主要观点','支持方认为 AI 能提供个性化辅导；反对方担心削弱独立思考。'],['研究空白','缺少长期跟踪研究，尤其是不同学科之间的差异。']]},
+    sheet:{c:['组别','样本数','均值','标准差'],r:[['对照组','30','72.4','6.1'],['实验组 A','30','78.9','5.4'],['实验组 B','30','81.2','4.8'],['合计','90','77.5','6.7']],ci:2},
+    web:{h:'你好，我是小林',s:'计算机专业大三，喜欢做有用的小工具。',k:['项目经历','技能栈','联系我'],url:'xiaolin.kimi.page'},
+    learn:{k:[['它是什么','让计算机从数据里学规律，而不是靠人写规则'],['三类任务','监督学习、无监督学习、强化学习'],['怎么入门','先学 Python 和线性代数，再动手做小项目']],d:['核心概念','线性回归','分类与决策树','神经网络入门','做第一个项目']}},
+  pm:{
+    research:{v:'国内 AI 办公助手正在从「能聊天」转向「能交付」，比拼的是文档、PPT、表格等成品的质量和速度。',k:['功能：主流产品都覆盖了文档、PPT 和深度研究','定价：多数提供免费档，付费档集中在每月几十元','口碑：用户最常抱怨额度不透明和结果不稳定'],bl:'用户最在意的因素',b:[['结果质量',46],['速度',22],['价格',18],['额度透明',14]],u:'%'},
+    ppt:{k:['背景与问题','目标与指标','方案与流程','风险与依赖','排期与分工']},
+    doc:{k:[['背景','会员到期后自动续费失败或用户忘记续费，造成非主动流失。'],['用户故事','作为会员，我希望到期前收到提醒，并能一键续费。'],['成功指标','到期续费率提升；提醒点击率；投诉率不上升。']]},
+    sheet:{c:['问题类型','次数','严重程度','负责人'],r:[['额度不透明','42','高','产品'],['生成速度慢','31','中','研发'],['PPT 排版错位','18','中','设计'],['登录失败','7','高','研发']]},
+    web:{h:'AI 效率周 · 免费体验',s:'5 天 5 个场景，带你用 AI 把周报、PPT 和表格一次做完。',k:['每天一个实战任务','完成送会员体验','名额有限'],url:'aiweek.kimi.page'},
+    learn:{k:[['AARRR','获取、激活、留存、变现、推荐五个环节'],['留存曲线','看曲线是否走平，判断有没有找到核心用户'],['增长实验','一次只改一个变量，用 A/B 实验验证']],d:['增长的基本框架','激活与 Aha 时刻','留存分析','增长实验设计','案例复盘']}},
+  dev:{
+    research:{v:'追求极致性能和内存安全选 Rust，追求开发效率和招聘容易选 Go。大多数业务后端，Go 是更稳妥的默认选项。',k:['性能：Rust 在高并发、低延迟场景领先','效率：Go 上手快、编译快，团队扩张更容易','生态：Go 的云原生生态更成熟，Rust 增长更快'],bl:'招聘难度指数（越高越难）',b:[['Rust',82],['Go',45]],u:''},
+    ppt:{k:['向量数据库是什么','核心原理：Embedding 与近似检索','主流产品对比','选型建议','踩过的坑']},
+    doc:{k:[['接口概览','POST /api/login：手机号加验证码登录，返回 token。'],['请求参数','phone（必填）、code（必填）、device_id（选填）。'],['错误码','40001 验证码错误；40002 验证码过期；42900 请求过于频繁。']]},
+    sheet:{c:['服务商','GPU','每小时价格','性价比'],r:[['服务商 A','A100','¥28.0','中'],['服务商 B','A100','¥24.5','高'],['服务商 C','H100','¥52.0','中'],['服务商 D','L40S','¥15.8','高']],ci:2},
+    web:{h:'Dev Notes',s:'记录后端、AI 工程和踩坑经验的技术博客。',k:['最新文章','标签分类','深色模式'],url:'devnotes.kimi.page'},
+    learn:{k:[['它解决什么','让 AI 应用用统一的方式连接各种工具和数据'],['核心概念','Server 提供工具，Client 发现并调用'],['怎么上手','先跑通官方示例，再写一个自己的 Server']],d:['协议背景','核心概念','跑通示例','写一个 Server','安全与权限']}},
+  mkt:{
+    research:{v:'美妆投放正在从头部达人转向中腰部达人和素人测评，「成分解析 + 真实使用感」类内容转化最好。',k:['预算：中腰部达人的投放占比在上升','内容：成分解析和对比测评类笔记互动率最高','节奏：大促前 3–4 周是种草窗口期'],bl:'各类内容互动率',b:[['成分解析',8.2],['对比测评',7.5],['开箱',4.1],['硬广',1.9]],u:'%'},
+    ppt:{k:['用户痛点','产品亮点','价格与套装','上市节奏','渠道与传播']},
+    doc:{k:[['目标完成','季度 GMV 完成 104%，新客占比 38%。'],['渠道表现','内容平台转化最好，信息流成本上升明显。'],['下季度计划','加大中腰部达人投放，测试私域复购活动。']]},
+    sheet:{c:['品牌','价格','核心卖点','主渠道'],r:[['品牌 A','¥199','成分温和','内容平台'],['品牌 B','¥259','功效实证','直播电商'],['品牌 C','¥149','性价比','社交电商'],['我们','¥219','敏感肌友好','内容平台']]},
+    web:{h:'新品预约 · 限量首发',s:'预约即可锁定首发价，开售当天短信提醒。',k:['倒计时 3 天','锁定首发价','预约送小样'],url:'launch.kimi.page'},
+    learn:{k:[['核心打法','把公域用户沉淀到企业微信和社群，长期运营'],['关键指标','加粉率、活跃率、复购率、客单价'],['常见误区','只拉人不运营，群变成广告群']],d:['私域是什么','引流设计','社群运营','复购与会员','数据复盘']}},
+  teacher:{
+    research:{v:'双减之后，学生的课外阅读时间整体增加，但阅读内容更依赖学校书单和短视频推荐。',k:['时间：课外阅读时间比双减前有所增加','内容：文学类和科普类读物占比上升','挑战：短视频挤占了部分深度阅读时间'],bl:'每周课外阅读时长（小时）',b:[['双减前',3.2],['一年后',4.5],['两年后',4.8]],u:''},
+    ppt:{k:['生活中的现象','实验：力、质量与加速度','牛顿第二定律','例题讲解','课堂练习']},
+    doc:{k:[['开场','感谢各位家长到场，先介绍本学期班级整体情况。'],['学习情况','期中平均分比上学期提高，数学和英语进步明显。'],['家校配合','建议家长每天花 10 分钟和孩子聊学校生活，关注作息。']]},
+    sheet:{c:['分数段','人数','占比','较上次'],r:[['90 以上','8','18%','+3'],['80–89','15','33%','+2'],['70–79','14','31%','-1'],['70 以下','8','18%','-4']]},
+    web:{h:'课堂随机点名',s:'导入学生名单，点一下随机抽人，可以设置不重复。',k:['导入名单','不重复抽取','投屏大字显示'],url:'rollcall.kimi.page'},
+    learn:{k:[['备课','快速生成教案、课件和分层练习'],['批改','作文初评和错题归类，老师复核'],['个性化','按学生水平推送不同难度的练习']],d:['AI 能做什么','备课实战','批改实战','个性化练习','注意事项']}},
+  other:{
+    research:{v:'2026 年值得关注的方向集中在 AI 智能体、具身机器人、固态电池、低空经济和脑机接口。',k:['AI 智能体从「对话」走向「替你完成任务」','具身机器人进入工厂和仓储试点','固态电池和低空经济开始小规模商业化'],bl:'关注热度指数',b:[['AI 智能体',92],['具身机器人',78],['固态电池',64],['低空经济',58]],u:''},
+    ppt:{k:['核心观点','背景与问题','三个关键论据','反方观点','总结']},
+    doc:{k:[['路线','大阪 2 天 → 京都 2 天 → 奈良 1 天，住在交通方便的车站附近。'],['交通','买关西周游卡覆盖主要线路；机场到市区坐特急列车。'],['预算','人均约 6,000 元（不含机票），住宿占一半。']]},
+    sheet:{c:['分类','预算','实际','差额'],r:[['房租','4,000','4,000','0'],['餐饮','2,500','2,860','-360'],['交通','600','520','+80'],['娱乐','800','650','+150']],ci:2},
+    web:{h:'Hi，我是阿杰',s:'摄影爱好者，周末喜欢徒步和做饭。',k:['我的照片','徒步路线','联系我'],url:'ajie.kimi.page'},
+    learn:{k:[['器材','小型烘焙机、温度计、磨豆机就能起步'],['原理','温度和时间决定风味：浅烘偏酸，深烘偏苦'],['新手问题','火候不稳、出豆太晚、没有记录曲线']],d:['认识生豆','烘焙原理','第一次烘焙','记录与调整','杯测入门']}}
+};
+const SOURCES=['公司年报与公告','行业协会统计','券商研究报告','主流财经与行业媒体'];
+
+/* ---------- deliverable renderers ---------- */
+function bars(o){ const max=Math.max(...o.b.map(x=>x[1]))||1; return '<div class="hbars">'+o.b.map(([l,v])=>'<div class="r"><span>'+esc(l)+'</span><span class="t"><i style="width:'+Math.max(4,v/max*100).toFixed(0)+'%"></i></span><span class="v">'+v+(o.u||'')+'</span></div>').join('')+'</div>'; }
+function slideHtml(t,i){
+  if(i===0) return '<div class="slide cover"><b>'+esc(t)+'</b><span style="opacity:.6">汇报 · 2026</span></div>';
+  const h=[40,65,52,80,70];
+  return '<div class="slide"><b>'+String(i).padStart(2,'0')+'  '+esc(t)+'</b><div class="bar" style="width:'+(28+(i*17)%40)+'%"></div><div class="ln" style="width:55%"></div><div class="ln" style="width:42%"></div><div class="ln" style="width:48%"></div>'+(i%2?'<span class="ch">'+h.map((x,j)=>'<i style="height:'+((x+i*9+j*7)%70+30)+'%"></i>').join('')+'</span>':'')+'</div>';
+}
+function renderFull(goal,o,title){
+  if(goal==='research') return '<div class="rep"><div class="k">深度研究报告 · 42 个来源</div><h2>'+esc(title)+'</h2><div class="by">Kimi 深度研究 · 刚刚生成 · 18 页</div><div class="call"><b>一句话结论：</b>'+esc(o.v)+'</div><h5>'+esc(o.bl)+'<span class="badge">示意数据</span></h5>'+bars(o)+'<h5>关键发现</h5><ol>'+o.k.map((x,i)=>'<li>'+esc(x)+'<sup>['+(i*2+1)+']</sup></li>').join('')+'</ol><div class="src"><b>参考来源（节选）</b>'+SOURCES.map((s,i)=>'<span>['+(i*2+1)+'] '+s+'</span>').join('')+'</div></div>';
+  if(goal==='ppt') return '<div class="bigslide"><span>01 / 10</span><b>'+esc(title)+'</b><span>Kimi PPT · 可下载 PPTX</span></div><div class="grid-slides">'+o.k.map((t,i)=>slideHtml(t,i+1)).join('')+'<div class="slide ghost">+4 页</div></div>';
+  if(goal==='doc') return '<div class="rep"><div class="k">文档 · 可导出 Word</div><h2>'+esc(title)+'</h2><div class="by">Kimi 文档 · 刚刚生成 · 6 页</div>'+o.k.map(([h,p],i)=>'<h5>'+(i+1)+'. '+esc(h)+'</h5><p>'+esc(p)+'</p>').join('')+'</div>';
+  if(goal==='sheet'){ const ci=o.ci||1; const b={b:o.r.map(r=>[r[0],parseFloat(String(r[ci]).replace(/[^\d.-]/g,''))||0]),u:''};
+    return '<div class="rep"><div class="k">表格 · 带公式</div><h2>'+esc(title)+'</h2><div style="overflow-x:auto"><table class="xl"><tr>'+o.c.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr>'+o.r.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</table></div><h5>'+esc(o.c[ci])+' 对比<span class="badge">示意数据</span></h5>'+bars(b)+'</div>'; }
+  if(goal==='web') return '<div class="browser"><div class="chrome"><i></i><i></i><i></i><span>https://'+esc(o.url)+'</span></div><div class="hero"><b>'+esc(o.h)+'</b><p>'+esc(o.s)+'</p><span class="go">开始使用 →</span></div><div class="feats">'+o.k.map(f=>'<div>'+esc(f)+'</div>').join('')+'</div></div>';
+  if(goal==='learn') return '<div class="rep"><div class="k">入门讲义 · 附学习路线</div><h2>'+esc(title)+'</h2><div class="concepts">'+o.k.map(([h,p])=>'<div><b>'+esc(h)+'</b>'+esc(p)+'</div>').join('')+'</div><h5>5 天学习路线</h5><div class="road">'+o.d.map((d,i)=>'<div><b>DAY '+(i+1)+'</b><span>'+esc(d)+'</span></div>').join('')+'</div></div>';
+}
+function renderThumb(goal,o,title){ return '<div class="mini" style="width:480px;transform:scale(.62)">'+renderFull(goal,o,title)+'</div>'; }
+
+/* ---------- funnels & console ---------- */
 const FUNNELS={
-  1:[['f1','注册完成','signup_complete',['signup_complete']],['f2','答完 2 个问题','onboarding_complete',['onboarding_complete']],['f3','发起首个 Agent 任务','agent_task_start',['agent_task_start']],['f4','Aha：查看成果','aha_reached',['aha_reached']],['f5','问完就走，没用过 Agent','session_end',['session_end'],'lost']],
+  1:[['f1','注册完成','signup_complete',['signup_complete']],['f2','答完 2 个问题','onboarding_complete',['onboarding_complete']],['f3','发起首个 Agent 任务','agent_task_start',['agent_task_start']],['f4','Aha：打开成果','aha_reached',['aha_reached']],['f5','问完就走','session_end',['session_end'],'lost']],
   2:[['f1','付费墙曝光','paywall_impression',['paywall_impression']],['f2','点击升级','paywall_cta_click',['paywall_cta_click']],['f3','支付成功','checkout_success',['checkout_success']],['f4','留下回访理由','draft_saved / remind',['draft_saved','paywall_fallback'],'guard'],['f5','空手离开','paywall_dismiss',['paywall_dismiss'],'lost']]
 };
 const SEG={
-  1:{B:['实验组：注册后直达 Aha','2 个点选问题 → 输入框里填好专属任务 → 按发送出成果'],A:['对照组：现状','注册后进入空白首页，用户自己想问什么']},
+  1:{B:['实验组：注册后直达 Aha','2 个点选问题 → 输入框预填专属任务 → 按发送出成果'],A:['对照组：现状','注册后进入空白首页，用户自己想问什么']},
   2:{B:['实验组：任务续航卡','预估消耗 → 免费先做一部分 → 按任务推荐 + 免费退路'],A:['对照组：现状','新任务提示「额度不足」→ 通用会员页']}
 };
 function syncConsole(){
@@ -275,11 +514,7 @@ function syncConsole(){
   S.fmap={};
   $('#funnel').innerHTML=FUNNELS[S.scene].map(([id,label,ev,evs,cls])=>{ evs.forEach(e=>S.fmap[e]='#'+id); return '<div class="fstep'+(cls?' '+cls:'')+'" id="'+id+'"><b>'+label+'</b>'+ev+'</div>'; }).join('');
 }
-
-/* ---------- console helpers ---------- */
-function note(title, body, why){
-  $('#note').innerHTML='<h2>当前节点 · 设计说明</h2><h3>'+title+'</h3>'+body+(why?'<p class="why">'+why+'</p>':'');
-}
+function note(title, body, why){ $('#note').innerHTML='<h2>当前节点 · 设计说明</h2><h3>'+title+'</h3>'+body+(why?'<p class="why">'+why+'</p>':''); }
 function log(name, props){
   const ul=$('#log'); const empty=ul.querySelector('.empty-log'); if(empty) empty.remove();
   const li=document.createElement('li');
@@ -290,212 +525,222 @@ function log(name, props){
   ul.prepend(li);
   if(S.fmap[name]) $(S.fmap[name]).classList.add('hit');
 }
-function resetConsole(){
-  S.t0=Date.now();
-  $('#log').innerHTML='<li class="empty-log">还没有事件。在手机里操作开始。</li>';
-  syncConsole();
-}
+function resetConsole(){ S.t0=Date.now(); $('#log').innerHTML='<li class="empty-log">还没有事件。在手机里操作开始。</li>'; syncConsole(); }
 
 /* ---------- phone helpers ---------- */
-function setQuota(v,label){
-  S.quota=v;
-  $('#meterBar').style.width=v+'%';
-  $('#meterLabel').textContent=label||('额度 '+v+'%');
-  $('#meter').classList.toggle('low', v<=20 && !label);
-  $('#meter').hidden = (S.variant==='A');   /* 现状：额度只在 设置→订阅 里能看到 */
+function setQuota(v,label,mode){
+  S.quota=v; $('#meterBar').style.width=v+'%'; $('#meterLabel').textContent=label||('额度 '+v+'%');
+  $('#meter').classList.toggle('low', v<=20 && !label); $('#meter').classList.toggle('gift', mode==='gift');
+  $('#meter').hidden=(S.variant==='A');   /* 现状：额度只在 设置→订阅 里能看到 */
 }
-function add(html, cls){
-  const d=document.createElement('div'); d.className=cls; d.innerHTML=html; chat.appendChild(d);
-  chat.scrollTop=chat.scrollHeight; return d;
-}
+function add(html, cls){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; chat.appendChild(d); chat.scrollTop=chat.scrollHeight; return d; }
 const user=t=>add('', 'u').appendChild(document.createTextNode(t));
-const ai=h=>add(h,'ai');
-const sys=t=>add(t,'sys');
-function card(html, extra){ const d=add(html,'card'+(extra?' '+extra:'')); return d; }
-async function typing(ms){ const d=ai('<span style="color:var(--muted)">正在思考…</span>'); await sleep(ms||900); d.remove(); }
+const ai=h=>add('<div class="who"><span class="logo">K</span>Kimi</div>'+h,'ai');
+const sys=t=>add(esc(t),'sys');
+const card=(html, extra)=>add(html,'card'+(extra?' '+extra:''));
+async function typing(ms){ const d=add('<div class="who"><span class="logo">K</span>Kimi</div><span style="color:var(--faint)">正在思考…</span>','ai'); await sleep(ms||900); d.remove(); }
 function setInput(text, onSend, opts){
-  const box=$('#inputBox'), btn=$('#sendBtn'); opts=opts||{};
-  box.classList.remove('prefilled');
+  const box=$('#inputBox'), btn=$('#sendBtn'), bw=$('#boxwrap'); opts=opts||{};
+  bw.classList.remove('prefilled');
   if(!text){ box.textContent=opts.placeholder||'给 Kimi 发消息…'; box.classList.add('empty'); btn.disabled=true; btn.classList.remove('pulse'); btn.onclick=null; return; }
-  box.textContent=text; box.classList.remove('empty'); box.classList.toggle('prefilled', !!opts.prefilled); btn.disabled=false; btn.classList.add('pulse');
+  box.classList.remove('empty'); box.textContent=text;
+  if(opts.prefilled){ bw.classList.add('prefilled'); const h=document.createElement('div'); h.className='hint'; h.innerHTML='<span>已为你填好，可以直接改</span><span><span class="kbd">Enter</span> 发送</span>'; box.appendChild(h); }
+  btn.disabled=false; btn.classList.add('pulse');
   const run=S.run;
   btn.onclick=()=>{ if(run!==S.run) return; setInput(''); onSend(); };
 }
 function toast(t, bad){ toastEl.textContent=t; toastEl.className='toast'+(bad?' bad':''); toastEl.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.hidden=true, 2200); }
 function sugs(html){ const el=$('#sugs'); if(!html){ el.hidden=true; el.innerHTML=''; return el; } el.innerHTML=html; el.hidden=false; return el; }
-function openSheet(html){ sheet.innerHTML=html; sheet.hidden=false; mask.hidden=false; sheet.scrollTop=0; }
+function openSheet(html, cls){ sheet.className='sheet'+(cls?' '+cls:''); sheet.innerHTML=html; sheet.hidden=false; mask.hidden=false; sheet.scrollTop=0; }
 function closeSheet(){ sheet.hidden=true; mask.hidden=true; clearInterval(S.timer); }
-function alive(run){ return run===S.run; }
+const alive=run=>run===S.run;
+function reset(){ closeSheet(); sugs(''); setInput(''); phone.classList.remove('ob'); chat.innerHTML=''; resetConsole(); }
 
-async function progress(steps, from, to, run, onTick){
-  const c=card('<h4></h4><div class="pbar"><i></i></div><ul class="steps">'+steps.map(s=>'<li>'+s+'</li>').join('')+'</ul>','tint');
+async function progress(steps, run, opts){
+  opts=opts||{};
+  const c=add('<div class="top"><span class="spin"></span><span class="ttl">'+(opts.title||'Kimi 正在工作')+'</span><span class="el">'+(opts.eta||'')+'</span></div><div class="pbar"><i></i></div><ul class="steps">'+steps.map(s=>'<li><div>'+esc(s[0])+(s[1]?'<small>'+esc(s[1])+'</small>':'')+'</div></li>').join('')+'</ul>','work');
   const lis=c.querySelectorAll('li'), bar=c.querySelector('.pbar i');
-  c.querySelector('h4').textContent='任务进行中';
   for(let i=0;i<steps.length;i++){
     if(!alive(run)) return null;
     lis[i].classList.add('on'); bar.style.width=((i+1)/steps.length*100)+'%';
-    if(onTick) onTick(i);
-    await sleep(750);
-    lis[i].classList.add('done');
+    if(opts.sources && i===1){
+      const sm=lis[i].querySelector('small'); const box=document.createElement('div'); box.className='srcs'; lis[i].firstChild.appendChild(box);
+      for(let n=1;n<=42;n++){ if(!alive(run)) return null; if(n%3===0){ const d=document.createElement('i'); d.style.background='hsl('+(n*37%360)+' 55% 72%)'; box.appendChild(d);} sm.textContent='正在阅读来源 '+n+' / 42'; if(n%6===0) chat.scrollTop=chat.scrollHeight; await sleep(20); }
+    }
+    if(opts.onTick) opts.onTick(i);
+    chat.scrollTop=chat.scrollHeight;
+    await sleep(opts.step||650);
+    lis[i].classList.remove('on'); lis[i].classList.add('done');
   }
-  c.querySelector('h4').textContent='已完成';
+  c.classList.add('done'); c.querySelector('.ttl').textContent=opts.doneTitle||'已完成';
   return c;
 }
 
-/* ---------- Scene 1: Day 1, signup → first Aha (P0) ---------- */
+/* ================= Scene 1: Day 1, signup → first Aha (P0) ================= */
 const FIRST_Q='宁德时代和比亚迪的储能业务，谁更有竞争力？';
 function homeWelcome(sub){
-  chat.innerHTML='<div class="welcome"><h3>KIMI</h3><p>'+sub+'</p><div class="chips"><span class="chip">深度研究</span><span class="chip">PPT</span><span class="chip">文档</span><span class="chip">网站</span><span class="chip">表格</span><span class="chip">Agent 集群</span></div></div>';
+  chat.innerHTML='<div class="ob-screen" style="justify-content:center;align-items:center;text-align:center;gap:12px"><div class="brand" style="font-size:30px"><span class="logo" style="width:40px;height:40px;font-size:20px;border-radius:12px">K</span>Kimi</div><p class="ob-sub">'+esc(sub)+'</p><div class="row" style="justify-content:center;gap:6px">'+['research','ppt','doc','web','sheet'].map(g=>'<span class="sug" style="pointer-events:none">'+icon(g)+'<span>'+CAP[g].cap+'</span></span>').join('')+'</div></div>';
 }
-async function scene1(){
-  const run=++S.run; S.scene=1; closeSheet(); sugs(''); chat.innerHTML=''; resetConsole(); setQuota(100);
+function scene1(){
+  const run=++S.run; S.scene=1; reset(); setQuota(100);
   log('signup_complete',{channel:'wechat'});
   if(S.variant==='A') return controlDay1(run);
   onboarding(run);
 }
 
-/* --- Treatment: two tap-only questions --- */
+/* --- Treatment: two tap-only questions, full-screen --- */
 function onboarding(run){
   const ob={role:null, goals:[]};
-  sys('注册成功 · 第 1 天');
-  const c=card('<div class="tag">先认识一下你 · 2 个问题，约 10 秒</div>'+
-    '<h4>你主要用 Kimi 做哪方面的事？</h4><div class="picks" id="roles">'+ROLES.map(r=>'<button class="pick" data-id="'+r[0]+'" aria-pressed="false">'+r[1]+'</button>').join('')+'</div>'+
-    '<div id="q2" hidden><h4 style="margin:4px 0 8px">最近想搞定什么？（最多选 3 个）</h4><div class="picks" id="goals">'+GOALS.map(g=>'<button class="pick" data-id="'+g[0]+'" aria-pressed="false">'+g[1]+'</button>').join('')+'</div></div>'+
-    '<div class="row" style="justify-content:space-between;align-items:center"><button class="btn ghost" id="skip">跳过，直接用</button><button class="btn primary" id="gen" disabled>帮我准备第一个任务</button></div>'+
-    '<div class="sub">只用来推荐任务，之后可以在设置里改。</div>','ob');
+  phone.classList.add('ob');
   log('onboarding_show',{questions:2});
-  setInput('',null,{placeholder:'也可以直接在这里提问…'});
-  note('P0 · 注册后先问 2 个问题','<p>注册成功后不直接进空白首页，而是用两个点选问题了解用户：<b>做什么工作、最近想搞定什么</b>。</p><ul><li>全部点选，不用打字，约 10 秒</li><li>可以跳过；跳过的人在首问之后由「能力推荐卡」兜底</li></ul>','为什么：走查发现最大的流失点在「首问 → 激活」。新用户不知道 Kimi 能做什么，也想不出该让它做什么。');
-  const gen=c.querySelector('#gen');
-  const refresh=()=>{ gen.disabled=!(ob.role && ob.goals.length); c.querySelectorAll('#goals .pick').forEach(b=>{ b.disabled = ob.goals.length>=3 && b.getAttribute('aria-pressed')!=='true'; }); };
-  c.querySelectorAll('#roles .pick').forEach(b=>b.onclick=()=>{
-    if(!alive(run)) return;
-    c.querySelectorAll('#roles .pick').forEach(x=>x.setAttribute('aria-pressed', x===b));
-    ob.role=b.dataset.id; c.querySelector('#q2').hidden=false; log('onboarding_answer',{q:'role',value:ob.role}); refresh(); chat.scrollTop=chat.scrollHeight;
-  });
-  c.querySelectorAll('#goals .pick').forEach(b=>b.onclick=()=>{
-    if(!alive(run)) return;
-    const id=b.dataset.id, on=b.getAttribute('aria-pressed')==='true';
-    if(on){ ob.goals=ob.goals.filter(g=>g!==id); b.setAttribute('aria-pressed','false'); }
-    else if(ob.goals.length<3){ ob.goals.push(id); b.setAttribute('aria-pressed','true'); }
-    log('onboarding_answer',{q:'goal',value:id,on:!on}); refresh();
-  });
-  c.querySelector('#skip').onclick=()=>{ if(!alive(run)) return; log('onboarding_skip',{answered:ob.role?1:0}); skipPath(run); };
-  gen.onclick=()=>{
-    if(!alive(run)) return;
-    log('onboarding_complete',{role:ob.role,goals:ob.goals.join('+')});
-    const roleLabel=ROLES.find(r=>r[0]===ob.role)[1];
-    const goalLabels=ob.goals.map(g=>GOALS.find(x=>x[0]===g)[1]).join('、');
-    c.remove(); sys('你是：'+roleLabel+' · 想做：'+goalLabels);
-    prefill(run, ob);
+  note('P0 · 注册后先问 2 个问题','<p>注册成功后不直接进空白首页，而是用两个点选问题了解用户：<b>做什么工作、最近想搞定什么</b>。</p><ul><li>全部点选，不用打字，约 10 秒</li><li>右上角随时可以跳过；跳过的人在首问之后由「能力推荐卡」兜底</li></ul>','为什么：走查发现最大的流失点在「首问 → 激活」。新用户不知道 Kimi 能做什么，也想不出该让它做什么。');
+  const step1=()=>{
+    chat.innerHTML='<div class="ob-screen"><div class="ob-head"><div class="dots"><i class="on"></i><i></i></div><button class="ob-skip" id="skip">跳过</button></div><div><h2 class="ob-title">注册成功，<br><span class="grad">先认识一下你</span></h2><p class="ob-sub">你主要用 Kimi 做哪方面的事？</p></div><div class="tiles" id="roles">'+ROLES.map((r,i)=>'<button class="tile" style="--i:'+i+'" data-role="'+r[0]+'" aria-pressed="false"><span class="ic">'+icon(r[0])+'</span><span>'+r[1]+'<small>'+r[2]+'</small></span></button>').join('')+'</div><div class="ob-foot"><div class="ob-note">只用来推荐任务，之后可以在设置里改</div></div></div>';
+    chat.querySelector('#skip').onclick=()=>{ if(!alive(run)) return; log('onboarding_skip',{at:'q1'}); skipPath(run); };
+    chat.querySelectorAll('[data-role]').forEach(b=>b.onclick=async()=>{
+      if(!alive(run)) return;
+      chat.querySelectorAll('[data-role]').forEach(x=>x.setAttribute('aria-pressed', x===b));
+      ob.role=b.dataset.role; log('onboarding_answer',{q:'role',value:ob.role});
+      await sleep(320); if(alive(run)) step2();
+    });
   };
+  const step2=()=>{
+    const rl=ROLES.find(r=>r[0]===ob.role)[1];
+    chat.innerHTML='<div class="ob-screen"><div class="ob-head"><div class="dots"><i class="on"></i><i class="on"></i></div><button class="ob-skip" id="skip">跳过</button></div><div><h2 class="ob-title">最近想<span class="grad">搞定什么</span>？</h2><p class="ob-sub">'+esc(rl)+' · 最多选 3 个，Kimi 会把第一个任务准备好</p></div><div class="tiles goals" id="goals">'+GOALS.map((g,i)=>'<button class="tile" style="--i:'+i+'" data-goal="'+g[0]+'" aria-pressed="false"><span class="ic">'+icon(g[0])+'</span><span>'+g[1]+'<small>'+g[2]+'</small></span></button>').join('')+'</div><div class="ob-foot"><button class="cta-big" id="gen" disabled>帮我准备第一个任务 '+icon('arrow')+'</button><button class="ob-skip" id="back">← 上一步</button></div></div>';
+    const gen=chat.querySelector('#gen');
+    const refresh=()=>{ gen.disabled=!ob.goals.length; chat.querySelectorAll('[data-goal]').forEach(b=>{ b.disabled = ob.goals.length>=3 && b.getAttribute('aria-pressed')!=='true'; }); };
+    chat.querySelector('#skip').onclick=()=>{ if(!alive(run)) return; log('onboarding_skip',{at:'q2'}); skipPath(run); };
+    chat.querySelector('#back').onclick=()=>{ if(alive(run)){ ob.goals=[]; step1(); } };
+    chat.querySelectorAll('[data-goal]').forEach(b=>b.onclick=()=>{
+      if(!alive(run)) return;
+      const id=b.dataset.goal, on=b.getAttribute('aria-pressed')==='true';
+      if(on){ ob.goals=ob.goals.filter(g=>g!==id); b.setAttribute('aria-pressed','false'); }
+      else if(ob.goals.length<3){ ob.goals.push(id); b.setAttribute('aria-pressed','true'); }
+      log('onboarding_answer',{q:'goal',value:id,on:!on}); refresh();
+    });
+    gen.onclick=async()=>{
+      if(!alive(run)) return;
+      log('onboarding_complete',{role:ob.role,goals:ob.goals.join('+')});
+      chat.innerHTML='<div class="preparing"><div class="orb"></div><div>正在为你准备第一个任务…</div></div>';
+      await sleep(1100); if(!alive(run)) return;
+      phone.classList.remove('ob'); chat.innerHTML='';
+      sys('注册成功 · 第 1 天');
+      prefill(run, ob);
+    };
+  };
+  step1();
 }
 
 /* --- Treatment: a personalised task waits in the input box --- */
-async function prefill(run, ob){
-  await typing(700); if(!alive(run)) return;
+function prefill(run, ob){
   const opts=ob.goals.slice();
   ['research','ppt','doc'].forEach(g=>{ if(opts.length<3 && !opts.includes(g)) opts.push(g); });
-  ai('<p>根据你的情况，我把第一个任务<b>填进输入框了</b>。直接按发送就开始，也可以改几个字再发。</p>');
-  const pv=card('','tint');
+  ai('<p>欢迎！根据你的情况，我把第一个任务<b>填进输入框了</b>。直接按发送就开始，也可以改几个字再发。</p>');
+  const tc=add('','taskcard');
   const pick=(g, rank, by)=>{
     const t=P[ob.role][g], m=CAP[g];
-    S.cur={goal:g, title:t[0], prompt:t[1], rank:rank};
-    pv.innerHTML='<div class="tag">'+m.cap+' · '+m.time+' · 新人首个任务免费，不占额度</div><h4>发送后你会得到：'+t[0]+'</h4><ul class="has">'+m.has.map(h=>'<li>'+h+'</li>').join('')+'</ul>';
-    sugs('<span>换一个：</span>'+opts.map((o,i)=>'<button class="pick" data-g="'+o+'" data-r="'+(i+1)+'" aria-pressed="'+(o===g)+'">'+CAP[o].cap+' · '+P[ob.role][o][0]+'</button>').join(''))
-      .querySelectorAll('.pick').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; pick(b.dataset.g, +b.dataset.r, 'swap'); });
+    S.cur={role:ob.role, goal:g, title:t[0], prompt:t[1], rank:rank};
+    tc.innerHTML='<div class="hd"><span class="cap">'+icon(g)+'</span><div><b>'+esc(t[0])+'</b><span>'+m.cap+' · '+m.time+' · 发送后你会得到</span></div></div><div class="bd"><ul>'+m.has.map(h=>'<li>'+h+'</li>').join('')+'</ul><span class="pill">新人首个任务免费</span></div>';
+    sugs('<span class="lbl">换一个</span>'+opts.map((o,i)=>'<button class="sug" data-g="'+o+'" data-r="'+(i+1)+'" aria-pressed="'+(o===g)+'">'+icon(o)+'<span>'+esc(P[ob.role][o][0])+'</span></button>').join(''))
+      .querySelectorAll('.sug').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; pick(b.dataset.g, +b.dataset.r, 'swap'); });
     setInput(t[1], ()=>firstTask(run), {prefilled:true});
     log('prefill_show',{goal:g,rank:rank,by:by});
     chat.scrollTop=chat.scrollHeight;
   };
   pick(opts[0],1,'auto');
-  note('P0 · 专属任务已经填好，按发送就开始','<p>根据两个回答，把一个<b>和用户自己有关的完整任务</b>直接填进输入框，用户只需要按发送（或 Enter）。</p><ul><li>上方能换成另外两个推荐，也能自己改</li><li>卡片提前说清楚：要多久、会得到什么</li><li>首个 Agent 任务免费、不占额度，保证第一次体验不撞墙</li></ul>','对比现状：灵感库里的案例是别人的，用户还得自己改写成自己的需求；预填任务的第一句话就是用户自己的事。');
+  note('P0 · 专属任务已经填好，按发送就开始','<p>根据两个回答，把一个<b>和用户自己有关的完整任务</b>直接填进输入框，用户只需要按发送（或 Enter）。</p><ul><li>输入框上方能换成另外两个推荐，也能自己改</li><li>任务卡提前说清楚：要多久、会得到什么</li><li>首个 Agent 任务免费、不占额度，保证第一次体验不撞墙</li></ul>','对比现状：灵感库里的案例是别人的，用户还得自己改写成自己的需求；预填任务的第一句话就是用户自己的事。');
 }
 
 async function firstTask(run){
-  sugs(''); const cur=S.cur, m=CAP[cur.goal];
+  sugs(''); const cur=S.cur, m=CAP[cur.goal], o=O[cur.role||'finance'][cur.goal];
   user(cur.prompt);
   log('prefill_send',{goal:cur.goal,rank:cur.rank,edited:false});
   log('agent_task_start',{type:m.cap,first:true,cost:'free_gift'});
-  const p=await progress(m.steps,0,0,run); if(!p) return;
-  const out=card('<div class="doc"><div class="ic">'+m.ic+'</div><div><h4>'+cur.title+'</h4><div class="sub">'+m.meta+' · 刚刚生成</div></div></div><div class="row"><button class="btn primary">打开查看</button><button class="btn">下载</button></div>');
+  setQuota(100,'新人赠送 · 不占额度','gift');
+  note('P0 · Kimi 正在工作','<p>过程透明：每一步在做什么、读了多少来源，都实时显示。</p>','第一次体验要让用户看到「它真的在替我干活」，这本身就是 Aha 的一部分。');
+  const p=await progress(m.steps,run,{eta:m.time+' · 演示已加速',sources:(cur.goal==='research'||cur.goal==='learn'),doneTitle:'已完成 · '+m.cap}); if(!p) return;
+  setQuota(100);
+  const out=add('<div class="thumbwrap">'+renderThumb(cur.goal,o,cur.title)+'</div><div class="meta"><b>'+esc(cur.title)+'</b><span>'+m.meta+' · 刚刚生成 · 已保存到「最近任务」</span><div class="row"><button class="btn primary" id="openOut">打开查看</button><button class="btn" id="dlOut">下载</button></div></div>','out');
   log('agent_task_done',{type:m.cap,first:true,quota_used:'0%'});
   note('P0 · 成果已经做好','<p>从注册到拿到一份能直接用的成果，用户只做了几次点选和 1 次发送。</p>','Aha 的定义：完成一次 Agent 任务，并<b>打开或下载</b>了产出。只生成、不查看不算。');
-  const [open,dl]=out.querySelectorAll('button');
-  const aha=(how)=>{
+  const open=out.querySelector('#openOut'), dl=out.querySelector('#dlOut');
+  const aha=how=>{
     if(!alive(run)) return;
-    log('aha_reached',{via:how,goal:cur.goal,minutes_from_signup:((Date.now()-S.t0)/60000).toFixed(1)});
-    if(how==='download'){ toast('（演示）已下载'); afterAha(run); return; }
-    openSheet('<button class="x" aria-label="关闭">×</button><div class="tag">'+m.cap+' · 示意内容</div><h3>'+cur.title+'</h3><div class="preview" style="display:flex;flex-direction:column;gap:8px">'+m.has.map((h,i)=>'<section><b>'+(i+1)+'. '+h+'</b><span style="color:var(--muted)">（演示原型，此处为示意内容）</span></section>').join('')+'</div><div class="demo-note">真实产品里这里是完整的报告 / PPT / 网页</div>');
-    sheet.querySelector('.x').onclick=()=>{ closeSheet(); afterAha(run); };
+    open.disabled=dl.disabled=true;
+    log('aha_reached',{via:how,goal:cur.goal,seconds_from_signup:((Date.now()-S.t0)/1000).toFixed(0)});
+    if(how==='download'){ toast('已下载（演示）'); afterAha(run); return; }
+    openSheet('<button class="x" aria-label="关闭">×</button>'+renderFull(cur.goal,o,cur.title)+'<button class="cta-big" id="shClose">完成</button>','doc');
+    const done=()=>{ closeSheet(); afterAha(run); };
+    sheet.querySelector('.x').onclick=done; sheet.querySelector('#shClose').onclick=done;
   };
-  open.onclick=()=>{ open.disabled=dl.disabled=true; aha('open'); };
-  dl.onclick=()=>{ open.disabled=dl.disabled=true; aha('download'); };
+  open.onclick=()=>aha('open'); dl.onclick=()=>aha('download');
 }
 
 function afterAha(run){
   if(!alive(run)) return;
   const cur=S.cur;
-  const next=cur.goal==='research'||cur.goal==='learn'?['把它做成 PPT','每周一给我更新一次']:['再改一版','用同样的方式再做一个'];
-  const c=card('<div class="tag">接下来可以</div><div class="row">'+next.map(n=>'<button class="btn">'+n+'</button>').join('')+'</div><div class="sub">做好的成果已保存在「最近任务」，明天打开首页就能看到。</div>');
-  c.querySelectorAll('.btn').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; log('next_action_click',{action:b.textContent}); toast('已记下，下次打开时接着做'); });
-  note('P0 · 第一次 Aha','<p>用户第一次看到 Kimi 和普通聊天机器人的区别：<b>一句话 → 一份能直接用的成果</b>。</p><ul><li>结尾给出下一步，并把成果保存在首页，留下回来的理由</li></ul>','对应指标：Aha 达成率、D1 留存（先行指标）→ Agent 渗透率 → 额度触顶率 → 7 日会员转化率。Aha 的人越多，后面撞墙、进入付费漏斗的人越多，这一段由 P1 任务续航接住。');
+  const next=(cur.goal==='research'||cur.goal==='learn')?[['ppt','把它做成 PPT'],['doc','每周一给我更新一次']]:[['doc','再改一版'],['research','用同样的方式再做一个']];
+  ai('<p>做好了，已经保存在「最近任务」里。接下来可以：</p><div class="row" style="margin-top:6px">'+next.map(n=>'<button class="btn" data-n="'+n[1]+'">'+icon(n[0])+n[1]+'</button>').join('')+'</div>')
+    .querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; log('next_action_click',{action:b.dataset.n}); toast('已记下，下次打开时接着做'); });
+  note('P0 · 第一次 Aha','<p>用户第一次看到 Kimi 和普通聊天机器人的区别：<b>一句话 → 一份能直接用的成果</b>。</p><ul><li>结尾给出下一步，成果保存在首页，留下回来的理由</li></ul>','对应指标：Aha 达成率、D1 留存（先行指标）→ Agent 渗透率 → 额度触顶率 → 7 日会员转化率。Aha 的人越多，后面撞墙、进入付费漏斗的人越多，这一段由 P1 任务续航接住。');
   fastForward(run);
 }
 function fastForward(run){
   setTimeout(()=>{ if(!alive(run)) return;
-    const nx=card('<div class="sub">接下来两天，用户又做了 2 次深度研究和 1 份文档，额度剩 12%。（第 3 天以投研用户为例）</div><div class="row"><button class="btn primary">快进到第 3 天：额度触顶（P1）→</button></div>','tint');
-    nx.querySelector('button').onclick=()=>scene2();
-  }, 500);
+    const nx=card('<div class="sub">接下来两天，用户又做了 2 次深度研究和 1 份文档，额度剩 12%。（第 3 天以投研用户为例）</div><button class="btn primary" id="ffBtn" style="align-self:flex-start">快进到第 3 天：额度触顶（P1） '+icon('arrow')+'</button>','tint');
+    nx.querySelector('#ffBtn').onclick=()=>scene2();
+  }, 600);
 }
 
 /* --- Treatment fallback: user skipped onboarding → capability card after first question --- */
 function skipPath(run){
-  homeWelcome('跳过引导，直接进入首页');
+  phone.classList.remove('ob');
+  homeWelcome('跳过了引导，直接从提问开始');
   note('P0 兜底 · 跳过引导的用户','<p>不想回答问题的用户直接进首页。首问回答之后，按问题意图推荐<b>一个</b>能一键执行的 Agent 能力。</p>','这就是原来的「能力发现卡」，现在作为 P0 的兜底路径，保证跳过的人也有机会到达 Aha。');
   setInput(FIRST_Q, async()=>{
     chat.innerHTML=''; user(FIRST_Q); log('query_send',{n:1});
     await typing(); if(!alive(run)) return;
     plainAnswer();
     await sleep(500); if(!alive(run)) return;
-    const c=card('<div class="tag">可以做得更深 · 新人首个任务免费</div><h4>把这个问题做成一份深度研究报告？</h4><div class="sub">约 3 分钟 · 自动检索 40+ 来源并标注引用 · 可导出 PDF</div><div class="row"><button class="btn primary">生成深度研究</button><button class="btn ghost">先不用</button></div>');
+    const c=add('<div class="hd"><span class="cap">'+icon('research')+'</span><div><b>把这个问题做成一份深度研究报告？</b><span>约 3 分钟 · 检索 40+ 来源并标注引用</span></div></div><div class="bd"><ul><li>开头一句话结论</li><li>关键数据对比图</li></ul><span class="pill">新人首个任务免费</span></div><div class="bd" style="padding-top:0"><button class="btn primary" id="capGo">生成深度研究</button><button class="btn ghost" id="capNo">先不用</button></div>','taskcard');
     log('capability_card_show',{intent:'company_compare',suggest:'deep_research'});
-    const [go,no]=c.querySelectorAll('button');
+    const go=c.querySelector('#capGo'), no=c.querySelector('#capNo');
     no.onclick=()=>{ if(!alive(run)) return; log('capability_card_dismiss'); log('session_end',{agent_used:false}); c.remove(); ai('<p>好的，有需要随时说。</p>'); };
     go.onclick=()=>{ if(!alive(run)) return; go.disabled=no.disabled=true; log('capability_card_click');
-      S.cur={goal:'research',title:P.finance.research[0],prompt:'生成深度研究',rank:0};
+      S.cur={role:'finance',goal:'research',title:P.finance.research[0],prompt:'生成深度研究',rank:0};
       firstTask(run); };
   });
 }
 function plainAnswer(){
-  ai('<p>简单说：<b>宁德时代</b>在储能电芯出货和海外大客户上领先，<b>比亚迪</b>在系统集成和成本控制上更强。两者路线不同，各有优势。</p><p style="color:var(--muted);font-size:12px">（演示用的简短回答，不构成投资建议）</p>');
+  ai('<p>简单说：<b>宁德时代</b>在储能电芯出货和海外大客户上领先，<b>比亚迪</b>在系统集成和成本控制上更强。两者路线不同，各有优势。</p><p style="color:var(--faint);font-size:11.5px">（演示用的简短回答，不构成投资建议）</p>');
 }
 
 /* --- Control: current behaviour --- */
 function controlDay1(run){
-  homeWelcome('新用户 · 注册第 1 天');
+  homeWelcome('有什么可以帮你？');
   note('P0 对照组 · 现状','<p>注册后直接进入首页：一个输入框加一排能力按钮。用户得自己想出要问什么，通常先问一个普通问题。</p>','能力按钮和用户自己的事没有关系；精彩案例要点进具体能力才看得到。');
   setInput(FIRST_Q, async()=>{
     chat.innerHTML=''; user(FIRST_Q); log('query_send',{n:1});
     await typing(); if(!alive(run)) return;
     plainAnswer();
     await sleep(600); if(!alive(run)) return;
-    sys('用户得到一个普通回答');
+    sys('用户得到一个普通回答，然后离开');
     log('session_end',{agent_used:false,queries:1});
     note('P0 对照组 · 问完就走','<p>回答和普通聊天机器人差不多。用户没接触任何 Agent 能力，后面也就不会撞墙、不会进入付费漏斗。</p>','这是走查观察到的现象，流失比例需要用埋点数据确认。');
     fastForward(run);
   });
 }
 
-/* ---------- Scene 2: Day 3, quota wall ---------- */
-async function scene2(){
-  const run=++S.run; S.scene=2; closeSheet(); sugs(''); chat.innerHTML=''; resetConsole(); setQuota(12);
+/* ================= Scene 2: Day 3, quota wall (P1) ================= */
+const D3SLIDES=['储能双雄','2026 储能格局','宁德时代：电芯与海外'];
+function scene2(){
+  const run=++S.run; S.scene=2; reset(); setQuota(12);
   sys('第 3 天 · 以投研用户为例');
-  card('<div class="doc"><div class="ic">PDF</div><div><h4>宁德时代 vs 比亚迪 · 储能业务深度研究</h4><div class="sub">18 页 · 2 天前</div></div></div>');
+  card('<div class="docline"><span class="doc-icon">PDF</span><div><h4>宁德时代 vs 比亚迪：储能业务对比</h4><div class="sub">深度研究 · 18 页 · 2 天前</div></div></div>');
   ai('<p>欢迎回来。上次的研究报告已保存在这里。</p>');
   log('home_view',{day:'D3',quota_left:'12%'});
   note('P1 · 第 3 天 · 撞墙前一刻','<p>用户带着一个<b>有截止时间的真实任务</b>回来：要把研究做成组会 PPT。这是 7 天里付费意愿最高的时刻。</p>','切换右上方的实验组 / 对照组，对比两种处理方式。');
-  setInput('把这份研究做成 12 页 PPT，周五组会要用', async()=>{
+  setInput('把这份研究做成 12 页 PPT，周五组会要用', ()=>{
     user('把这份研究做成 12 页 PPT，周五组会要用');
     log('agent_task_request',{type:'ppt',pages:12});
     if(S.variant==='A') return control(run); else return treatment(run);
@@ -508,14 +753,14 @@ async function control(run){
   toast('额度不足',true);
   const c=card('<h4>你的额度已用完</h4><div class="sub">新任务无法开始。升级会员可获得更多额度。</div><div class="row"><button class="btn primary">查看会员</button></div>','warn');
   log('paywall_impression',{trigger:'quota_insufficient',surface:'toast+inline',task:'ppt',progress:'0/12'});
-  note('对照组 · 现状','<p>帮助中心原文：额度用完时，进行中的任务可以完成，<b>新任务会提示额度不足</b>。</p><ul><li>没告诉用户这个任务需要多少额度、还差多少</li><li>任务一点都没开始，用户手里什么都没有</li><li>会员页是通用的五档对比，跟当前任务没关系</li><li>不付费的话没有任何退路，也没有回来的理由</li></ul>');
+  note('P1 对照组 · 现状','<p>帮助中心原文：额度用完时，进行中的任务可以完成，<b>新任务会提示额度不足</b>。</p><ul><li>没告诉用户这个任务需要多少额度、还差多少</li><li>任务一点都没开始，用户手里什么都没有</li><li>会员页是通用的五档对比，跟当前任务没关系</li><li>不付费的话没有任何退路，也没有回来的理由</li></ul>');
   c.querySelector('button').onclick=()=>{
     if(!alive(run)) return;
     log('paywall_cta_click',{target:'plan_page'});
     openSheet('<button class="x" aria-label="关闭">×</button><h3>会员计划</h3><div class="sub" style="font-size:12px;color:var(--muted)">按 Kimi 帮助中心 2026-10-19 截图整理（节选）</div><div style="overflow-x:auto"><table class="plans"><tr><th></th><th>Go</th><th>Plus</th><th>Pro</th></tr><tr><th>连续包月</th><td>¥49</td><td>¥99</td><td>¥199</td></tr><tr><th>Agent 额度</th><td>更多</td><td>2 倍</td><td>4 倍</td></tr><tr><th>并行任务</th><td>1</td><td>2</td><td>2</td></tr><tr><th>Kimi Code</th><td>—</td><td>支持</td><td>支持</td></tr><tr><th>Agent 集群</th><td>—</td><td>支持</td><td>支持</td></tr></table></div><div class="row"><button class="btn primary" data-p="49">开通 Go ¥49/月</button><button class="btn" data-p="99">Plus ¥99</button></div><div class="demo-note">新用户看到「2 倍额度」「Agent 集群」，很难换算成「我的 PPT 能不能做完」。</div>');
     log('plan_page_view');
-    sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('paywall_dismiss',{saved_progress:'none'}); ai('<p style="color:var(--muted)">（用户关掉页面离开。任务没开始，也没有留下任何回来的理由。）</p>');
-      note('对照组 · 用户离开','<p>没付费的用户空手离开。这就是现状下转化和留存同时受伤的地方：转化没拿到，用户对产品的最后印象还是一次「被拦住」。</p>'); };
+    sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('paywall_dismiss',{saved_progress:'none'}); ai('<p style="color:var(--faint)">（用户关掉页面离开。任务没开始，也没有留下任何回来的理由。）</p>');
+      note('P1 对照组 · 用户离开','<p>没付费的用户空手离开。这就是现状下转化和留存同时受伤的地方：转化没拿到，用户对产品的最后印象还是一次「被拦住」。</p>'); };
     sheet.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{ log('paywall_cta_click',{plan:b.dataset.p==='49'?'go':'plus'}); pay(+b.dataset.p, b.dataset.p==='49'?'Go 连续包月':'Plus 连续包月', run, 0); });
   };
 }
@@ -523,26 +768,25 @@ async function control(run){
 /* --- Treatment: task continuation --- */
 async function treatment(run){
   await typing(700); if(!alive(run)) return;
-  card('<div class="tag">开始前先估一下</div><h4>这份 PPT 预计需要约 30% 额度，你还剩 12%</h4><div class="split"><span class="have" style="width:40%"></span><span class="need" style="width:60%"></span></div><div class="legend"><span>剩余额度能做约 3 页</span><span>还差约 18%</span></div><div class="sub">先用剩下的额度把大纲和前 3 页做出来，你看看效果再决定。</div>','tint');
+  card('<span class="tag blue">开始前先估一下</span><h4>这份 PPT 预计需要约 30% 额度，你还剩 12%</h4><div class="split"><span class="have" style="width:40%"></span><span class="need" style="width:60%"></span></div><div class="legend"><span>剩余额度能做约 3 页</span><span>还差约 18%</span></div><div class="sub">先用剩下的额度把大纲和前 3 页做出来，你看看效果再决定。</div>','tint');
   log('quota_precheck_show',{need:'30%',left:'12%'});
-  note('实验组 · 动手前先预估','<p>发任务时先告诉用户<b>这件事要多少额度、还差多少</b>，而不是等用完了才报错。</p>','额度现在按 token 计、只显示百分比，新用户换算不出来。预估卡把百分比翻译成「能做几页」。');
+  note('P1 实验组 · 动手前先预估','<p>发任务时先告诉用户<b>这件事要多少额度、还差多少</b>，而不是等用完了才报错。</p>','额度现在按 token 计、只显示百分比，新用户换算不出来。预估卡把百分比翻译成「能做几页」。');
   await sleep(600); if(!alive(run)) return;
   const q=[12,8,4,0];
-  const p=await progress(['生成 12 页大纲','第 1 页：封面','第 2 页：2026 储能格局','第 3 页：宁德时代'],0,0,run,i=>setQuota(q[Math.min(i,3)]));
+  const p=await progress([['生成 12 页大纲',''],['第 1 页：封面',''],['第 2 页：2026 储能格局',''],['第 3 页：宁德时代','']],run,{onTick:i=>setQuota(q[Math.min(i,3)]),doneTitle:'大纲 + 前 3 页已完成'});
   if(!p) return;
-  card('<h4>大纲 + 前 3 页已完成</h4><div class="slides"><div class="sl"><b>储能双雄</b>宁德时代 vs 比亚迪<br>组会 · 周五</div><div class="sl"><b>2026 格局</b>出货 / 份额 / 海外订单</div><div class="sl"><b>宁德时代</b>电芯技术与产能布局</div><div class="sl ghost">+9 页</div></div><div class="sub">已自动保存到「最近任务」</div>');
+  card('<h4>大纲 + 前 3 页已完成</h4><div class="slides">'+D3SLIDES.map((t,i)=>slideHtml(t,i)).join('')+'<div class="slide ghost">+9 页</div></div><div class="sub">已自动保存到「最近任务」</div>');
   log('free_preview_done',{pages:'3/12'}); log('draft_saved',{task:'ppt'});
   await sleep(700); if(!alive(run)) return;
   openWall(run);
 }
-
 function fmtLeft(){
   let s=Math.max(0,Math.floor((S.offerEnds-Date.now())/1000));
   const d=Math.floor(s/86400); s%=86400; const h=Math.floor(s/3600); s%=3600; const m=Math.floor(s/60); s%=60;
   return d+' 天 '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
 function openWall(run){
-  openSheet('<button class="x" aria-label="关闭">×</button><div class="tag">还差 9 页就完成了</div><h3>继续完成这份 PPT，赶上周五的组会</h3>'+
+  openSheet('<button class="x" aria-label="关闭">×</button><span class="tag">还差 9 页就完成了</span><h3>继续完成这份 PPT，赶上周五的组会</h3>'+
   '<button class="opt rec" id="oPay"><span class="tag">推荐 · 新人专享</span><span class="t">开通 Go，首月 ¥19.9 <s>¥49/月</s></span><span class="d">马上续写剩下 9 页，约 2 分钟。按这份 PPT 的消耗估算，一个月的额度还够再做十几份同等任务。</span><span class="count" id="cd">新人价还剩 '+fmtLeft()+'</span></button>'+
   '<button class="opt" id="oRemind"><span class="t">额度刷新时提醒我继续</span><span class="d">大纲和前 3 页已保存，不会丢。额度刷新后一键接着做。</span></button>'+
   '<button class="opt" id="oLite"><span class="t">先给我文字版</span><span class="d">用普通对话把剩下 9 页的要点写出来，不含排版。</span></button>'+
@@ -551,40 +795,39 @@ function openWall(run){
   log('paywall_impression',{trigger:'quota_insufficient',surface:'task_sheet',task:'ppt',progress:'3/12',offer:'newbie_19.9'});
   note('P1 实验组 · 任务续航卡','<ul><li><b>标题讲任务，不讲额度</b>：「还差 9 页」比「额度不足」更像一次推荐</li><li><b>只推一个档位</b>：按当前任务推荐 Go，不让新用户在五档里挑</li><li><b>新人首月价 + 截止时间</b>：和注册 7 天的窗口绑定，制造合理的决策时点</li><li><b>两条免费退路</b>：提醒继续、文字版，保护 D7 留存</li></ul>','护栏：「空手离开」比例必须下降；关闭率和退款率要盯住。');
   sheet.querySelector('.x').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_dismiss',{saved_progress:'3/12'}); savedDraft(run,false);
-    note('实验组 · 关闭也不是空手离开','<p>即使直接关掉，前 3 页也已经保存在最近任务里。用户下次打开时，首页会显示这个没做完的任务。</p>','这是保护留存的关键：不付费的用户也带走了成果，并且有一个回来的理由。'); };
+    note('P1 实验组 · 关闭也不是空手离开','<p>即使直接关掉，前 3 页也已经保存在最近任务里。用户下次打开时，首页会显示这个没做完的任务。</p>','这是保护留存的关键：不付费的用户也带走了成果，并且有一个回来的理由。'); };
   $('#oPay').onclick=()=>{ if(!alive(run)) return; log('paywall_cta_click',{plan:'go',offer:'newbie_first_month'}); pay(19.9,'Go · 新人首月',run,3); };
   $('#oRemind').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_fallback',{type:'remind_on_refresh'}); savedDraft(run,true); toast('已设置提醒，额度刷新时通知你');
-    note('实验组 · 免费退路：提醒继续','<p>不付费的用户也留下了一个<b>具体的回访理由</b>：一份做了一半、周五要用的 PPT。</p>','对应护栏指标：D7 留存。也可以单独看「提醒触达 → 回访 → 二次撞墙 → 付费」这条延迟转化链路。'); };
+    note('P1 实验组 · 免费退路：提醒继续','<p>不付费的用户也留下了一个<b>具体的回访理由</b>：一份做了一半、周五要用的 PPT。</p>','对应护栏指标：D7 留存。也可以单独看「提醒触达 → 回访 → 二次撞墙 → 付费」这条延迟转化链路。'); };
   $('#oLite').onclick=async()=>{ if(!alive(run)) return; closeSheet(); log('paywall_fallback',{type:'lite_text'});
     await typing(700); if(!alive(run)) return;
     ai('<p><b>第 4–12 页要点（文字版）</b></p><ul><li>比亚迪：系统集成与成本</li><li>海外订单对比</li><li>技术路线：大电芯 / 长时储能</li><li>盈利能力与价格战</li><li>风险与观察指标 …</li></ul>');
     savedDraft(run,false);
-    note('实验组 · 免费退路：文字版','<p>用普通对话能力兜底，任务不会卡死。用户拿到了内容，但没拿到排版好的 PPT，这个差距就是会员的价值。</p>'); };
+    note('P1 实验组 · 免费退路：文字版','<p>用普通对话能力兜底，任务不会卡死。用户拿到了内容，但没拿到排版好的 PPT，这个差距就是会员的价值。</p>'); };
 }
 function savedDraft(run, reminded){
-  const c=card('<div class="doc"><div class="ic">PPT</div><div><h4>储能双雄 · 组会 PPT（3/12 页）</h4><div class="sub">'+(reminded?'已设置提醒 · 额度刷新时通知你':'已保存在最近任务')+'</div></div></div><div class="row"><button class="btn">升级后继续</button></div>');
+  const c=card('<div class="docline"><span class="doc-icon">PPT</span><div><h4>储能双雄 · 组会 PPT（3/12 页）</h4><div class="sub">'+(reminded?'已设置提醒 · 额度刷新时通知你':'已保存在最近任务')+'</div></div></div><div class="row"><button class="btn">升级后继续</button></div>');
   c.querySelector('button').onclick=()=>{ if(!alive(run)) return; log('draft_resume_click'); openWall(run); };
 }
-
 function pay(amount, plan, run, donePages){
-  openSheet('<button class="x" aria-label="关闭">×</button><h3>确认开通</h3><div class="card tint"><div class="t" style="display:flex;justify-content:space-between;font-weight:700"><span>'+plan+'</span><span>¥'+amount+'</span></div><div class="sub">'+(donePages?'次月起 ¥49/月，可随时取消自动续费':'连续包月，可随时取消自动续费')+'</div></div><div class="paymethod"><label><input type="radio" name="pm" id="pm1" checked>微信支付</label><label><input type="radio" name="pm" id="pm2">支付宝</label></div><button class="btn primary" id="payBtn" style="padding:10px;border-radius:12px">确认支付 ¥'+amount+'</button><div class="demo-note">演示环境，不会产生真实扣款</div>');
+  openSheet('<button class="x" aria-label="关闭">×</button><h3>确认开通</h3><div class="card tint"><div style="display:flex;justify-content:space-between;font-weight:700"><span>'+plan+'</span><span>¥'+amount+'</span></div><div class="sub">'+(donePages?'次月起 ¥49/月，可随时取消自动续费':'连续包月，可随时取消自动续费')+'</div></div><div class="paymethod"><label><input type="radio" name="pm" checked>微信支付</label><label><input type="radio" name="pm">支付宝</label></div><button class="cta-big" id="payBtn">确认支付 ¥'+amount+'</button><div class="demo-note">演示环境，不会产生真实扣款</div>');
   log('checkout_show',{plan:plan,amount:amount});
   sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('checkout_abandon'); if(S.variant==='B') savedDraft(run,false); };
   $('#payBtn').onclick=async()=>{
     if(!alive(run)) return;
     closeSheet(); log('checkout_success',{plan:plan,amount:amount});
-    setQuota(100,'Go 会员 · 额度 100%'); toast('会员已生效');
+    setQuota(100,'Go 会员 · 100%'); toast('会员已生效');
     if(S.variant==='B'){
-      note('实验组 · 付费后无缝续写','<p>付费成功后<b>直接接着做</b>，不用用户重新发起任务。从点击到拿到完整 PPT，中间没有断点。</p>','付费后体验决定次月续费，可以把「首月 Agent 任务数」作为续费的先行指标。');
+      note('P1 实验组 · 付费后无缝续写','<p>付费成功后<b>直接接着做</b>，不用用户重新发起任务。从点击到拿到完整 PPT，中间没有断点。</p>','付费后体验决定次月续费，可以把「首月 Agent 任务数」作为续费的先行指标。');
       log('task_resume',{from:'3/12'});
-      const p=await progress(['第 4–6 页','第 7–9 页','第 10–12 页','排版与配图'],0,0,run,i=>setQuota([97,93,90,88][i],'Go 会员 · 额度 '+[97,93,90,88][i]+'%'));
+      const p=await progress([['第 4–6 页',''],['第 7–9 页',''],['第 10–12 页',''],['排版与配图','']],run,{onTick:i=>setQuota([97,93,90,88][i],'Go 会员 · '+[97,93,90,88][i]+'%'),doneTitle:'12 页全部完成'});
       if(!p) return;
-      card('<div class="doc"><div class="ic">PPT</div><div><h4>储能双雄 · 组会 PPT</h4><div class="sub">12 页 · 已完成 · 可下载 PPTX</div></div></div>');
+      card('<div class="docline"><span class="doc-icon">PPT</span><div><h4>储能双雄 · 组会 PPT</h4><div class="sub">12 页 · 已完成 · 可下载 PPTX</div></div></div>');
       log('agent_task_done',{type:'ppt'});
       ai('<p>PPT 已完成。会员额度这个月还很充足，你也可以试试：<b>把 PPT 转成演讲稿</b>，或者<b>设置每周储能行业简报</b>。</p>');
     } else {
-      note('对照组 · 付费后','<p>付费后用户还得回到对话里<b>重新发起</b>任务。从决定付费到拿到结果，中间多了一次跳转和一次重试。</p>');
-      ai('<p style="color:var(--muted)">（用户回到对话，重新发送一遍 PPT 请求。）</p>');
+      note('P1 对照组 · 付费后','<p>付费后用户还得回到对话里<b>重新发起</b>任务。从决定付费到拿到结果，中间多了一次跳转和一次重试。</p>');
+      ai('<p style="color:var(--faint)">（用户回到对话，重新发送一遍 PPT 请求。）</p>');
     }
   };
 }
