@@ -2,6 +2,8 @@
 
 AI 产品经理作业：提升 Kimi 新用户（注册 7 天内）的会员转化率，同时保证留存不下降。
 
+**在线体验**：[可交互原型](https://bill306.github.io/kimi-newuser-growth/site/prototype.html) ｜ [网页版报告](https://bill306.github.io/kimi-newuser-growth/)
+
 ## 交付物
 
 | 部分 | 文件 | 说明 |
