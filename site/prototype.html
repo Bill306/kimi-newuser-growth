@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>任务续航原型</title>
+<title>新用户转化原型</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -154,16 +154,35 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .log .ev{color:var(--accent);font-weight:600}
 .log .pr{grid-column:2;color:var(--muted);word-break:break-all}
 .empty-log{color:var(--muted);font-size:12px;font-family:var(--font)}
+/* ---------- onboarding (P0) ---------- */
+.card.ob{border-color:var(--accent);gap:10px}
+.picks{display:flex;flex-wrap:wrap;gap:6px}
+.pick{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--fg)}
+.pick[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:500}
+.pick:disabled{opacity:.4;cursor:default}
+.has{margin:0;padding-left:18px;font-size:12px;color:var(--muted)}
+.sugs{display:flex;gap:6px;align-items:center;padding:8px 12px 0;overflow-x:auto;border-top:1px solid var(--line);font-size:11px;color:var(--muted);white-space:nowrap;flex:none}
+.sugs .pick{font-size:11.5px;padding:3px 10px;flex:none}
+.sugs + .ph-input{border-top:none}
+.ph-input .box{max-height:120px;overflow-y:auto}
+.ph-input .box.prefilled{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px var(--accent-soft)}
+.kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);border-radius:4px;padding:0 4px;background:var(--surface-2)}
+.scenes .btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:500}
+.fstep.lost.hit{border-color:var(--warn);background:var(--warn-soft)}
+.fstep.lost.hit b{color:var(--warn)}
+.preview h4{margin:0}
+.preview section{border-top:1px solid var(--line);padding-top:8px;font-size:12.5px}
+.preview section b{display:block;margin-bottom:2px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="topline">
-    <h1>需求 A · 额度触顶时的「任务续航」付费引导</h1>
+    <h1>新用户转化原型 · P0 注册后直达 Aha ＋ P1 任务续航</h1>
     <a href="index.html">← 返回方案报告</a>
   </div>
-  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面。价格取自 Kimi 帮助中心（2026-10-19 截图）的 Go 套餐 ¥49/月；「新人首月 ¥19.9」是待实验的假设参数。所有支付均为演示，不会扣款。</div>
+  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面，生成结果均为示意。价格取自 Kimi 帮助中心（2026-10-19 截图）的 Go 套餐 ¥49/月；「新人首个任务免费」「新人首月 ¥19.9」是待实验的假设参数。所有支付均为演示，不会扣款。</div>
 
   <div class="stage">
     <div class="phone-col">
@@ -173,6 +192,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
           <div class="meter" id="meter"><span id="meterLabel">额度 100%</span><span class="bar"><i id="meterBar" style="width:100%"></i></span></div>
         </div>
         <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="sugs" id="sugs" hidden></div>
         <div class="ph-input">
           <div class="box empty" id="inputBox">给 Kimi 发消息…</div>
           <button class="send" id="sendBtn" disabled aria-label="发送">↑</button>
@@ -181,19 +201,20 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
         <div class="sheet" id="sheet" hidden></div>
         <div class="toast" id="toast" hidden></div>
       </div>
-      <div class="caption">点手机里的蓝色发送键推进剧情；右侧可以切换实验组 / 对照组，或直接跳到第 3 天。</div>
+      <div class="caption">在手机里点选、按蓝色发送键（或键盘 <span class="kbd">Enter</span>）推进剧情；右侧可以切换场景和实验组 / 对照组。</div>
     </div>
 
     <div class="console">
       <div class="panel">
+        <h2>场景</h2>
+        <div class="scenes">
+          <button class="btn" id="s1" aria-pressed="true">① 第 1 天：注册 → 第一次 Aha（P0）</button>
+          <button class="btn" id="s2" aria-pressed="false">② 第 3 天：额度触顶（P1）</button>
+        </div>
         <h2>实验分组</h2>
         <div class="seg" role="group" aria-label="实验分组">
-          <button id="vB" aria-pressed="true">实验组 B：任务续航卡<small>预估消耗 → 免费先做一部分 → 按任务推荐 + 免费退路</small></button>
-          <button id="vA" aria-pressed="false">对照组 A：现状<small>新任务提示「额度不足」→ 通用会员页</small></button>
-        </div>
-        <div class="scenes">
-          <button class="btn" id="s1">① 第 1 天：首问 → 第一次深度研究</button>
-          <button class="btn primary" id="s2">② 第 3 天：额度触顶（核心）</button>
+          <button id="vB" aria-pressed="true"></button>
+          <button id="vA" aria-pressed="false"></button>
         </div>
       </div>
 
@@ -201,13 +222,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
       <div class="panel">
         <h2>本次会话漏斗</h2>
-        <div class="funnel">
-          <div class="fstep" id="f-imp"><b>付费墙曝光</b>paywall_impression</div>
-          <div class="fstep" id="f-clk"><b>点击升级</b>paywall_cta_click</div>
-          <div class="fstep" id="f-pay"><b>支付成功</b>checkout_success</div>
-          <div class="fstep guard" id="f-keep"><b>留下回访理由</b>draft_saved / remind</div>
-          <div class="fstep" id="f-lost"><b>空手离开</b>paywall_dismiss</div>
-        </div>
+        <div class="funnel" id="funnel"></div>
       </div>
 
       <div class="panel">
@@ -222,8 +237,44 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 (function(){
 const $=s=>document.querySelector(s);
 const chat=$('#chat'), sheet=$('#sheet'), mask=$('#mask'), toastEl=$('#toast');
-const S={variant:'B', quota:100, run:0, t0:Date.now(), offerEnds:Date.now()+(3*86400+23*3600+59*60)*1000, timer:null};
+const S={variant:'B', scene:1, quota:100, run:0, t0:Date.now(), offerEnds:Date.now()+(3*86400+23*3600+59*60)*1000, timer:null, fmap:{}, cur:null};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---------- P0 data: onboarding questions and prefilled first tasks ---------- */
+const ROLES=[['student','学生'],['finance','投研 / 金融'],['pm','产品 / 运营'],['dev','程序员'],['mkt','市场 / 销售'],['teacher','老师'],['other','其他']];
+const GOALS=[['research','研究一个行业或公司'],['ppt','做 PPT'],['doc','写报告 / 论文'],['sheet','整理数据、做表格'],['web','做网页 / 小工具'],['learn','快速学一个新领域']];
+const CAP={
+  research:{cap:'深度研究',time:'约 3 分钟',ic:'PDF',steps:['拆解问题','检索 42 个来源','交叉核对数据','撰写报告'],meta:'18 页 · 42 个来源',has:['一句话结论','关键数据对比表','每个结论都附来源链接']},
+  ppt:{cap:'PPT',time:'约 2 分钟',ic:'PPT',steps:['生成大纲','设计版式','逐页撰写','排版配图'],meta:'10 页 · 可下载 PPTX',has:['10 页完整版式','每页附讲稿备注','可以接着对话修改']},
+  doc:{cap:'文档',time:'约 2 分钟',ic:'DOC',steps:['确定结构','检索资料','撰写正文','校对格式'],meta:'6 页 · 可导出 Word',has:['完整结构和小标题','引用来源','可导出 Word']},
+  sheet:{cap:'表格',time:'约 1 分钟',ic:'XLS',steps:['确定字段','收集数据','计算与校验','生成图表'],meta:'1 张表 · 2 张图',has:['带公式的明细表','2 张对比图','数据来源说明']},
+  web:{cap:'网站',time:'约 3 分钟',ic:'WEB',steps:['规划页面','生成代码','预览调试','部署上线'],meta:'已部署 · 可分享链接',has:['可直接打开的链接','适配手机','可以接着对话修改']},
+  learn:{cap:'深度研究',time:'约 3 分钟',ic:'PDF',steps:['拆解知识点','检索 30 个来源','由浅入深整理','生成学习路线'],meta:'12 页 · 附 7 天学习路线',has:['核心概念讲解','常见误区','7 天学习路线']}
+};
+const P={
+  finance:{research:['宁德时代 vs 比亚迪：储能业务对比','帮我做一份深度研究：宁德时代和比亚迪的储能业务谁更有竞争力？对比出货量、海外订单和毛利率，并标注来源'],ppt:['宁德时代季报汇报 PPT','把宁德时代最新一季财报做成 10 页汇报 PPT，重点讲收入结构、毛利率变化和储能业务'],doc:['储能行业周报','写一份本周储能行业周报：政策、招标价格、龙头公司动态，最后列出下周关注点'],sheet:['储能公司估值对比表','整理 10 家储能产业链公司的估值对比表：市值、PE、PB、营收增速，并做成图表'],web:['持仓收益计算小工具','做一个网页小工具：输入买入价、数量和现价，自动算出收益率和盈亏'],learn:['30 分钟读懂固态电池','我想快速读懂固态电池：技术路线、量产进度、主要玩家，按入门到进阶整理']},
+  student:{research:['补贴退坡对新能源车销量的影响','帮我做一份深度研究：新能源汽车补贴退坡对国内销量有什么影响？给出数据和来源，我要写课程论文'],ppt:['课程展示：AI 如何改变就业','帮我做一份 10 页课程展示 PPT，主题是 AI 如何改变就业，要有数据和案例'],doc:['文献综述：生成式 AI 与教育','帮我写一份文献综述：生成式 AI 在教育中的应用，列出主要观点和代表文献'],sheet:['实验数据整理成图表','把我的实验数据整理成表格，算出均值和标准差，并画出对比图'],web:['个人作品集网页','帮我做一个个人作品集网页，展示我的项目经历和联系方式'],learn:['从零读懂机器学习','我想从零读懂机器学习：核心概念、常见算法、怎么入门，整理成一份讲义']},
+  pm:{research:['国内 AI 办公助手竞品分析','帮我做一份竞品分析：国内主流 AI 办公助手的功能、定价和用户口碑对比，并标注来源'],ppt:['新功能评审会 PPT','帮我做一份 10 页新功能评审 PPT：背景、目标、方案、指标和排期'],doc:['续费提醒功能 PRD','帮我写一份 PRD：会员到期前的续费提醒功能，包含用户故事、流程和指标'],sheet:['用户反馈分类表','把这周的用户反馈整理成分类表：问题类型、出现次数、严重程度'],web:['活动落地页','帮我做一个活动落地页：标题、亮点介绍、报名按钮'],learn:['读懂用户增长模型','我想快速读懂用户增长：AARRR、留存曲线、增长实验，整理成入门讲义']},
+  dev:{research:['Rust vs Go：后端选型调研','帮我做一份技术调研：后端服务用 Rust 还是 Go？对比性能、生态和招聘难度，并标注来源'],ppt:['技术分享：向量数据库入门','帮我做一份 10 页技术分享 PPT：向量数据库是什么、怎么选型、有哪些坑'],doc:['登录模块接口文档','帮我写一份用户登录模块的接口设计文档，包含请求参数、返回值和错误码'],sheet:['云服务商 GPU 价格对比','对比 5 家云服务商的 GPU 实例价格，整理成表格并画出性价比图'],web:['个人技术博客','帮我做一个个人技术博客网站，首页列出文章，支持深色模式'],learn:['读懂 MCP 协议','我想快速读懂 MCP 协议：解决什么问题、怎么用、有哪些实现，整理成讲义']},
+  mkt:{research:['小红书美妆投放趋势','帮我做一份深度研究：今年小红书美妆赛道的投放趋势和爆款内容特征，并标注来源'],ppt:['新品发布会 PPT','帮我做一份 10 页新品发布会 PPT：用户痛点、产品亮点、价格和上市计划'],doc:['季度营销复盘','帮我写一份季度营销复盘：目标完成情况、渠道表现、问题和下季度计划'],sheet:['竞品价格与卖点对比表','整理 8 个竞品的价格、核心卖点和渠道，做成对比表'],web:['新品预约落地页','帮我做一个新品预约落地页，有倒计时和预约表单'],learn:['读懂私域运营','我想快速读懂私域运营：核心打法、关键指标、常见误区，整理成讲义']},
+  teacher:{research:['双减后课外阅读的变化','帮我做一份深度研究：双减之后中小学生课外阅读发生了哪些变化？给出数据和来源'],ppt:['物理课件：牛顿第二定律','帮我做一份高一物理课件：牛顿第二定律，10 页，包含例题和课堂练习'],doc:['家长会发言稿','帮我写一份期中家长会发言稿，讲学习情况、存在的问题和家校配合建议'],sheet:['班级成绩分析表','把班级期中成绩整理成分析表：平均分、分数段分布、进步最大的学生'],web:['课堂随机点名工具','帮我做一个课堂随机点名的网页小工具，可以导入学生名单'],learn:['读懂 AI 辅助教学','我想快速了解 AI 怎么辅助教学：备课、批改、个性化练习，整理成讲义']},
+  other:{research:['2026 年值得关注的科技趋势','帮我做一份深度研究：2026 年最值得关注的 5 个科技趋势，每个都给出数据和来源'],ppt:['长文章做成 PPT','帮我把一篇长文章做成 8 页 PPT，提炼观点并配上图示'],doc:['日本关西 5 天旅行攻略','帮我写一份日本关西 5 天旅行攻略：路线、交通、预算和必吃清单'],sheet:['家庭月度预算表','帮我做一张家庭月度预算表，分类统计支出并画出占比图'],web:['个人主页','帮我做一个个人主页网站，介绍我自己和我的爱好'],learn:['快速入门咖啡烘焙','我想快速入门咖啡烘焙：器材、基本原理、新手常见问题，整理成讲义']}
+};
+const FUNNELS={
+  1:[['f1','注册完成','signup_complete',['signup_complete']],['f2','答完 2 个问题','onboarding_complete',['onboarding_complete']],['f3','发起首个 Agent 任务','agent_task_start',['agent_task_start']],['f4','Aha：查看成果','aha_reached',['aha_reached']],['f5','问完就走，没用过 Agent','session_end',['session_end'],'lost']],
+  2:[['f1','付费墙曝光','paywall_impression',['paywall_impression']],['f2','点击升级','paywall_cta_click',['paywall_cta_click']],['f3','支付成功','checkout_success',['checkout_success']],['f4','留下回访理由','draft_saved / remind',['draft_saved','paywall_fallback'],'guard'],['f5','空手离开','paywall_dismiss',['paywall_dismiss'],'lost']]
+};
+const SEG={
+  1:{B:['实验组：注册后直达 Aha','2 个点选问题 → 输入框里填好专属任务 → 按发送出成果'],A:['对照组：现状','注册后进入空白首页，用户自己想问什么']},
+  2:{B:['实验组：任务续航卡','预估消耗 → 免费先做一部分 → 按任务推荐 + 免费退路'],A:['对照组：现状','新任务提示「额度不足」→ 通用会员页']}
+};
+function syncConsole(){
+  const seg=SEG[S.scene];
+  [['#vB','B'],['#vA','A']].forEach(([id,v])=>{ const b=$(id); b.innerHTML=''; b.append(seg[v][0]); const s=document.createElement('small'); s.textContent=seg[v][1]; b.append(s); b.setAttribute('aria-pressed', S.variant===v); });
+  $('#s1').setAttribute('aria-pressed', S.scene===1); $('#s2').setAttribute('aria-pressed', S.scene===2);
+  S.fmap={};
+  $('#funnel').innerHTML=FUNNELS[S.scene].map(([id,label,ev,evs,cls])=>{ evs.forEach(e=>S.fmap[e]='#'+id); return '<div class="fstep'+(cls?' '+cls:'')+'" id="'+id+'"><b>'+label+'</b>'+ev+'</div>'; }).join('');
+}
 
 /* ---------- console helpers ---------- */
 function note(title, body, why){
@@ -237,13 +288,12 @@ function log(name, props){
   li.innerHTML='<span class="ts">+'+sec+'s</span><span class="ev"></span><span class="pr"></span>';
   li.querySelector('.ev').textContent=name; li.querySelector('.pr').textContent=p;
   ul.prepend(li);
-  const map={paywall_impression:'#f-imp',paywall_cta_click:'#f-clk',checkout_success:'#f-pay',draft_saved:'#f-keep',paywall_fallback:'#f-keep',paywall_dismiss:'#f-lost'};
-  if(map[name]) $(map[name]).classList.add('hit');
+  if(S.fmap[name]) $(S.fmap[name]).classList.add('hit');
 }
 function resetConsole(){
   S.t0=Date.now();
-  $('#log').innerHTML='<li class="empty-log">还没有事件。点手机里的发送键开始。</li>';
-  document.querySelectorAll('.fstep').forEach(e=>e.classList.remove('hit'));
+  $('#log').innerHTML='<li class="empty-log">还没有事件。在手机里操作开始。</li>';
+  syncConsole();
 }
 
 /* ---------- phone helpers ---------- */
@@ -263,14 +313,16 @@ const ai=h=>add(h,'ai');
 const sys=t=>add(t,'sys');
 function card(html, extra){ const d=add(html,'card'+(extra?' '+extra:'')); return d; }
 async function typing(ms){ const d=ai('<span style="color:var(--muted)">正在思考…</span>'); await sleep(ms||900); d.remove(); }
-function setInput(text, onSend){
-  const box=$('#inputBox'), btn=$('#sendBtn');
-  if(!text){ box.textContent='给 Kimi 发消息…'; box.classList.add('empty'); btn.disabled=true; btn.classList.remove('pulse'); btn.onclick=null; return; }
-  box.textContent=text; box.classList.remove('empty'); btn.disabled=false; btn.classList.add('pulse');
+function setInput(text, onSend, opts){
+  const box=$('#inputBox'), btn=$('#sendBtn'); opts=opts||{};
+  box.classList.remove('prefilled');
+  if(!text){ box.textContent=opts.placeholder||'给 Kimi 发消息…'; box.classList.add('empty'); btn.disabled=true; btn.classList.remove('pulse'); btn.onclick=null; return; }
+  box.textContent=text; box.classList.remove('empty'); box.classList.toggle('prefilled', !!opts.prefilled); btn.disabled=false; btn.classList.add('pulse');
   const run=S.run;
   btn.onclick=()=>{ if(run!==S.run) return; setInput(''); onSend(); };
 }
 function toast(t, bad){ toastEl.textContent=t; toastEl.className='toast'+(bad?' bad':''); toastEl.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.hidden=true, 2200); }
+function sugs(html){ const el=$('#sugs'); if(!html){ el.hidden=true; el.innerHTML=''; return el; } el.innerHTML=html; el.hidden=false; return el; }
 function openSheet(html){ sheet.innerHTML=html; sheet.hidden=false; mask.hidden=false; sheet.scrollTop=0; }
 function closeSheet(){ sheet.hidden=true; mask.hidden=true; clearInterval(S.timer); }
 function alive(run){ return run===S.run; }
@@ -290,46 +342,159 @@ async function progress(steps, from, to, run, onTick){
   return c;
 }
 
-/* ---------- Scene 1: Day 1 ---------- */
+/* ---------- Scene 1: Day 1, signup → first Aha (P0) ---------- */
+const FIRST_Q='宁德时代和比亚迪的储能业务，谁更有竞争力？';
+function homeWelcome(sub){
+  chat.innerHTML='<div class="welcome"><h3>KIMI</h3><p>'+sub+'</p><div class="chips"><span class="chip">深度研究</span><span class="chip">PPT</span><span class="chip">文档</span><span class="chip">网站</span><span class="chip">表格</span><span class="chip">Agent 集群</span></div></div>';
+}
 async function scene1(){
-  const run=++S.run; closeSheet(); chat.innerHTML=''; resetConsole(); setQuota(100);
-  chat.innerHTML='<div class="welcome"><h3>KIMI</h3><p>新用户 · 注册第 1 天</p><div class="chips"><span class="chip">深度研究</span><span class="chip">PPT</span><span class="chip">文档</span><span class="chip">网站</span><span class="chip">表格</span></div><p>首页能力入口都在，但用户通常只会先问一个普通问题。</p></div>';
-  log('home_view',{day:'D1'});
-  note('第 1 天 · 首问','<p>新用户进来先问一个普通问题。这是流失最多的地方：问完就走，从来没用过 Kimi 的 Agent 能力。</p>','这一步属于需求 B（能力发现），放在这里是为了展示需求 A 的前提：用户先尝到价值，撞墙时才有付费意愿。');
-  setInput('宁德时代和比亚迪的储能业务，谁更有竞争力？', async()=>{
-    chat.innerHTML=''; user('宁德时代和比亚迪的储能业务，谁更有竞争力？'); log('query_send',{n:1});
+  const run=++S.run; S.scene=1; closeSheet(); sugs(''); chat.innerHTML=''; resetConsole(); setQuota(100);
+  log('signup_complete',{channel:'wechat'});
+  if(S.variant==='A') return controlDay1(run);
+  onboarding(run);
+}
+
+/* --- Treatment: two tap-only questions --- */
+function onboarding(run){
+  const ob={role:null, goals:[]};
+  sys('注册成功 · 第 1 天');
+  const c=card('<div class="tag">先认识一下你 · 2 个问题，约 10 秒</div>'+
+    '<h4>你主要用 Kimi 做哪方面的事？</h4><div class="picks" id="roles">'+ROLES.map(r=>'<button class="pick" data-id="'+r[0]+'" aria-pressed="false">'+r[1]+'</button>').join('')+'</div>'+
+    '<div id="q2" hidden><h4 style="margin:4px 0 8px">最近想搞定什么？（最多选 3 个）</h4><div class="picks" id="goals">'+GOALS.map(g=>'<button class="pick" data-id="'+g[0]+'" aria-pressed="false">'+g[1]+'</button>').join('')+'</div></div>'+
+    '<div class="row" style="justify-content:space-between;align-items:center"><button class="btn ghost" id="skip">跳过，直接用</button><button class="btn primary" id="gen" disabled>帮我准备第一个任务</button></div>'+
+    '<div class="sub">只用来推荐任务，之后可以在设置里改。</div>','ob');
+  log('onboarding_show',{questions:2});
+  setInput('',null,{placeholder:'也可以直接在这里提问…'});
+  note('P0 · 注册后先问 2 个问题','<p>注册成功后不直接进空白首页，而是用两个点选问题了解用户：<b>做什么工作、最近想搞定什么</b>。</p><ul><li>全部点选，不用打字，约 10 秒</li><li>可以跳过；跳过的人在首问之后由「能力推荐卡」兜底</li></ul>','为什么：走查发现最大的流失点在「首问 → 激活」。新用户不知道 Kimi 能做什么，也想不出该让它做什么。');
+  const gen=c.querySelector('#gen');
+  const refresh=()=>{ gen.disabled=!(ob.role && ob.goals.length); c.querySelectorAll('#goals .pick').forEach(b=>{ b.disabled = ob.goals.length>=3 && b.getAttribute('aria-pressed')!=='true'; }); };
+  c.querySelectorAll('#roles .pick').forEach(b=>b.onclick=()=>{
+    if(!alive(run)) return;
+    c.querySelectorAll('#roles .pick').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    ob.role=b.dataset.id; c.querySelector('#q2').hidden=false; log('onboarding_answer',{q:'role',value:ob.role}); refresh(); chat.scrollTop=chat.scrollHeight;
+  });
+  c.querySelectorAll('#goals .pick').forEach(b=>b.onclick=()=>{
+    if(!alive(run)) return;
+    const id=b.dataset.id, on=b.getAttribute('aria-pressed')==='true';
+    if(on){ ob.goals=ob.goals.filter(g=>g!==id); b.setAttribute('aria-pressed','false'); }
+    else if(ob.goals.length<3){ ob.goals.push(id); b.setAttribute('aria-pressed','true'); }
+    log('onboarding_answer',{q:'goal',value:id,on:!on}); refresh();
+  });
+  c.querySelector('#skip').onclick=()=>{ if(!alive(run)) return; log('onboarding_skip',{answered:ob.role?1:0}); skipPath(run); };
+  gen.onclick=()=>{
+    if(!alive(run)) return;
+    log('onboarding_complete',{role:ob.role,goals:ob.goals.join('+')});
+    const roleLabel=ROLES.find(r=>r[0]===ob.role)[1];
+    const goalLabels=ob.goals.map(g=>GOALS.find(x=>x[0]===g)[1]).join('、');
+    c.remove(); sys('你是：'+roleLabel+' · 想做：'+goalLabels);
+    prefill(run, ob);
+  };
+}
+
+/* --- Treatment: a personalised task waits in the input box --- */
+async function prefill(run, ob){
+  await typing(700); if(!alive(run)) return;
+  const opts=ob.goals.slice();
+  ['research','ppt','doc'].forEach(g=>{ if(opts.length<3 && !opts.includes(g)) opts.push(g); });
+  ai('<p>根据你的情况，我把第一个任务<b>填进输入框了</b>。直接按发送就开始，也可以改几个字再发。</p>');
+  const pv=card('','tint');
+  const pick=(g, rank, by)=>{
+    const t=P[ob.role][g], m=CAP[g];
+    S.cur={goal:g, title:t[0], prompt:t[1], rank:rank};
+    pv.innerHTML='<div class="tag">'+m.cap+' · '+m.time+' · 新人首个任务免费，不占额度</div><h4>发送后你会得到：'+t[0]+'</h4><ul class="has">'+m.has.map(h=>'<li>'+h+'</li>').join('')+'</ul>';
+    sugs('<span>换一个：</span>'+opts.map((o,i)=>'<button class="pick" data-g="'+o+'" data-r="'+(i+1)+'" aria-pressed="'+(o===g)+'">'+CAP[o].cap+' · '+P[ob.role][o][0]+'</button>').join(''))
+      .querySelectorAll('.pick').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; pick(b.dataset.g, +b.dataset.r, 'swap'); });
+    setInput(t[1], ()=>firstTask(run), {prefilled:true});
+    log('prefill_show',{goal:g,rank:rank,by:by});
+    chat.scrollTop=chat.scrollHeight;
+  };
+  pick(opts[0],1,'auto');
+  note('P0 · 专属任务已经填好，按发送就开始','<p>根据两个回答，把一个<b>和用户自己有关的完整任务</b>直接填进输入框，用户只需要按发送（或 Enter）。</p><ul><li>上方能换成另外两个推荐，也能自己改</li><li>卡片提前说清楚：要多久、会得到什么</li><li>首个 Agent 任务免费、不占额度，保证第一次体验不撞墙</li></ul>','对比现状：灵感库里的案例是别人的，用户还得自己改写成自己的需求；预填任务的第一句话就是用户自己的事。');
+}
+
+async function firstTask(run){
+  sugs(''); const cur=S.cur, m=CAP[cur.goal];
+  user(cur.prompt);
+  log('prefill_send',{goal:cur.goal,rank:cur.rank,edited:false});
+  log('agent_task_start',{type:m.cap,first:true,cost:'free_gift'});
+  const p=await progress(m.steps,0,0,run); if(!p) return;
+  const out=card('<div class="doc"><div class="ic">'+m.ic+'</div><div><h4>'+cur.title+'</h4><div class="sub">'+m.meta+' · 刚刚生成</div></div></div><div class="row"><button class="btn primary">打开查看</button><button class="btn">下载</button></div>');
+  log('agent_task_done',{type:m.cap,first:true,quota_used:'0%'});
+  note('P0 · 成果已经做好','<p>从注册到拿到一份能直接用的成果，用户只做了几次点选和 1 次发送。</p>','Aha 的定义：完成一次 Agent 任务，并<b>打开或下载</b>了产出。只生成、不查看不算。');
+  const [open,dl]=out.querySelectorAll('button');
+  const aha=(how)=>{
+    if(!alive(run)) return;
+    log('aha_reached',{via:how,goal:cur.goal,minutes_from_signup:((Date.now()-S.t0)/60000).toFixed(1)});
+    if(how==='download'){ toast('（演示）已下载'); afterAha(run); return; }
+    openSheet('<button class="x" aria-label="关闭">×</button><div class="tag">'+m.cap+' · 示意内容</div><h3>'+cur.title+'</h3><div class="preview" style="display:flex;flex-direction:column;gap:8px">'+m.has.map((h,i)=>'<section><b>'+(i+1)+'. '+h+'</b><span style="color:var(--muted)">（演示原型，此处为示意内容）</span></section>').join('')+'</div><div class="demo-note">真实产品里这里是完整的报告 / PPT / 网页</div>');
+    sheet.querySelector('.x').onclick=()=>{ closeSheet(); afterAha(run); };
+  };
+  open.onclick=()=>{ open.disabled=dl.disabled=true; aha('open'); };
+  dl.onclick=()=>{ open.disabled=dl.disabled=true; aha('download'); };
+}
+
+function afterAha(run){
+  if(!alive(run)) return;
+  const cur=S.cur;
+  const next=cur.goal==='research'||cur.goal==='learn'?['把它做成 PPT','每周一给我更新一次']:['再改一版','用同样的方式再做一个'];
+  const c=card('<div class="tag">接下来可以</div><div class="row">'+next.map(n=>'<button class="btn">'+n+'</button>').join('')+'</div><div class="sub">做好的成果已保存在「最近任务」，明天打开首页就能看到。</div>');
+  c.querySelectorAll('.btn').forEach(b=>b.onclick=()=>{ if(!alive(run)) return; log('next_action_click',{action:b.textContent}); toast('已记下，下次打开时接着做'); });
+  note('P0 · 第一次 Aha','<p>用户第一次看到 Kimi 和普通聊天机器人的区别：<b>一句话 → 一份能直接用的成果</b>。</p><ul><li>结尾给出下一步，并把成果保存在首页，留下回来的理由</li></ul>','对应指标：Aha 达成率、D1 留存（先行指标）→ Agent 渗透率 → 额度触顶率 → 7 日会员转化率。Aha 的人越多，后面撞墙、进入付费漏斗的人越多，这一段由 P1 任务续航接住。');
+  fastForward(run);
+}
+function fastForward(run){
+  setTimeout(()=>{ if(!alive(run)) return;
+    const nx=card('<div class="sub">接下来两天，用户又做了 2 次深度研究和 1 份文档，额度剩 12%。（第 3 天以投研用户为例）</div><div class="row"><button class="btn primary">快进到第 3 天：额度触顶（P1）→</button></div>','tint');
+    nx.querySelector('button').onclick=()=>scene2();
+  }, 500);
+}
+
+/* --- Treatment fallback: user skipped onboarding → capability card after first question --- */
+function skipPath(run){
+  homeWelcome('跳过引导，直接进入首页');
+  note('P0 兜底 · 跳过引导的用户','<p>不想回答问题的用户直接进首页。首问回答之后，按问题意图推荐<b>一个</b>能一键执行的 Agent 能力。</p>','这就是原来的「能力发现卡」，现在作为 P0 的兜底路径，保证跳过的人也有机会到达 Aha。');
+  setInput(FIRST_Q, async()=>{
+    chat.innerHTML=''; user(FIRST_Q); log('query_send',{n:1});
     await typing(); if(!alive(run)) return;
-    ai('<p>简单说：<b>宁德时代</b>在储能电芯出货和海外大客户上领先，<b>比亚迪</b>在系统集成和成本控制上更强。两者路线不同，各有优势。</p><p style="color:var(--muted);font-size:12px">（演示用的简短回答，不构成投资建议）</p>');
+    plainAnswer();
     await sleep(500); if(!alive(run)) return;
-    const c=card('<div class="tag">可以做得更深</div><h4>把这个问题做成一份深度研究报告？</h4><div class="sub">约 3 分钟 · 自动检索 40+ 来源并标注引用 · 可导出 PDF</div><div class="row"><button class="btn primary">生成深度研究</button><button class="btn ghost">先不用</button></div>');
+    const c=card('<div class="tag">可以做得更深 · 新人首个任务免费</div><h4>把这个问题做成一份深度研究报告？</h4><div class="sub">约 3 分钟 · 自动检索 40+ 来源并标注引用 · 可导出 PDF</div><div class="row"><button class="btn primary">生成深度研究</button><button class="btn ghost">先不用</button></div>');
     log('capability_card_show',{intent:'company_compare',suggest:'deep_research'});
-    note('第 1 天 · 能力发现卡（需求 B）','<p>首轮回答之后，按问题意图推荐一个具体的高级能力，一键就能执行。</p><ul><li>只推一个，不铺满屏幕</li><li>说清楚要多久、能得到什么</li></ul>','对应指标：核心能力渗透率、D1 激活率。');
     const [go,no]=c.querySelectorAll('button');
-    no.onclick=()=>{ if(!alive(run)) return; log('capability_card_dismiss'); c.remove(); ai('<p>好的，有需要随时说。</p>'); };
-    go.onclick=async()=>{
-      if(!alive(run)) return; go.disabled=no.disabled=true; log('capability_card_click');
-      user('生成深度研究'); log('agent_task_start',{type:'deep_research'});
-      const q=[100,91,80,71,64];
-      const p=await progress(['拆解问题','检索 42 个来源','交叉核对数据','撰写报告'],0,0,run,i=>setQuota(q[i+1]));
-      if(!p) return;
-      card('<div class="doc"><div class="ic">PDF</div><div><h4>宁德时代 vs 比亚迪 · 储能业务深度研究</h4><div class="sub">18 页 · 42 个来源 · 刚刚生成</div></div></div>');
-      log('agent_task_done',{type:'deep_research',quota_used:'36%'});
-      note('第 1 天 · Aha 时刻','<p>用户第一次看到 Kimi 和普通聊天机器人的区别。实验组顶部常驻额度条，用户从第一天就知道额度是会被用掉的。</p>','现状下额度藏在「设置 → 订阅」里，而且只显示百分比。用户感受不到额度在被消耗，到撞墙那一刻才第一次意识到。');
-      await sleep(400); if(!alive(run)) return;
-      const nx=card('<div class="sub">接下来两天，用户又做了 1 次深度研究和 1 份文档，额度剩 12%。</div><div class="row"><button class="btn primary">快进到第 3 天 →</button></div>','tint');
-      nx.querySelector('button').onclick=()=>scene2();
-    };
+    no.onclick=()=>{ if(!alive(run)) return; log('capability_card_dismiss'); log('session_end',{agent_used:false}); c.remove(); ai('<p>好的，有需要随时说。</p>'); };
+    go.onclick=()=>{ if(!alive(run)) return; go.disabled=no.disabled=true; log('capability_card_click');
+      S.cur={goal:'research',title:P.finance.research[0],prompt:'生成深度研究',rank:0};
+      firstTask(run); };
+  });
+}
+function plainAnswer(){
+  ai('<p>简单说：<b>宁德时代</b>在储能电芯出货和海外大客户上领先，<b>比亚迪</b>在系统集成和成本控制上更强。两者路线不同，各有优势。</p><p style="color:var(--muted);font-size:12px">（演示用的简短回答，不构成投资建议）</p>');
+}
+
+/* --- Control: current behaviour --- */
+function controlDay1(run){
+  homeWelcome('新用户 · 注册第 1 天');
+  note('P0 对照组 · 现状','<p>注册后直接进入首页：一个输入框加一排能力按钮。用户得自己想出要问什么，通常先问一个普通问题。</p>','能力按钮和用户自己的事没有关系；精彩案例要点进具体能力才看得到。');
+  setInput(FIRST_Q, async()=>{
+    chat.innerHTML=''; user(FIRST_Q); log('query_send',{n:1});
+    await typing(); if(!alive(run)) return;
+    plainAnswer();
+    await sleep(600); if(!alive(run)) return;
+    sys('用户得到一个普通回答');
+    log('session_end',{agent_used:false,queries:1});
+    note('P0 对照组 · 问完就走','<p>回答和普通聊天机器人差不多。用户没接触任何 Agent 能力，后面也就不会撞墙、不会进入付费漏斗。</p>','这是走查观察到的现象，流失比例需要用埋点数据确认。');
+    fastForward(run);
   });
 }
 
 /* ---------- Scene 2: Day 3, quota wall ---------- */
 async function scene2(){
-  const run=++S.run; closeSheet(); chat.innerHTML=''; resetConsole(); setQuota(12);
-  sys('第 3 天');
+  const run=++S.run; S.scene=2; closeSheet(); sugs(''); chat.innerHTML=''; resetConsole(); setQuota(12);
+  sys('第 3 天 · 以投研用户为例');
   card('<div class="doc"><div class="ic">PDF</div><div><h4>宁德时代 vs 比亚迪 · 储能业务深度研究</h4><div class="sub">18 页 · 2 天前</div></div></div>');
   ai('<p>欢迎回来。上次的研究报告已保存在这里。</p>');
   log('home_view',{day:'D3',quota_left:'12%'});
-  note('第 3 天 · 撞墙前一刻','<p>用户带着一个<b>有截止时间的真实任务</b>回来：要把研究做成组会 PPT。这是 7 天里付费意愿最高的时刻。</p>','切换右上方的实验组 / 对照组，对比两种处理方式。');
+  note('P1 · 第 3 天 · 撞墙前一刻','<p>用户带着一个<b>有截止时间的真实任务</b>回来：要把研究做成组会 PPT。这是 7 天里付费意愿最高的时刻。</p>','切换右上方的实验组 / 对照组，对比两种处理方式。');
   setInput('把这份研究做成 12 页 PPT，周五组会要用', async()=>{
     user('把这份研究做成 12 页 PPT，周五组会要用');
     log('agent_task_request',{type:'ppt',pages:12});
@@ -384,7 +549,7 @@ function openWall(run){
   '<div class="demo-note">首月价、倒计时和「十几份」的估算都是待实验校准的参数</div>');
   S.timer=setInterval(()=>{ const e=document.getElementById('cd'); if(e) e.textContent='新人价还剩 '+fmtLeft(); },1000);
   log('paywall_impression',{trigger:'quota_insufficient',surface:'task_sheet',task:'ppt',progress:'3/12',offer:'newbie_19.9'});
-  note('实验组 · 任务续航卡（需求 A 核心）','<ul><li><b>标题讲任务，不讲额度</b>：「还差 9 页」比「额度不足」更像一次推荐</li><li><b>只推一个档位</b>：按当前任务推荐 Go，不让新用户在五档里挑</li><li><b>新人首月价 + 截止时间</b>：和注册 7 天的窗口绑定，制造合理的决策时点</li><li><b>两条免费退路</b>：提醒继续、文字版，保护 D7 留存</li></ul>','护栏：「空手离开」比例必须下降；关闭率和退款率要盯住。');
+  note('P1 实验组 · 任务续航卡','<ul><li><b>标题讲任务，不讲额度</b>：「还差 9 页」比「额度不足」更像一次推荐</li><li><b>只推一个档位</b>：按当前任务推荐 Go，不让新用户在五档里挑</li><li><b>新人首月价 + 截止时间</b>：和注册 7 天的窗口绑定，制造合理的决策时点</li><li><b>两条免费退路</b>：提醒继续、文字版，保护 D7 留存</li></ul>','护栏：「空手离开」比例必须下降；关闭率和退款率要盯住。');
   sheet.querySelector('.x').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_dismiss',{saved_progress:'3/12'}); savedDraft(run,false);
     note('实验组 · 关闭也不是空手离开','<p>即使直接关掉，前 3 页也已经保存在最近任务里。用户下次打开时，首页会显示这个没做完的任务。</p>','这是保护留存的关键：不付费的用户也带走了成果，并且有一个回来的理由。'); };
   $('#oPay').onclick=()=>{ if(!alive(run)) return; log('paywall_cta_click',{plan:'go',offer:'newbie_first_month'}); pay(19.9,'Go · 新人首月',run,3); };
@@ -425,17 +590,18 @@ function pay(amount, plan, run, donePages){
 }
 
 /* ---------- wiring ---------- */
-function setVariant(v){
-  S.variant=v;
-  $('#vB').setAttribute('aria-pressed', v==='B'); $('#vA').setAttribute('aria-pressed', v==='A');
-  scene2();
-}
+function setVariant(v){ S.variant=v; (S.scene===2?scene2:scene1)(); }
 $('#vB').onclick=()=>setVariant('B');
 $('#vA').onclick=()=>setVariant('A');
 $('#s1').onclick=()=>scene1();
 $('#s2').onclick=()=>scene2();
 mask.onclick=()=>{ const x=sheet.querySelector('.x'); if(x) x.click(); };
-scene2();
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter' || e.isComposing) return;
+  const t=e.target; if(t && t.closest && t.closest('button,input,textarea,select,a')) return;
+  const b=$('#sendBtn'); if(!b.disabled && sheet.hidden){ e.preventDefault(); b.click(); }
+});
+scene1();
 })();
 </script>
 </body>

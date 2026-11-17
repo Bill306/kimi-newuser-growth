@@ -111,9 +111,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div class="eyebrow">AI 产品经理作业 · 2026 年 11 月</div>
     <h1>Kimi 新用户 7 日会员转化方案</h1>
     <p class="lede">目标：提升注册 7 天内用户的会员转化率，同时 D7 留存不能下降。</p>
-    <div class="bet"><b>核心判断</b>：付费引导该出现在用户<b>正在做一件重要的事、额度不够用</b>的那一刻，而不是打开产品的那一刻。把这一刻从「报错」改成「帮你把事做完」，再给不付费的人留一条免费退路，转化和留存可以同时往上走。</div>
-    <a class="cta" href="prototype.html">打开可交互原型（需求 A）→</a>
-    <p class="meta">交付物：本页（文档网页版）· 可交互原型 · 58 秒录屏（见第 06 节）· 文档 PDF / Word 与原型代码见 <a href="https://github.com/Bill306/kimi-newuser-growth">代码仓库</a>。</p>
+    <div class="bet"><b>核心判断</b>：新用户 7 天里有两个决定性时刻。<b>注册后的头几分钟</b>，要让用户不用想、不用打字就做成一件和自己有关的事（Aha）；<b>额度用完的那一刻</b>，要先帮用户做一部分再推付费，并留一条免费退路。前一个时刻决定有多少人走到后一个时刻，所以先做 Aha（P0），再接住撞墙（P1）。</div>
+    <a class="cta" href="prototype.html">打开可交互原型（P0 + P1）→</a>
+    <p class="meta">交付物：本页（文档网页版）· 可交互原型 · 47 秒录屏（见第 06 节）· 文档 PDF / Word 与原型代码见 <a href="https://github.com/Bill306/kimi-newuser-growth">代码仓库</a>。</p>
     <p class="meta">标注说明：<span class="tag v">已核实</span> 来自 Kimi 官网 / 帮助中心或实地观察；<span class="tag h">假设</span> 待用真实数据或实验校准；<span class="tag r">待核实</span> 来自既有认知，需要新账号走查确认。</p>
   </header>
 
@@ -139,7 +139,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       <tr><td>点进 Deep Research</td><td>只切换了输入框提示语，没有说明耗时、产出、是否消耗额度</td><td>用户不知道这个按钮会花掉多少额度，也不知道能得到什么</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
       <tr><td>发送按钮提示</td><td>悬停发送键显示「Sending a message uses credits」</td><td>提示只说会扣额度，没说扣多少；对新用户反而会制造犹豫</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
       <tr><td>拉新与促活</td><td>侧边栏有「Invite to Earn」邀请得 K3.1 Pro 权益</td><td>可以作为免费用户额度的补充来源，和付费墙配合</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
-      <tr><td>免费档额度</td><td>免费档（Adagio）具体有多少 Agent 额度、多久刷新</td><td>决定新用户多快撞墙，是需求 A 的关键参数</td><td><span class="tag r">待核实</span><br><span class="src">海外帮助页列出旧版 Agent 额度 6/60/150/360/720，口径不一致</span></td></tr>
+      <tr><td>免费档额度</td><td>免费档（Adagio）具体有多少 Agent 额度、多久刷新</td><td>决定新用户多快撞墙，是需求 B 的关键参数</td><td><span class="tag r">待核实</span><br><span class="src">海外帮助页列出旧版 Agent 额度 6/60/150/360/720，口径不一致</span></td></tr>
     </table></div>
   </section>
 
@@ -179,19 +179,23 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div class="tbl"><table>
       <tr><th>层级</th><th>指标</th><th>定义</th></tr>
       <tr><td><b>核心</b></td><td><b>7 日会员转化率</b></td><td>注册后 7×24 小时内首次支付成功的用户数 ÷ 同期注册用户数。按注册日 cohort 计算，剔除 7 天内退款和测试账号</td></tr>
+      <tr><td rowspan="2">过程 · 引导</td><td>引导完成率 / 跳过率</td><td>答完 2 个问题的新用户 ÷ 看到引导的新用户；跳过的单独统计</td></tr>
+      <tr><td>预填任务发送率</td><td>发送（或改后发送）预填任务的用户 ÷ 看到预填任务的用户；记录推荐排序、是否换过、是否改过</td></tr>
       <tr><td rowspan="2">过程 · 激活</td><td>D0 激活率</td><td>注册当天完成 ≥2 轮对话，且用过 ≥1 个 Agent 能力（深度研究 / PPT / 文档 / 网站 / 表格）</td></tr>
-      <tr><td>Aha 达成率</td><td>7 天内完成一次 Agent 任务并查看或下载产出</td></tr>
+      <tr><td>Aha 达成率</td><td>7 天内完成一次 Agent 任务并打开或下载产出；同时看 D0 达成率和注册到 Aha 的时长</td></tr>
       <tr><td>过程 · 关键功能</td><td>Agent 能力渗透率</td><td>7 天内用过任一 Agent 能力的新用户占比；按能力拆分</td></tr>
       <tr><td rowspan="3">过程 · 付费页</td><td>额度触顶率</td><td>7 天内至少一次发起任务时额度不足的新用户占比</td></tr>
       <tr><td>付费页曝光率 / 点击率</td><td>曝光 UV ÷ 新用户；点击升级 UV ÷ 曝光 UV。<b>按曝光场景拆分</b>（触顶、首页、设置页）</td></tr>
       <tr><td>下单率 / 支付成功率</td><td>进入收银台 → 发起支付 → 支付成功</td></tr>
       <tr><td><b>护栏（主）</b></td><td><b>D7 留存</b></td><td>注册第 7 天（D7）有任意有效对话。实验组相对对照组的降幅不能超过 0.5pp（非劣效检验，单侧 95%）</td></tr>
-      <tr><td rowspan="4">护栏（辅）</td><td>D1 留存</td><td>同上，用来更早发现问题</td></tr>
+      <tr><td rowspan="6">护栏（辅）</td><td>D1 留存</td><td>同上，用来更早发现问题</td></tr>
+      <tr><td>注册后首个动作率</td><td>注册后 10 分钟内发出第一条消息或完成第一个任务的比例，监控引导页本身造成的流失</td></tr>
+      <tr><td>首任务赠送成本</td><td>赠送的首个 Agent 任务的平均算力成本，对照 7 日转化带来的收入</td></tr>
       <tr><td>触顶后空手离开率</td><td>付费墙曝光后 24 小时内既没付费、也没保存或继续任何任务、也没回访的比例</td></tr>
       <tr><td>付费弹层关闭率</td><td>关闭 ÷ 曝光，监控打扰程度</td></tr>
       <tr><td>首月退款率 / 投诉率 / 次月续费率</td><td>防止新人价拉来低质量付费</td></tr>
     </table></div>
-    <div class="funnel"><span>新用户</span><em>→</em><span>D0 激活</span><em>→</em><span>Agent 渗透</span><em>→</em><span>额度触顶</span><em>→</em><span>付费墙曝光</span><em>→</em><span>点击升级</span><em>→</em><span>支付成功</span></div>
+    <div class="funnel"><span>新用户</span><em>→</em><span>完成引导</span><em>→</em><span>D0 Aha</span><em>→</em><span>Agent 渗透</span><em>→</em><span>额度触顶</span><em>→</em><span>付费墙曝光</span><em>→</em><span>点击升级</span><em>→</em><span>支付成功</span></div>
     <p class="src">7 日转化率 = 新用户 × 激活率 × 渗透率 × 触顶率 × 曝光→点击 × 点击→支付（另有不经过触顶、直接付费的路径，单独统计）。这样拆开，每个需求都能对到具体一段。</p>
   </section>
 
@@ -199,7 +203,25 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <h2><span class="n">04</span>三个需求与优先级</h2>
     <div class="reqs">
       <article class="req top">
-        <header><span class="pri">P0</span><h3>需求 A：额度触顶时的「任务续航」付费引导</h3></header>
+        <header><span class="pri">P0</span><h3>需求 A：注册后直达 Aha</h3></header>
+        <dl class="kv">
+          <dt>旅程节点</dt><dd>② 登录 → ③ 首问 → ④ 激活</dd>
+          <dt>问题</dt><dd>新用户不知道 Kimi 能做什么，也想不出该让它做什么，只好先问一个普通问题；回答和普通聊天机器人差不多，问完就走。灵感库里的案例是别人的，用户还要自己改写成自己的需求。</dd>
+          <dt>方案</dt><dd><ul class="clean">
+            <li><b>2 个点选问题</b>：注册成功后问「你主要用 Kimi 做哪方面的事」「最近想搞定什么（最多选 3 个）」。不打字，约 10 秒，可以跳过</li>
+            <li><b>专属任务预填进输入框</b>：例如投研用户 + 研究 →「帮我做一份深度研究：宁德时代和比亚迪的储能业务谁更有竞争力？……」，用户只需按发送或 Enter</li>
+            <li><b>可以换、可以改</b>：输入框上方再给两个推荐，一键切换；上方卡片说清楚要多久、会得到什么</li>
+            <li><b>首个 Agent 任务免费</b>、不占额度，保证第一次体验不撞墙</li>
+            <li><b>成果后给下一步</b>（「把它做成 PPT」「每周一更新」），成果保存在首页，留下回来的理由</li>
+            <li><b>兜底</b>：跳过引导的用户，首问回答后按意图推荐一个能一键执行的 Agent 能力</li>
+          </ul></dd>
+          <dt>影响指标</dt><dd>引导完成率、预填发送率 → D0 Aha 达成率、Agent 渗透率 ↑ → D1 / D7 留存 ↑ → 触顶率 ↑ → 7 日转化率 ↑</dd>
+          <dt>验证</dt><dd>A/B，3 组（见第 05 节）。先看引导完成率、预填发送率、D0 Aha 达成率和 D1 留存（1–2 天可读），再看 7 日转化和 D7。推荐任务与回答的匹配度单独抽样人工评估。</dd>
+        </dl>
+      </article>
+
+      <article class="req">
+        <header><span class="pri">P1</span><h3>需求 B：额度触顶时的「任务续航」付费引导</h3></header>
         <dl class="kv">
           <dt>旅程节点</dt><dd>⑥ 撞墙 → ⑦ 收银台</dd>
           <dt>问题</dt><dd>用户发起重要任务时，额度不足会直接拦下新任务：不说要多少、不先给任何成果、只给一张通用会员页、不付费就没有出路。</dd>
@@ -211,18 +233,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
             <li><b>付费后无缝续写</b>，不用用户重新发起</li>
           </ul></dd>
           <dt>影响指标</dt><dd>曝光→点击率、点击→支付率 ↑ → 7 日转化率 ↑；触顶后空手离开率 ↓ → D7 留存持平或上升</dd>
-          <dt>验证</dt><dd>注册时按用户 ID 随机分组 50/50，跑满 2 个完整的 7 日 cohort。主分析看全体新用户（ITT），同时看「触顶用户」子集，那是信号最强的地方。D7 做非劣效检验。新人首月价单独开一个因子（¥19.9 / ¥29.9 / 无折扣），避免把「设计」和「降价」的效果混在一起。</dd>
-        </dl>
-      </article>
-
-      <article class="req">
-        <header><span class="pri">P1</span><h3>需求 B：首问后的「能力发现」卡</h3></header>
-        <dl class="kv">
-          <dt>旅程节点</dt><dd>③ 首问 → ④ 激活</dd>
-          <dt>问题</dt><dd>用户问完一个问题就走，没见过 Kimi 的差异化能力；首页 chip 平铺，和用户的问题没有关系。</dd>
-          <dt>方案</dt><dd>首轮回答后按意图只推荐一个能一键执行的 Agent 能力（问公司 → 深度研究；问写作 → PPT / 文档），写清楚耗时和产出，并附上对应的精彩案例（现在只在点 chip 后才出现）。新用户前 3 天的第一次 Agent 任务额外送一次额度，确保第一次体验不会撞墙。另开一个小实验：登录弹窗加一句「登录后可免费体验深度研究和 PPT」，看登录完成率。</dd>
-          <dt>影响指标</dt><dd>D0 激活率、Agent 渗透率、Aha 达成率 ↑ → 触顶率 ↑ → 7 日转化 ↑；D1 / D7 ↑</dd>
-          <dt>验证</dt><dd>A/B。先看推荐卡点击率和 Aha 达成率（一周内可读），再看 7 日转化和 D7。意图识别准确率要单独抽样人工评估。</dd>
+          <dt>验证</dt><dd>注册时按用户 ID 随机分组，跑满 2 个完整的 7 日 cohort。主分析看全体新用户（ITT），同时看「触顶用户」子集。D7 做非劣效检验。新人首月价单独开一个因子（¥19.9 / ¥29.9 / 无折扣）。和需求 A 的实验正交分层，可以同时运行。</dd>
         </dl>
       </article>
 
@@ -231,7 +242,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
         <dl class="kv">
           <dt>旅程节点</dt><dd>⑦ 收银台</dd>
           <dt>问题</dt><dd>五档会员、按功能列权益，新用户算不清自己需要哪一档，在选档时犹豫流失。</dd>
-          <dt>方案</dt><dd>根据用户 7 天内的使用情况默认选中一个档位（「你这周做了 3 次深度研究、1 份 PPT，Go 够用」）；权益从功能清单改写成「每月大约能做多少件事」；默认只展开 Go 和 Plus，其余折叠。</dd>
+          <dt>方案</dt><dd>根据用户 7 天内的使用情况默认选中一个档位（「你这周做了 3 次深度研究、1 份 PPT，Go 够用」）；权益从功能清单改写成「每月大约能做多少件事」；默认只展开 Go 和 Plus，其余折叠。注册时的职业和兴趣回答（需求 A）也可以作为推荐依据。</dd>
           <dt>影响指标</dt><dd>收银台下单率、支付成功率 ↑；ARPPU 可能下降，需要同时监控</dd>
           <dt>验证</dt><dd>A/B。主指标是收银台转化率，同时看 ARPPU 和首月后升档率，确认没有把本来会买 Plus 的人推到 Go。</dd>
         </dl>
@@ -241,44 +252,56 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <h3>为什么这样排</h3>
     <div class="tbl"><table>
       <tr><th>需求</th><th>离钱的距离</th><th>作用人群</th><th>留存风险</th><th>研发成本</th><th>多快能读出结果</th></tr>
-      <tr><td><b>A 任务续航</b></td><td>最近：直接作用于付费意愿最高的时刻</td><td>触顶用户（规模取决于免费额度）</td><td>低：有免费退路，且只影响已经撞墙的人</td><td>中：要做消耗预估和部分交付</td><td>快：7 日 cohort</td></tr>
-      <tr><td>B 能力发现</td><td>远：转化的上游</td><td>全部新用户</td><td>低，可能正向</td><td>高：依赖意图识别和推荐质量</td><td>慢：链路长，归因难</td></tr>
+      <tr><td><b>A 注册后直达 Aha</b></td><td>远：转化的上游</td><td>全部新用户</td><td>正向：直接拉高 D1 / D7</td><td>中：两个问题 + 预填模板 + 首任务赠送</td><td>先行指标 1–2 天；转化 7 天</td></tr>
+      <tr><td>B 任务续航</td><td>最近：直接作用于付费意愿最高的时刻</td><td>触顶用户（规模取决于免费额度和 A 的效果）</td><td>低：有免费退路，且只影响已经撞墙的人</td><td>中：要做消耗预估和部分交付</td><td>快：7 日 cohort</td></tr>
       <tr><td>C 档位推荐</td><td>近：只在漏斗最后一段</td><td>最少：已进入收银台的人</td><td>极低</td><td>低</td><td>快</td></tr>
     </table></div>
-    <p>A 排第一，因为它<b>离转化最近、留存风险最低、能最快读出结果</b>。B 的潜在上限可能更大，但见效慢，而且需要 A 先把「撞墙之后」接住，B 带来的更多触顶才能变成付费。C 改动小，可以和 A 并行做，但它作用的人群最少。</p>
+    <p><b>A 排第一</b>：它作用在最大的流失点、覆盖全部新用户，而且是唯一同时推高转化和留存的需求，正好对应「转化提升、留存不降」这道题。<b>B 排第二</b>：离钱最近，但只对撞墙的人有效；A 把更多人带到撞墙这一步，B 再把他们接住变成付费，两者是接力。<b>C 排第三</b>：改动小，可以和 B 并行，但作用人群最少。</p>
+    <div class="grid2">
+      <div class="box"><h3>反方最强的反驳</h3><p>A 离付费远、链路长，7 天内未必能变成付费；首个任务免费还可能推迟撞墙。B 离钱最近，7 天内就能直接读出转化。</p></div>
+      <div class="box"><h3>我目前的立场</h3><p>仍然 A 第一：走查看到的最大问题是新用户根本没碰到 Agent 能力，B 能作用的人群取决于 A；A 的先行指标 1–2 天就能读出；首任务只免费一次，对撞墙时间的影响在实验里单独测。<b>改变排序的条件</b>：如果埋点显示 7 日触顶率已超过 30% <span class="tag h">假设阈值</span>，说明上游不缺人，B 提到第一。</p></div>
+    </div>
   </section>
 
   <section>
     <h2><span class="n">05</span>需求 A 的实验设计</h2>
     <div class="grid2">
-      <div class="box"><h3>假设</h3><p>在额度触顶时先交付部分成果、按任务推荐单一档位并提供免费退路，能让触顶用户的 7 日付费率相对提升 ≥15%，且 D7 留存降幅不超过 0.5pp。</p></div>
-      <div class="box"><h3>样本量（示意）</h3><p>假设 7 日转化基线 2.0% <span class="tag h">假设</span>，要检测相对 +15%（到 2.3%），α=0.05、功效 80%：每组约 <b>3.7 万</b>名新用户。如果只看触顶用户（转化基线更高），需要的样本会小很多。</p></div>
-      <div class="box"><h3>分组与口径</h3><ul class="clean"><li>注册时按用户 ID 哈希分组，跨端一致</li><li>同一用户 7 天内始终在同一组</li><li>主口径 ITT；触发口径只作为辅助分析</li></ul></div>
-      <div class="box"><h3>停止 / 回滚条件</h3><ul class="clean"><li>D1 留存降幅 &gt;1pp，立即暂停</li><li>首月退款率或投诉率翻倍，暂停</li><li>消耗预估误差 &gt;30% 的比例过高，先修预估再继续</li></ul></div>
+      <div class="box"><h3>假设</h3><p>注册后用 2 个点选问题生成并预填一个专属任务，能让 D0 Aha 达成率明显上升，7 日转化率相对提升 ≥15%，且 D7 留存不下降。</p></div>
+      <div class="box"><h3>分组</h3><ul class="clean"><li>注册时按用户 ID 哈希分 3 组，跨端一致</li><li>对照组（现状）／ 引导 + 预填／ 引导 + 预填 + 首任务免费</li><li>把「引导设计」和「赠送额度」的效果分开测</li><li>主口径 ITT：跳过引导的人也算实验组</li></ul></div>
+      <div class="box"><h3>样本量与读数节奏</h3><p>假设 7 日转化基线 2.0% <span class="tag h">假设</span>，检测相对 +15%（到 2.3%），α=0.05、功效 80%：每组约 <b>3.7 万</b>名新用户。第 1–2 天读引导完成率、预填发送率、D0 Aha、D1；满 7 天读转化和 D7。</p></div>
+      <div class="box"><h3>停止 / 回滚条件</h3><ul class="clean"><li>注册后首个动作率降幅 &gt;3pp（引导页本身造成流失）</li><li>D1 留存降幅 &gt;1pp，立即暂停</li><li>推荐任务被人工评为「不相关」的比例过高</li></ul></div>
     </div>
+    <p class="src">需求 B 的实验和 A 正交分层：两者作用在不同节点，可以同时跑，分析时检查交互效应。</p>
   </section>
 
   <section>
     <h2><span class="n">06</span>原型</h2>
-    <p>原型模拟一个新用户第 1 天和第 3 天的完整故事，可以在<b>实验组</b>（任务续航卡）和<b>对照组</b>（现状：新任务提示额度不足 → 通用会员页）之间切换，右侧实时显示埋点事件和本次会话的漏斗。</p>
+    <p>原型用一个手机界面串起新用户第 1 天（需求 A，P0）和第 3 天（需求 B，P1），两个场景都能在<b>实验组</b>和<b>对照组</b>之间切换，右侧实时显示埋点事件和本次会话的漏斗。</p>
+    <div class="shots">
+      <figure><img src="shots/proto_p0_prefill.jpg" alt="原型：答完两个问题后，输入框里填好了专属任务" loading="lazy"><figcaption><b>P0 · 注册后直达 Aha</b>：答完 2 个点选问题，输入框里已经填好专属任务，上方可以换成另外两个推荐。</figcaption></figure>
+      <figure><img src="shots/proto_treatment.jpg" alt="原型：额度触顶后的任务续航卡" loading="lazy"><figcaption><b>P1 · 任务续航</b>：额度触顶后先免费做出前 3 页，再弹出续航卡：推荐 Go 新人首月价，或两条免费退路。</figcaption></figure>
+    </div>
     <div class="shot">
       <b>建议体验路径</b>
       <ul class="clean">
-        <li>默认在「第 3 天：额度触顶」，点手机里的发送键 → 看预估卡 → 免费生成前 3 页 → 弹出续航卡</li>
-        <li>分别试试「开通 Go」「提醒我继续」「文字版」和直接关闭，看漏斗里「留下回访理由」和「空手离开」的区别</li>
-        <li>切到对照组再走一遍，对比现状</li>
-        <li>点「第 1 天」看前置的能力发现卡（需求 B）和第一次深度研究</li>
+        <li>默认在「第 1 天」：选一个职业和 1–3 件想做的事 → 点「帮我准备第一个任务」→ 输入框里出现专属任务，按发送或 Enter → 打开成果，漏斗走到「Aha」</li>
+        <li>换不同的职业试试，看预填任务怎么变；也可以点「跳过，直接用」看兜底的能力推荐卡</li>
+        <li>切到对照组：空白首页 → 问一个普通问题 → 问完就走</li>
+        <li>点「快进到第 3 天」：额度只剩 12% → 预估卡 → 免费生成前 3 页 → 续航卡；分别试「开通 Go」「提醒我继续」「文字版」和直接关闭</li>
       </ul>
     </div>
     <a class="cta" href="prototype.html">打开可交互原型 →</a>
-    <figure class="video"><video src="prototype-demo.mp4" controls muted playsinline preload="metadata"></video><figcaption>录屏（58 秒）：第 1 天首问与第一次深度研究 → 第 3 天实验组付费续写 → 实验组「提醒我继续」 → 对照组现状。</figcaption></figure>
+    <figure class="video"><video src="prototype-demo.mp4" controls muted playsinline preload="metadata"></video><figcaption>录屏：第 1 天注册 → 2 个问题 → 预填任务按发送 → 打开成果（Aha）→ 第 3 天额度触顶 → 付费续写 → 对照组现状。</figcaption></figure>
   </section>
 
   <section>
     <h2><span class="n">07</span>反方观点</h2>
     <div class="tbl"><table>
       <tr><th>判断</th><th>最强的反驳</th><th>我目前的立场</th></tr>
-      <tr><td>触顶时推付费最有效</td><td>如果免费额度很大，大部分新用户 7 天内根本撞不到墙，A 作用的人群太小</td><td>先查「7 日触顶率」。如果低于 10% <span class="tag h">假设阈值</span>，就把 B 提到 P0，或者调整新用户免费额度让 Aha 和撞墙都发生在 7 天内</td></tr>
+      <tr><td>注册后先问问题能带来 Aha</td><td>多一个步骤就多一处流失，有人会直接关掉</td><td>全部点选、约 10 秒、可以跳过；「注册后首个动作率」作为护栏，降幅超过 3pp 就停</td></tr>
+      <tr><td>预填任务比灵感库更有效</td><td>两个问题信息量太少，推荐可能和真实需求不符，反而显得不懂用户</td><td>给 3 个推荐可换、可改；记录「换过」「改过」的比例，持续调整推荐</td></tr>
+      <tr><td>首个任务免费能保护第一次体验</td><td>白送额度会推迟撞墙、减少 7 天内付费，也有算力成本</td><td>实验单独设一组不赠送，把赠送的效果分开测；成本纳入护栏</td></tr>
+      <tr><td>触顶时推付费有效（需求 B）</td><td>如果免费额度很大，大部分新用户 7 天内撞不到墙，B 作用的人群太小</td><td>先查「7 日触顶率」；需求 A 会提高触顶率，两者一起看</td></tr>
       <tr><td>动手前预估消耗能减少挫败感</td><td>把成本摆在眼前，可能让用户不敢用 Agent 能力，降低渗透率</td><td>只在剩余额度不够这个任务时显示预估，平时只显示常驻额度条；把「Agent 渗透率」加进监控</td></tr>
       <tr><td>新人首月价能拉高转化</td><td>折扣拉来的是低意愿用户，次月续费差，长期收入可能变少</td><td>价格单独做一个实验因子，以「首月 + 次月」的累计收入为准做决定</td></tr>
       <tr><td>免费退路能保护留存</td><td>给了退路，部分本来会付费的人选择等待，转化被稀释</td><td>这是有意的取舍，留存是底线。可以看「提醒 → 回访 → 二次触顶 → 付费」这条延迟转化链路，它会把一部分转化拉回来</td></tr>
@@ -293,16 +316,17 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     </div>
     <div class="box">
       <h3>最难、最容易出错的部分</h3>
-      <p>需求 A 有两个关键参数：<b>免费额度在第几天让新用户撞墙</b>，以及<b>新人价给多少</b>。它们直接决定转化提升和留存损失之间的取舍，只能靠实验测出来。另一个风险是消耗预估的准确度：预估说「还差 18%」，结果实际差 40%，会直接损害信任。</p>
+      <p><b>需求 A</b>：两个问题的选项设计和预填任务的匹配度，决定用户是「被说中了」还是「被打扰了」，只能靠实验和人工抽样评估验证。<b>需求 B</b>：免费额度在第几天让新用户撞墙、新人价给多少，直接决定转化提升和留存损失之间的取舍；消耗预估如果不准（说还差 18%，实际差 40%），会直接损害信任。</p>
     </div>
     <div class="box">
       <h3>上线前必须核验的数字</h3>
       <ul class="clean">
         <li>新用户 7 日会员转化率基线（内部数据）</li>
         <li>新用户 D1 / D7 留存基线（内部数据）</li>
+        <li>新用户 D0 Aha 达成率和 Agent 能力渗透率，决定需求 A 的提升空间（内部数据）</li>
         <li>7 日内额度触顶率，以及触顶用户的付费率（内部数据）</li>
         <li>免费档 Agent 额度和刷新规则（会员购买页 / 产品文档）</li>
-        <li>各类 Agent 任务的平均额度消耗，以及预估误差分布（日志）</li>
+        <li>各类 Agent 任务的平均额度消耗、算力成本，以及预估误差分布（日志）</li>
         <li>Go 套餐价格 ¥49/月（帮助中心 2026-10-19 截图，上线前以购买页为准）</li>
       </ul>
     </div>
