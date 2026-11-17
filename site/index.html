@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kimi 新用户 7 日转化方案</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single reading column (~760px) with wide tables/maps scrolling inside their own boxes */
+:root{
+  --bg:#F6F7FA; --surface:#FFFFFF; --surface-2:#EEF1F6; --fg:#151B27; --muted:#5A6477; --line:#DCE1EA;
+  --accent:#2646D4; --accent-soft:#E5EAFD;
+  --offer:#A8500B; --offer-soft:#FCEFE1;
+  --ok:#1D7448; --ok-soft:#E1F2E8; --warn:#B3261E; --warn-soft:#FBE9E7;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --font:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F131B; --surface:#171C27; --surface-2:#1F2533; --fg:#E7EBF3; --muted:#9AA4B8; --line:#2C3446;
+  --accent:#8299FF; --accent-soft:#232C4D; --offer:#F0A35C; --offer-soft:#3A2A1A;
+  --ok:#5DC893; --ok-soft:#173326; --warn:#FF8A80; --warn-soft:#3A1E1C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F131B; --surface:#171C27; --surface-2:#1F2533; --fg:#E7EBF3; --muted:#9AA4B8; --line:#2C3446;
+  --accent:#8299FF; --accent-soft:#232C4D; --offer:#F0A35C; --offer-soft:#3A2A1A;
+  --ok:#5DC893; --ok-soft:#173326; --warn:#FF8A80; --warn-soft:#3A1E1C; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.75 var(--font);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+main{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+h1,h2{font-family:var(--serif);text-wrap:balance;margin:0}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.3}
+h2{font-size:23px;line-height:1.35;display:flex;gap:10px;align-items:baseline}
+h2 .n{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600}
+h3{font-size:16.5px;margin:0}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:16px}
+a{color:var(--accent)}
+.eyebrow{font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.lede{font-size:17px;color:var(--fg)}
+.meta{font-size:13px;color:var(--muted)}
+.hero{display:flex;flex-direction:column;gap:14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--surface);text-decoration:none;border-radius:10px;padding:10px 18px;font-weight:500;align-self:flex-start}
+.cta:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.bet{border-left:3px solid var(--offer);background:var(--offer-soft);padding:14px 16px;border-radius:0 10px 10px 0}
+.bet b{color:var(--offer)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.6}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+tr:last-child td{border-bottom:none}
+th{background:var(--surface-2);font-weight:500;color:var(--muted);white-space:nowrap}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.src{font-size:12px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.v{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.tag.h{border-color:var(--offer);color:var(--offer);background:var(--offer-soft)}
+.tag.r{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+ul.clean{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+
+/* journey map */
+.journey{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.jgrid{display:grid;grid-template-columns:96px repeat(8,minmax(118px,1fr));min-width:1040px;font-size:12.5px;line-height:1.5}
+.jgrid > div{padding:8px 10px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.jgrid > div:nth-child(9n){border-right:none}
+.jgrid .rh{background:var(--surface-2);color:var(--muted);font-weight:500}
+.jgrid .st{font-weight:700;background:var(--surface-2)}
+.jgrid .st small{display:block;font-weight:400;color:var(--muted);font-family:var(--mono);font-size:11px}
+.risk{display:flex;flex-direction:column;gap:4px}
+.risk i{display:block;height:6px;border-radius:3px;background:var(--line)}
+.risk.hi i{background:var(--warn)} .risk.md i{background:var(--offer)} .risk.lo i{background:var(--ok)}
+.jgrid .key{background:var(--offer-soft)}
+.jgrid .last{border-bottom:none}
+
+/* requirement cards */
+.reqs{display:flex;flex-direction:column;gap:14px}
+.req{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.req.top{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.req header{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.pri{font-family:var(--mono);font-weight:600;font-size:12px;padding:2px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+.kv{display:grid;grid-template-columns:88px minmax(0,1fr);gap:6px 12px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.funnel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.funnel span{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+.funnel em{font-style:normal;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.grid2{grid-template-columns:minmax(0,1fr)} .kv{grid-template-columns:minmax(0,1fr)} .kv dt{margin-top:4px}}
+.box{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box h3{font-size:15px}
+.shot{border:1px dashed var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);font-size:13.5px}
+.shot code,code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.shots{grid-template-columns:minmax(0,1fr)}}
+.shots figure{margin:0;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.shots img{display:block;width:100%;max-width:100%;height:auto;border-bottom:1px solid var(--line)}
+.shots figure.narrow img{max-width:220px;margin:0 auto;border-bottom:none}
+.shots figure.narrow{background:var(--surface-2)}
+.shots figcaption{font-size:13px;line-height:1.6;padding:10px 12px;background:var(--surface)}
+.video{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.video video{display:block;width:100%;max-width:100%;height:auto;background:var(--surface-2)}
+.video figcaption{font-size:13px;padding:10px 12px;color:var(--muted)}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+</style>
+
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="eyebrow">AI 产品经理作业 · 2026 年 11 月</div>
+    <h1>Kimi 新用户 7 日会员转化方案</h1>
+    <p class="lede">目标：提升注册 7 天内用户的会员转化率，同时 D7 留存不能下降。</p>
+    <div class="bet"><b>核心判断</b>：付费引导该出现在用户<b>正在做一件重要的事、额度不够用</b>的那一刻，而不是打开产品的那一刻。把这一刻从「报错」改成「帮你把事做完」，再给不付费的人留一条免费退路，转化和留存可以同时往上走。</div>
+    <a class="cta" href="prototype.html">打开可交互原型（需求 A）→</a>
+    <p class="meta">标注说明：<span class="tag v">已核实</span> 来自 Kimi 官网 / 帮助中心或实地观察；<span class="tag h">假设</span> 待用真实数据或实验校准；<span class="tag r">待核实</span> 来自既有认知，需要新账号走查确认。</p>
+  </header>
+
+  <section>
+    <h2><span class="n">01</span>实地观察：现在的 Kimi 是什么样</h2>
+    <p>2026-11-16 做了两轮走查：一轮用<b>全新、无登录信息的浏览器</b>以游客身份从首页走到首问（桌面 1280px + 手机 390px，中文环境），一轮用已有会员账号看登录后的界面；同时阅读了帮助中心的会员说明。登录后的新手引导、免费额度和第一次撞墙需要新注册的账号，还没有覆盖。</p>
+    <div class="shots">
+      <figure><img src="shots/01_home_guest.jpg" alt="游客首页：KIMI 标志、输入框和 7 个能力入口" loading="lazy"><figcaption><b>① 游客首页</b>：只有输入框和 7 个能力 chip（3D Make、PPT、深度研究、文档、构建应用、表格、设计），没有一句话讲 Kimi 和别家有什么不同。</figcaption></figure>
+      <figure><img src="shots/03_first_question_18s.jpg" alt="游客发送第一个问题后弹出的登录弹窗" loading="lazy"><figcaption><b>② 首问即登录墙</b>：游客发出第一个问题，没有任何回答，直接弹出微信扫码 / 手机验证码登录。弹窗里没有「登录后能得到什么」。好的一点：问题保留在输入框里，登录后不用重打。</figcaption></figure>
+      <figure><img src="shots/05_deep_research_mode.jpg" alt="点击深度研究后出现三个精彩案例" loading="lazy"><figcaption><b>③ 深度研究入口</b>：点进去才看到「深度研究精彩案例」三张卡，这是很好的价值展示，但只有主动点 chip 的人能看到；没有说明耗时、产出和额度消耗。</figcaption></figure>
+      <figure><img src="shots/09_inspiration.jpg" alt="灵感库页面，展示 3D、游戏、网页等模板" loading="lazy"><figcaption><b>④ 灵感库</b>：3D、游戏、网页、PPT 模板，最能制造「原来它能做这个」的地方，入口却是首页底部一行灰色小字「探索灵感」。</figcaption></figure>
+      <figure class="narrow"><img src="shots/10_mobile_home.jpg" alt="手机网页版首页" loading="lazy"><figcaption><b>⑤ 手机网页</b>：顶部「下载 APP」+「登录」，能力 chip 只露出 3 个，其余要横滑。</figcaption></figure>
+    </div>
+    <div class="tbl"><table>
+      <tr><th>观察</th><th>细节</th><th>对新用户的影响</th><th>来源</th></tr>
+      <tr><td>会员五档</td><td>Go ¥49 · Plus ¥99 · Pro ¥199 · Max ¥699 · Ultra ¥1,399（连续包月）；年付折合 ¥39–1,119/月</td><td>入门门槛 ¥49/月；五档对新用户偏多，名字和权益（如「Agent 集群」「目标模式」）需要理解成本</td><td><span class="tag v">已核实</span><br><span class="src">帮助中心，价格截图日期 2026-10-19</span></td></tr>
+      <tr><td>额度是一个共享池</td><td>深度研究、PPT、网站、Kimi Code、Claw 等共享月度额度池，按 token 扣除，<b>只显示百分比</b></td><td>新用户无法把「剩 12%」换算成「还能做几件事」，撞墙前几乎没有预期</td><td><span class="tag v">已核实</span><br><span class="src">帮助中心「会员订阅服务权益介绍」</span></td></tr>
+      <tr><td>额度藏得深</td><td>查看路径：Web 端 头像 → 设置 → 订阅；App 端 我的 → 会员计划 → 订阅</td><td>日常对话界面看不到额度，用户感知不到消耗</td><td><span class="tag v">已核实</span><br><span class="src">同上</span></td></tr>
+      <tr><td>撞墙规则</td><td>额度用完时，进行中的任务可以完成，<b>新任务提示额度不足</b>；出路是等刷新、升级、加油包（仅会员）或活动</td><td>墙出现在用户刚说出需求、手里还什么都没有的时刻；免费用户没有加油包这条路</td><td><span class="tag v">已核实</span><br><span class="src">帮助中心「额度用完了怎么办」</span></td></tr>
+      <tr><td>游客首问即登录</td><td>未登录用户发出第一个问题就弹登录弹窗（微信扫码 / 手机验证码 / 企业 SSO），拿不到任何回答</td><td>价值还没出现，先要求留资料；这是 ② → ③ 之间最硬的一道门槛</td><td><span class="tag v">已核实</span><br><span class="src">无登录浏览器走查，截图 ②</span></td></tr>
+      <tr><td>价值展示藏得深</td><td>深度研究案例只在点 chip 后出现；灵感库入口是首页底部小字</td><td>最能制造 Aha 的内容，大部分新用户看不到</td><td><span class="tag v">已核实</span><br><span class="src">截图 ③ ④</span></td></tr>
+      <tr><td>首页入口</td><td>输入框下有 3D Make、Slides、Deep Research、Docs、Build、Sheets 等能力入口；顶部横幅推 K2.8 Preview 额度 5 折</td><td>能力都在，但用 chip 平铺，没有和用户的第一个问题关联起来</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
+      <tr><td>点进 Deep Research</td><td>只切换了输入框提示语，没有说明耗时、产出、是否消耗额度</td><td>用户不知道这个按钮会花掉多少额度，也不知道能得到什么</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
+      <tr><td>发送按钮提示</td><td>悬停发送键显示「Sending a message uses credits」</td><td>提示只说会扣额度，没说扣多少；对新用户反而会制造犹豫</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
+      <tr><td>拉新与促活</td><td>侧边栏有「Invite to Earn」邀请得 K3.1 Pro 权益</td><td>可以作为免费用户额度的补充来源，和付费墙配合</td><td><span class="tag v">已核实</span><br><span class="src">kimi.com 实地走查</span></td></tr>
+      <tr><td>免费档额度</td><td>免费档（Adagio）具体有多少 Agent 额度、多久刷新</td><td>决定新用户多快撞墙，是需求 A 的关键参数</td><td><span class="tag r">待核实</span><br><span class="src">海外帮助页列出旧版 Agent 额度 6/60/150/360/720，口径不一致</span></td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2><span class="n">02</span>用户旅程：注册到成为会员</h2>
+    <p>把前 7 天拆成 8 个节点。红色是流失风险最高的地方，橙色底色是转化杠杆最大的地方。风险高低是基于产品走查的判断，<span class="tag h">假设</span>，需要用埋点数据确认。</p>
+    <div class="journey"><div class="jgrid">
+      <div class="rh">节点</div>
+      <div class="st">① 落地<small>D0</small></div><div class="st">② 登录<small>D0</small></div><div class="st">③ 首问<small>D0</small></div><div class="st">④ 激活<small>D0–D1</small></div><div class="st">⑤ 回访<small>D1–D3</small></div><div class="st key">⑥ 撞墙<small>D2–D6</small></div><div class="st">⑦ 收银台<small>D2–D7</small></div><div class="st">⑧ 首月<small>D7–D30</small></div>
+      <div class="rh">用户在做什么</div>
+      <div>从搜索、投放、口碑进入首页</div><div>手机号 / 微信登录</div><div>问一个普通问题</div><div>第一次用深度研究、PPT、文档等 Agent 能力</div><div>隔天回来做第二件事</div><div class="key">发起一个重要任务，额度不够</div><div>看会员页、选档、支付</div><div>用会员能力、决定是否续费</div>
+      <div class="rh">流失 / 卡点</div>
+      <div>看不出和豆包、DeepSeek 的区别</div><div>游客发第一个问题就弹登录，一个回答都拿不到（已核实）</div><div>问完就走，没见到差异化能力</div><div>入口是平铺的 chip，和问题无关</div><div>没有未完成的事，没理由回来</div><div class="key">「额度不足」像报错；任务没开始；没有免费退路</div><div>五档难选，权益换算不成「我的事能不能做完」</div><div>付费后没被引导去用，次月不续</div>
+      <div class="rh">风险</div>
+      <div class="risk md"><i></i>中</div><div class="risk md"><i></i>中高 · 首问即拦</div><div class="risk hi"><i></i>高 · 最大流失</div><div class="risk hi"><i></i>高</div><div class="risk md"><i></i>中</div><div class="risk hi"><i></i>高 · 最大杠杆</div><div class="risk md"><i></i>中</div><div class="risk md"><i></i>中</div>
+      <div class="rh last">原因</div>
+      <div class="last">首屏只有输入框，差异点没讲出来</div><div class="last">注册摩擦先于价值；弹窗不讲登录后能得到什么</div><div class="last">首答和普通聊天机器人差别不大</div><div class="last">能力发现靠用户自己找</div><div class="last">没有提醒、没有进行中的任务</div><div class="last">墙出现在用户最想要结果的时候，却什么都不给</div><div class="last">按功能列权益，不按任务讲价值</div><div class="last">付费和使用之间断开</div>
+    </div></div>
+    <div class="grid2">
+      <div class="box"><h3>最大流失点：③ 首问 → ④ 激活</h3><p>大多数用户只问一个问题，从没碰到深度研究、PPT 这些 Kimi 真正领先的能力。这些用户后面不会撞墙，也就不会进入付费漏斗。走查还发现，在这之前游客连第一个回答都要先登录才能拿到（② 节点），所以「问一个就走」的一部分其实是「没登录就走」。</p></div>
+      <div class="box"><h3>最大转化杠杆：⑥ 撞墙</h3><p>用户带着有截止时间的任务来、额度不够，是 7 天内付费意愿最高的时刻。现在的处理方式（新任务直接提示额度不足）同时浪费了转化，还伤留存。</p></div>
+    </div>
+    <h3>竞品怎么处理同一时刻</h3>
+    <div class="tbl"><table>
+      <tr><th>产品</th><th>新用户引导</th><th>撞墙时的处理</th><th>可借鉴</th></tr>
+      <tr><td>ChatGPT</td><td><span class="tag v">已核实</span> 游客可以直接在输入框提问，左侧常驻「登录后可以基于历史对话回答、生成图片、上传文件」的说明，右上角是「Sign up for free」</td><td><span class="tag r">待核实</span> 免费额度用完后降级到小模型继续回答，并显示恢复时间和升级入口</td><td>登录提示讲「登录后多得到什么」；撞墙时降级而不阻断</td></tr>
+      <tr><td>Perplexity</td><td><span class="tag r">待核实</span> 推荐问题、Discover 信息流</td><td><span class="tag r">待核实</span> 每天给少量 Pro Search，用完后回到普通搜索</td><td>先让免费用户尝到高级能力</td></tr>
+      <tr><td>豆包</td><td><span class="tag v">已核实（仅香港网络）</span> 未登录访问被提示「受区域限制，请先登录再使用」，并引导到海外版 Dola</td><td><span class="tag r">待核实</span> 基本不设付费墙</td><td>内地网络下的游客流程需另行走查</td></tr>
+      <tr><td>DeepSeek</td><td><span class="tag r">待核实</span> 极简，几乎没有引导（自动化访问被拦截，未能走查）</td><td><span class="tag r">待核实</span> 不对 C 端收费</td><td>反例：要靠付费的产品不适合零引导</td></tr>
+    </table></div>
+    <div class="shots"><figure><img src="shots/c_chatgpt_home.jpg" alt="ChatGPT 游客首页，左侧有登录好处说明" loading="lazy"><figcaption><b>对照：ChatGPT 游客首页</b>。登录提示写的是登录后能多做什么（基于历史对话回答、生成图片、上传文件），而 Kimi 的登录弹窗只有扫码和验证码。</figcaption></figure></div>
+    <p class="src">走查时间 2026-11-17，全新无登录浏览器、香港网络。标「待核实」的内容来自既有认知。</p>
+  </section>
+
+  <section>
+    <h2><span class="n">03</span>指标体系</h2>
+    <div class="tbl"><table>
+      <tr><th>层级</th><th>指标</th><th>定义</th></tr>
+      <tr><td><b>核心</b></td><td><b>7 日会员转化率</b></td><td>注册后 7×24 小时内首次支付成功的用户数 ÷ 同期注册用户数。按注册日 cohort 计算，剔除 7 天内退款和测试账号</td></tr>
+      <tr><td rowspan="2">过程 · 激活</td><td>D0 激活率</td><td>注册当天完成 ≥2 轮对话，且用过 ≥1 个 Agent 能力（深度研究 / PPT / 文档 / 网站 / 表格）</td></tr>
+      <tr><td>Aha 达成率</td><td>7 天内完成一次 Agent 任务并查看或下载产出</td></tr>
+      <tr><td>过程 · 关键功能</td><td>Agent 能力渗透率</td><td>7 天内用过任一 Agent 能力的新用户占比；按能力拆分</td></tr>
+      <tr><td rowspan="3">过程 · 付费页</td><td>额度触顶率</td><td>7 天内至少一次发起任务时额度不足的新用户占比</td></tr>
+      <tr><td>付费页曝光率 / 点击率</td><td>曝光 UV ÷ 新用户；点击升级 UV ÷ 曝光 UV。<b>按曝光场景拆分</b>（触顶、首页、设置页）</td></tr>
+      <tr><td>下单率 / 支付成功率</td><td>进入收银台 → 发起支付 → 支付成功</td></tr>
+      <tr><td><b>护栏（主）</b></td><td><b>D7 留存</b></td><td>注册第 7 天（D7）有任意有效对话。实验组相对对照组的降幅不能超过 0.5pp（非劣效检验，单侧 95%）</td></tr>
+      <tr><td rowspan="4">护栏（辅）</td><td>D1 留存</td><td>同上，用来更早发现问题</td></tr>
+      <tr><td>触顶后空手离开率</td><td>付费墙曝光后 24 小时内既没付费、也没保存或继续任何任务、也没回访的比例</td></tr>
+      <tr><td>付费弹层关闭率</td><td>关闭 ÷ 曝光，监控打扰程度</td></tr>
+      <tr><td>首月退款率 / 投诉率 / 次月续费率</td><td>防止新人价拉来低质量付费</td></tr>
+    </table></div>
+    <div class="funnel"><span>新用户</span><em>→</em><span>D0 激活</span><em>→</em><span>Agent 渗透</span><em>→</em><span>额度触顶</span><em>→</em><span>付费墙曝光</span><em>→</em><span>点击升级</span><em>→</em><span>支付成功</span></div>
+    <p class="src">7 日转化率 = 新用户 × 激活率 × 渗透率 × 触顶率 × 曝光→点击 × 点击→支付（另有不经过触顶、直接付费的路径，单独统计）。这样拆开，每个需求都能对到具体一段。</p>
+  </section>
+
+  <section>
+    <h2><span class="n">04</span>三个需求与优先级</h2>
+    <div class="reqs">
+      <article class="req top">
+        <header><span class="pri">P0</span><h3>需求 A：额度触顶时的「任务续航」付费引导</h3></header>
+        <dl class="kv">
+          <dt>旅程节点</dt><dd>⑥ 撞墙 → ⑦ 收银台</dd>
+          <dt>问题</dt><dd>用户发起重要任务时，额度不足会直接拦下新任务：不说要多少、不先给任何成果、只给一张通用会员页、不付费就没有出路。</dd>
+          <dt>方案</dt><dd><ul class="clean">
+            <li><b>动手前预估</b>：发任务时显示「这个任务约需 30%，你还剩 12%」，把百分比翻译成「能做几页 / 几份」</li>
+            <li><b>先免费交付一部分</b>：用剩余额度做出大纲和前几页，并自动保存</li>
+            <li><b>按任务推荐一个档位</b>：标题写「还差 9 页就完成了」，只推 Go，附新人首月价，有效期和注册 7 天窗口绑定</li>
+            <li><b>两条免费退路</b>：额度刷新时提醒继续；用普通对话先给文字版</li>
+            <li><b>付费后无缝续写</b>，不用用户重新发起</li>
+          </ul></dd>
+          <dt>影响指标</dt><dd>曝光→点击率、点击→支付率 ↑ → 7 日转化率 ↑；触顶后空手离开率 ↓ → D7 留存持平或上升</dd>
+          <dt>验证</dt><dd>注册时按用户 ID 随机分组 50/50，跑满 2 个完整的 7 日 cohort。主分析看全体新用户（ITT），同时看「触顶用户」子集，那是信号最强的地方。D7 做非劣效检验。新人首月价单独开一个因子（¥19.9 / ¥29.9 / 无折扣），避免把「设计」和「降价」的效果混在一起。</dd>
+        </dl>
+      </article>
+
+      <article class="req">
+        <header><span class="pri">P1</span><h3>需求 B：首问后的「能力发现」卡</h3></header>
+        <dl class="kv">
+          <dt>旅程节点</dt><dd>③ 首问 → ④ 激活</dd>
+          <dt>问题</dt><dd>用户问完一个问题就走，没见过 Kimi 的差异化能力；首页 chip 平铺，和用户的问题没有关系。</dd>
+          <dt>方案</dt><dd>首轮回答后按意图只推荐一个能一键执行的 Agent 能力（问公司 → 深度研究；问写作 → PPT / 文档），写清楚耗时和产出，并附上对应的精彩案例（现在只在点 chip 后才出现）。新用户前 3 天的第一次 Agent 任务额外送一次额度，确保第一次体验不会撞墙。另开一个小实验：登录弹窗加一句「登录后可免费体验深度研究和 PPT」，看登录完成率。</dd>
+          <dt>影响指标</dt><dd>D0 激活率、Agent 渗透率、Aha 达成率 ↑ → 触顶率 ↑ → 7 日转化 ↑；D1 / D7 ↑</dd>
+          <dt>验证</dt><dd>A/B。先看推荐卡点击率和 Aha 达成率（一周内可读），再看 7 日转化和 D7。意图识别准确率要单独抽样人工评估。</dd>
+        </dl>
+      </article>
+
+      <article class="req">
+        <header><span class="pri">P2</span><h3>需求 C：会员页按使用情况推荐档位</h3></header>
+        <dl class="kv">
+          <dt>旅程节点</dt><dd>⑦ 收银台</dd>
+          <dt>问题</dt><dd>五档会员、按功能列权益，新用户算不清自己需要哪一档，在选档时犹豫流失。</dd>
+          <dt>方案</dt><dd>根据用户 7 天内的使用情况默认选中一个档位（「你这周做了 3 次深度研究、1 份 PPT，Go 够用」）；权益从功能清单改写成「每月大约能做多少件事」；默认只展开 Go 和 Plus，其余折叠。</dd>
+          <dt>影响指标</dt><dd>收银台下单率、支付成功率 ↑；ARPPU 可能下降，需要同时监控</dd>
+          <dt>验证</dt><dd>A/B。主指标是收银台转化率，同时看 ARPPU 和首月后升档率，确认没有把本来会买 Plus 的人推到 Go。</dd>
+        </dl>
+      </article>
+    </div>
+
+    <h3>为什么这样排</h3>
+    <div class="tbl"><table>
+      <tr><th>需求</th><th>离钱的距离</th><th>作用人群</th><th>留存风险</th><th>研发成本</th><th>多快能读出结果</th></tr>
+      <tr><td><b>A 任务续航</b></td><td>最近：直接作用于付费意愿最高的时刻</td><td>触顶用户（规模取决于免费额度）</td><td>低：有免费退路，且只影响已经撞墙的人</td><td>中：要做消耗预估和部分交付</td><td>快：7 日 cohort</td></tr>
+      <tr><td>B 能力发现</td><td>远：转化的上游</td><td>全部新用户</td><td>低，可能正向</td><td>高：依赖意图识别和推荐质量</td><td>慢：链路长，归因难</td></tr>
+      <tr><td>C 档位推荐</td><td>近：只在漏斗最后一段</td><td>最少：已进入收银台的人</td><td>极低</td><td>低</td><td>快</td></tr>
+    </table></div>
+    <p>A 排第一，因为它<b>离转化最近、留存风险最低、能最快读出结果</b>。B 的潜在上限可能更大，但见效慢，而且需要 A 先把「撞墙之后」接住，B 带来的更多触顶才能变成付费。C 改动小，可以和 A 并行做，但它作用的人群最少。</p>
+  </section>
+
+  <section>
+    <h2><span class="n">05</span>需求 A 的实验设计</h2>
+    <div class="grid2">
+      <div class="box"><h3>假设</h3><p>在额度触顶时先交付部分成果、按任务推荐单一档位并提供免费退路，能让触顶用户的 7 日付费率相对提升 ≥15%，且 D7 留存降幅不超过 0.5pp。</p></div>
+      <div class="box"><h3>样本量（示意）</h3><p>假设 7 日转化基线 2.0% <span class="tag h">假设</span>，要检测相对 +15%（到 2.3%），α=0.05、功效 80%：每组约 <b>3.7 万</b>名新用户。如果只看触顶用户（转化基线更高），需要的样本会小很多。</p></div>
+      <div class="box"><h3>分组与口径</h3><ul class="clean"><li>注册时按用户 ID 哈希分组，跨端一致</li><li>同一用户 7 天内始终在同一组</li><li>主口径 ITT；触发口径只作为辅助分析</li></ul></div>
+      <div class="box"><h3>停止 / 回滚条件</h3><ul class="clean"><li>D1 留存降幅 &gt;1pp，立即暂停</li><li>首月退款率或投诉率翻倍，暂停</li><li>消耗预估误差 &gt;30% 的比例过高，先修预估再继续</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">06</span>原型</h2>
+    <p>原型模拟一个新用户第 1 天和第 3 天的完整故事，可以在<b>实验组</b>（任务续航卡）和<b>对照组</b>（现状：新任务提示额度不足 → 通用会员页）之间切换，右侧实时显示埋点事件和本次会话的漏斗。</p>
+    <div class="shot">
+      <b>建议体验路径</b>
+      <ul class="clean">
+        <li>默认在「第 3 天：额度触顶」，点手机里的发送键 → 看预估卡 → 免费生成前 3 页 → 弹出续航卡</li>
+        <li>分别试试「开通 Go」「提醒我继续」「文字版」和直接关闭，看漏斗里「留下回访理由」和「空手离开」的区别</li>
+        <li>切到对照组再走一遍，对比现状</li>
+        <li>点「第 1 天」看前置的能力发现卡（需求 B）和第一次深度研究</li>
+      </ul>
+    </div>
+    <a class="cta" href="prototype.html">打开可交互原型 →</a>
+    <figure class="video"><video src="prototype-demo.mp4" controls muted playsinline preload="metadata"></video><figcaption>录屏（58 秒）：第 1 天首问与第一次深度研究 → 第 3 天实验组付费续写 → 实验组「提醒我继续」 → 对照组现状。</figcaption></figure>
+  </section>
+
+  <section>
+    <h2><span class="n">07</span>反方观点</h2>
+    <div class="tbl"><table>
+      <tr><th>判断</th><th>最强的反驳</th><th>我目前的立场</th></tr>
+      <tr><td>触顶时推付费最有效</td><td>如果免费额度很大，大部分新用户 7 天内根本撞不到墙，A 作用的人群太小</td><td>先查「7 日触顶率」。如果低于 10% <span class="tag h">假设阈值</span>，就把 B 提到 P0，或者调整新用户免费额度让 Aha 和撞墙都发生在 7 天内</td></tr>
+      <tr><td>动手前预估消耗能减少挫败感</td><td>把成本摆在眼前，可能让用户不敢用 Agent 能力，降低渗透率</td><td>只在剩余额度不够这个任务时显示预估，平时只显示常驻额度条；把「Agent 渗透率」加进监控</td></tr>
+      <tr><td>新人首月价能拉高转化</td><td>折扣拉来的是低意愿用户，次月续费差，长期收入可能变少</td><td>价格单独做一个实验因子，以「首月 + 次月」的累计收入为准做决定</td></tr>
+      <tr><td>免费退路能保护留存</td><td>给了退路，部分本来会付费的人选择等待，转化被稀释</td><td>这是有意的取舍，留存是底线。可以看「提醒 → 回访 → 二次触顶 → 付费」这条延迟转化链路，它会把一部分转化拉回来</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2><span class="n">08</span>缺口与下一步</h2>
+    <div class="grid2">
+      <div class="box"><h3>已充分覆盖</h3><ul class="clean"><li>会员档位、价格和额度规则（官网帮助中心）</li><li>游客从首页到首问、登录弹窗、深度研究入口、灵感库、手机网页（无登录浏览器走查 + 截图）</li><li>旅程框架、指标定义、需求排序、实验设计、可交互原型</li></ul></div>
+      <div class="box"><h3>仍然缺少</h3><ul class="clean"><li>登录后的新手引导、首个回答、免费额度和第一次撞墙（需要新注册账号） <span class="tag r">待核实</span></li><li>免费档额度大小与刷新周期 <span class="tag r">待核实</span></li><li>App 端流程</li><li>竞品：ChatGPT 游客首页已核实；Perplexity、DeepSeek 和内地网络下的豆包未能走查 <span class="tag r">待核实</span></li><li>所有基线数字（转化率、留存、触顶率） <span class="tag h">假设</span></li></ul></div>
+    </div>
+    <div class="box">
+      <h3>最难、最容易出错的部分</h3>
+      <p>需求 A 有两个关键参数：<b>免费额度在第几天让新用户撞墙</b>，以及<b>新人价给多少</b>。它们直接决定转化提升和留存损失之间的取舍，只能靠实验测出来。另一个风险是消耗预估的准确度：预估说「还差 18%」，结果实际差 40%，会直接损害信任。</p>
+    </div>
+    <div class="box">
+      <h3>上线前必须核验的数字</h3>
+      <ul class="clean">
+        <li>新用户 7 日会员转化率基线（内部数据）</li>
+        <li>新用户 D1 / D7 留存基线（内部数据）</li>
+        <li>7 日内额度触顶率，以及触顶用户的付费率（内部数据）</li>
+        <li>免费档 Agent 额度和刷新规则（会员购买页 / 产品文档）</li>
+        <li>各类 Agent 任务的平均额度消耗，以及预估误差分布（日志）</li>
+        <li>Go 套餐价格 ¥49/月（帮助中心 2026-10-19 截图，上线前以购买页为准）</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div>来源：Kimi 帮助中心「会员是怎么收费的 / 套餐包括什么」「会员订阅服务权益介绍」（kimi.com/help/membership，价格截图日期 2026-10-19，2026-11-16 访问）；kimi.com 网页端实地走查（2026-11-16；游客走查使用全新无登录浏览器，中文环境，桌面 1280px 与手机 390px）。</div>
+    <div>本页是独立撰写的产品方案作业，不代表 Moonshot AI 官方观点。原型中的界面是概念演示，不是 Kimi 官方界面。</div>
+  </footer>
+</main>
+</body>
+
+</html>

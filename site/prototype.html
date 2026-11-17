@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>任务续航原型</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: phone mock (the product) on the left, experiment console (the PM's view) on the right; stacks below 900px */
+:root{
+  --bg:#ECEFF5; --surface:#FFFFFF; --surface-2:#F4F6FA; --fg:#131926; --muted:#5A6477; --line:#DAE0EA;
+  --accent:#2646D4; --accent-soft:#E5EAFD; --accent-fg:#FFFFFF;
+  --offer:#A8500B; --offer-soft:#FCEFE1;
+  --ok:#1D7448; --ok-soft:#E1F2E8; --warn:#B3261E; --warn-soft:#FBE9E7;
+  --frame:#1B2130; --scrim:rgba(15,20,32,.42);
+  --font:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E121A; --surface:#171C27; --surface-2:#1E2432; --fg:#E8ECF4; --muted:#9AA4B8; --line:#2C3446;
+  --accent:#7B93FF; --accent-soft:#232C4D; --accent-fg:#0E121A;
+  --offer:#F0A35C; --offer-soft:#3A2A1A; --ok:#5DC893; --ok-soft:#173326; --warn:#FF8A80; --warn-soft:#3A1E1C;
+  --frame:#000000; --scrim:rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E121A; --surface:#171C27; --surface-2:#1E2432; --fg:#E8ECF4; --muted:#9AA4B8; --line:#2C3446;
+  --accent:#7B93FF; --accent-soft:#232C4D; --accent-fg:#0E121A;
+  --offer:#F0A35C; --offer-soft:#3A2A1A; --ok:#5DC893; --ok-soft:#173326; --warn:#FF8A80; --warn-soft:#3A1E1C;
+  --frame:#000000; --scrim:rgba(0,0,0,.6); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:14px/1.6 var(--font);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.topline{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+.topline h1{font-size:20px;margin:0;text-wrap:balance}
+.topline a{color:var(--accent);text-decoration:none;font-size:13px}
+.disclaimer{font-size:12px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:6px 10px}
+.stage{display:grid;grid-template-columns:400px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:900px){.stage{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- phone ---------- */
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:8px}
+.phone{position:relative;width:min(380px,100%);height:740px;background:var(--surface);border:10px solid var(--frame);border-radius:40px;overflow:hidden;display:flex;flex-direction:column}
+.ph-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.brand{font-weight:700;letter-spacing:.06em;font-size:15px}
+.brand small{font-weight:500;color:var(--muted);letter-spacing:0;margin-left:6px;font-size:11px}
+.meter{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter .bar{width:64px;height:6px;border-radius:3px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.meter .bar i{display:block;height:100%;background:var(--accent);transition:width .6s ease}
+.meter.low .bar i{background:var(--offer)}
+.chat{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.u{align-self:flex-end;max-width:82%;background:var(--accent-soft);padding:8px 12px;border-radius:14px 14px 4px 14px}
+.ai{align-self:flex-start;max-width:92%;padding:2px 2px}
+.ai p{margin:0 0 6px}
+.ai ul{margin:0;padding-left:18px}
+.sys{align-self:stretch;text-align:center;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.sys::before,.sys::after{content:"";flex:1;height:1px;background:var(--line)}
+.card{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.card h4{margin:0;font-size:14px}
+.card .sub{font-size:12px;color:var(--muted)}
+.card.tint{background:var(--surface-2)}
+.card.warn{border-color:var(--warn);background:var(--warn-soft)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13px}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:500}
+.btn.offer{background:var(--offer);color:var(--surface);border-color:var(--offer);font-weight:500}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn:disabled{opacity:.45;cursor:default}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.steps li{display:flex;gap:6px;align-items:center}
+.steps li::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line)}
+.steps li.on{color:var(--fg)}
+.steps li.on::before{border-color:var(--accent);background:var(--accent-soft)}
+.steps li.done::before{background:var(--accent);border-color:var(--accent)}
+.pbar{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .5s ease}
+.doc{display:flex;gap:10px;align-items:center}
+.doc .ic{width:34px;height:42px;border-radius:4px;background:var(--accent-soft);border:1px solid var(--line);display:grid;place-items:center;font-size:10px;color:var(--accent);font-weight:700}
+.slides{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.sl{aspect-ratio:16/9;max-width:100%;border-radius:4px;border:1px solid var(--line);background:var(--surface-2);font-size:8px;line-height:1.25;padding:4px;overflow:hidden;color:var(--fg)}
+.sl b{display:block;font-size:8.5px;margin-bottom:2px}
+.sl.ghost{display:grid;place-items:center;color:var(--muted);border-style:dashed;font-size:10px}
+.split{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line)}
+.split .have{background:var(--accent)}
+.split .need{background:repeating-linear-gradient(45deg,var(--offer) 0 4px,var(--offer-soft) 4px 8px)}
+.legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--surface-2);color:var(--muted)}
+.welcome{margin:auto 0;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;padding:20px 8px}
+.welcome h3{margin:0;font-size:22px;letter-spacing:.08em}
+.welcome p{margin:0;color:var(--muted);font-size:12.5px}
+.ph-input{border-top:1px solid var(--line);padding:10px 12px 14px;display:flex;gap:8px;align-items:flex-end}
+.ph-input .box{flex:1;min-height:40px;border:1px solid var(--line);border-radius:14px;padding:9px 12px;font-size:13px;background:var(--surface-2);color:var(--fg)}
+.ph-input .box.empty{color:var(--muted)}
+.send{width:38px;height:38px;border-radius:50%;border:none;background:var(--accent);color:var(--accent-fg);font-weight:700;font-size:16px;flex:none}
+.send:disabled{background:var(--line);color:var(--muted);cursor:default}
+.send.pulse{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--accent-soft)}50%{box-shadow:0 0 0 7px var(--accent-soft)}}
+.mask{position:absolute;inset:0;background:var(--scrim);z-index:5}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-radius:20px 20px 0 0;padding:18px 16px 20px;display:flex;flex-direction:column;gap:10px;max-height:88%;overflow-y:auto;animation:up .28s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet h3{margin:0;font-size:17px;text-wrap:balance}
+.sheet .x{position:absolute;right:12px;top:10px;border:none;background:none;font-size:18px;color:var(--muted)}
+.opt{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left;background:var(--surface);display:flex;flex-direction:column;gap:2px;width:100%}
+.opt.rec{border-color:var(--offer);background:var(--offer-soft)}
+.opt .t{font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.opt .t s{color:var(--muted);font-weight:400;font-size:12px}
+.opt .d{font-size:12px;color:var(--muted)}
+.tag{font-size:10.5px;font-weight:700;color:var(--offer);letter-spacing:.04em}
+.count{font-family:var(--mono);font-size:11px;color:var(--offer)}
+.plans{width:100%;border-collapse:collapse;font-size:11.5px}
+.plans th,.plans td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
+.plans th{color:var(--muted);font-weight:500}
+.toast{position:absolute;left:50%;top:64px;transform:translateX(-50%);z-index:8;background:var(--fg);color:var(--surface);font-size:12.5px;padding:7px 14px;border-radius:999px;white-space:nowrap;animation:up .2s ease-out}
+.toast.bad{background:var(--warn);color:var(--surface)}
+.paymethod{display:flex;gap:8px}
+.paymethod label{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:8px;font-size:13px;display:flex;gap:6px;align-items:center}
+.paymethod input{accent-color:var(--accent)}
+.demo-note{font-size:11px;color:var(--muted);text-align:center}
+.caption{font-size:12px;color:var(--muted);text-align:center;max-width:380px}
+
+/* ---------- console ---------- */
+.console{display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel h2{margin:0;font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:500;text-transform:uppercase}
+.seg{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{flex:1;min-width:140px;border:none;background:transparent;border-radius:8px;padding:7px 10px;font-size:13px;color:var(--muted);text-align:left}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 0 0 1px var(--line);font-weight:500}
+.seg small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.scenes{display:flex;gap:8px;flex-wrap:wrap}
+.scenes .btn{border-radius:8px}
+.note h3{margin:0 0 4px;font-size:15px}
+.note p{margin:0 0 6px;color:var(--fg)}
+.note ul{margin:0;padding-left:18px;color:var(--fg)}
+.note .why{font-size:12.5px;color:var(--muted)}
+.funnel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media (max-width:520px){.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.fstep{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:10.5px;line-height:1.35;font-family:var(--mono);color:var(--muted);background:var(--surface-2);overflow-wrap:anywhere;min-width:0}
+.fstep b{font-family:var(--font)}
+.fstep b{display:block;font-size:12.5px;color:var(--muted)}
+.fstep.hit{border-color:var(--ok);background:var(--ok-soft)}
+.fstep.hit b{color:var(--ok)}
+.fstep.guard.hit{border-color:var(--accent);background:var(--accent-soft)}
+.fstep.guard.hit b{color:var(--accent)}
+.log{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:11.5px;max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:4px}
+.log li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 8px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.log .ts{color:var(--muted)}
+.log .ev{color:var(--accent);font-weight:600}
+.log .pr{grid-column:2;color:var(--muted);word-break:break-all}
+.empty-log{color:var(--muted);font-size:12px;font-family:var(--font)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topline">
+    <h1>需求 A · 额度触顶时的「任务续航」付费引导</h1>
+    <a href="index.html">← 返回方案报告</a>
+  </div>
+  <div class="disclaimer">概念原型，仅用于产品方案演示，不是 Kimi 官方界面。价格取自 Kimi 帮助中心（2026-10-19 截图）的 Go 套餐 ¥49/月；「新人首月 ¥19.9」是待实验的假设参数。所有支付均为演示，不会扣款。</div>
+
+  <div class="stage">
+    <div class="phone-col">
+      <div class="phone" id="phone">
+        <div class="ph-top">
+          <div class="brand">KIMI<small>概念原型</small></div>
+          <div class="meter" id="meter"><span id="meterLabel">额度 100%</span><span class="bar"><i id="meterBar" style="width:100%"></i></span></div>
+        </div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="ph-input">
+          <div class="box empty" id="inputBox">给 Kimi 发消息…</div>
+          <button class="send" id="sendBtn" disabled aria-label="发送">↑</button>
+        </div>
+        <div class="mask" id="mask" hidden></div>
+        <div class="sheet" id="sheet" hidden></div>
+        <div class="toast" id="toast" hidden></div>
+      </div>
+      <div class="caption">点手机里的蓝色发送键推进剧情；右侧可以切换实验组 / 对照组，或直接跳到第 3 天。</div>
+    </div>
+
+    <div class="console">
+      <div class="panel">
+        <h2>实验分组</h2>
+        <div class="seg" role="group" aria-label="实验分组">
+          <button id="vB" aria-pressed="true">实验组 B：任务续航卡<small>预估消耗 → 免费先做一部分 → 按任务推荐 + 免费退路</small></button>
+          <button id="vA" aria-pressed="false">对照组 A：现状<small>新任务提示「额度不足」→ 通用会员页</small></button>
+        </div>
+        <div class="scenes">
+          <button class="btn" id="s1">① 第 1 天：首问 → 第一次深度研究</button>
+          <button class="btn primary" id="s2">② 第 3 天：额度触顶（核心）</button>
+        </div>
+      </div>
+
+      <div class="panel note" id="note"></div>
+
+      <div class="panel">
+        <h2>本次会话漏斗</h2>
+        <div class="funnel">
+          <div class="fstep" id="f-imp"><b>付费墙曝光</b>paywall_impression</div>
+          <div class="fstep" id="f-clk"><b>点击升级</b>paywall_cta_click</div>
+          <div class="fstep" id="f-pay"><b>支付成功</b>checkout_success</div>
+          <div class="fstep guard" id="f-keep"><b>留下回访理由</b>draft_saved / remind</div>
+          <div class="fstep" id="f-lost"><b>空手离开</b>paywall_dismiss</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>埋点事件（最新在上）</h2>
+        <ul class="log" id="log"><li class="empty-log">还没有事件。点手机里的发送键开始。</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const chat=$('#chat'), sheet=$('#sheet'), mask=$('#mask'), toastEl=$('#toast');
+const S={variant:'B', quota:100, run:0, t0:Date.now(), offerEnds:Date.now()+(3*86400+23*3600+59*60)*1000, timer:null};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---------- console helpers ---------- */
+function note(title, body, why){
+  $('#note').innerHTML='<h2>当前节点 · 设计说明</h2><h3>'+title+'</h3>'+body+(why?'<p class="why">'+why+'</p>':'');
+}
+function log(name, props){
+  const ul=$('#log'); const empty=ul.querySelector('.empty-log'); if(empty) empty.remove();
+  const li=document.createElement('li');
+  const sec=((Date.now()-S.t0)/1000).toFixed(1);
+  const p=Object.entries(Object.assign({variant:S.variant}, props||{})).map(([k,v])=>k+'='+v).join('  ');
+  li.innerHTML='<span class="ts">+'+sec+'s</span><span class="ev"></span><span class="pr"></span>';
+  li.querySelector('.ev').textContent=name; li.querySelector('.pr').textContent=p;
+  ul.prepend(li);
+  const map={paywall_impression:'#f-imp',paywall_cta_click:'#f-clk',checkout_success:'#f-pay',draft_saved:'#f-keep',paywall_fallback:'#f-keep',paywall_dismiss:'#f-lost'};
+  if(map[name]) $(map[name]).classList.add('hit');
+}
+function resetConsole(){
+  S.t0=Date.now();
+  $('#log').innerHTML='<li class="empty-log">还没有事件。点手机里的发送键开始。</li>';
+  document.querySelectorAll('.fstep').forEach(e=>e.classList.remove('hit'));
+}
+
+/* ---------- phone helpers ---------- */
+function setQuota(v,label){
+  S.quota=v;
+  $('#meterBar').style.width=v+'%';
+  $('#meterLabel').textContent=label||('额度 '+v+'%');
+  $('#meter').classList.toggle('low', v<=20 && !label);
+  $('#meter').hidden = (S.variant==='A');   /* 现状：额度只在 设置→订阅 里能看到 */
+}
+function add(html, cls){
+  const d=document.createElement('div'); d.className=cls; d.innerHTML=html; chat.appendChild(d);
+  chat.scrollTop=chat.scrollHeight; return d;
+}
+const user=t=>add('', 'u').appendChild(document.createTextNode(t));
+const ai=h=>add(h,'ai');
+const sys=t=>add(t,'sys');
+function card(html, extra){ const d=add(html,'card'+(extra?' '+extra:'')); return d; }
+async function typing(ms){ const d=ai('<span style="color:var(--muted)">正在思考…</span>'); await sleep(ms||900); d.remove(); }
+function setInput(text, onSend){
+  const box=$('#inputBox'), btn=$('#sendBtn');
+  if(!text){ box.textContent='给 Kimi 发消息…'; box.classList.add('empty'); btn.disabled=true; btn.classList.remove('pulse'); btn.onclick=null; return; }
+  box.textContent=text; box.classList.remove('empty'); btn.disabled=false; btn.classList.add('pulse');
+  const run=S.run;
+  btn.onclick=()=>{ if(run!==S.run) return; setInput(''); onSend(); };
+}
+function toast(t, bad){ toastEl.textContent=t; toastEl.className='toast'+(bad?' bad':''); toastEl.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.hidden=true, 2200); }
+function openSheet(html){ sheet.innerHTML=html; sheet.hidden=false; mask.hidden=false; sheet.scrollTop=0; }
+function closeSheet(){ sheet.hidden=true; mask.hidden=true; clearInterval(S.timer); }
+function alive(run){ return run===S.run; }
+
+async function progress(steps, from, to, run, onTick){
+  const c=card('<h4></h4><div class="pbar"><i></i></div><ul class="steps">'+steps.map(s=>'<li>'+s+'</li>').join('')+'</ul>','tint');
+  const lis=c.querySelectorAll('li'), bar=c.querySelector('.pbar i');
+  c.querySelector('h4').textContent='任务进行中';
+  for(let i=0;i<steps.length;i++){
+    if(!alive(run)) return null;
+    lis[i].classList.add('on'); bar.style.width=((i+1)/steps.length*100)+'%';
+    if(onTick) onTick(i);
+    await sleep(750);
+    lis[i].classList.add('done');
+  }
+  c.querySelector('h4').textContent='已完成';
+  return c;
+}
+
+/* ---------- Scene 1: Day 1 ---------- */
+async function scene1(){
+  const run=++S.run; closeSheet(); chat.innerHTML=''; resetConsole(); setQuota(100);
+  chat.innerHTML='<div class="welcome"><h3>KIMI</h3><p>新用户 · 注册第 1 天</p><div class="chips"><span class="chip">深度研究</span><span class="chip">PPT</span><span class="chip">文档</span><span class="chip">网站</span><span class="chip">表格</span></div><p>首页能力入口都在，但用户通常只会先问一个普通问题。</p></div>';
+  log('home_view',{day:'D1'});
+  note('第 1 天 · 首问','<p>新用户进来先问一个普通问题。这是流失最多的地方：问完就走，从来没用过 Kimi 的 Agent 能力。</p>','这一步属于需求 B（能力发现），放在这里是为了展示需求 A 的前提：用户先尝到价值，撞墙时才有付费意愿。');
+  setInput('宁德时代和比亚迪的储能业务，谁更有竞争力？', async()=>{
+    chat.innerHTML=''; user('宁德时代和比亚迪的储能业务，谁更有竞争力？'); log('query_send',{n:1});
+    await typing(); if(!alive(run)) return;
+    ai('<p>简单说：<b>宁德时代</b>在储能电芯出货和海外大客户上领先，<b>比亚迪</b>在系统集成和成本控制上更强。两者路线不同，各有优势。</p><p style="color:var(--muted);font-size:12px">（演示用的简短回答，不构成投资建议）</p>');
+    await sleep(500); if(!alive(run)) return;
+    const c=card('<div class="tag">可以做得更深</div><h4>把这个问题做成一份深度研究报告？</h4><div class="sub">约 3 分钟 · 自动检索 40+ 来源并标注引用 · 可导出 PDF</div><div class="row"><button class="btn primary">生成深度研究</button><button class="btn ghost">先不用</button></div>');
+    log('capability_card_show',{intent:'company_compare',suggest:'deep_research'});
+    note('第 1 天 · 能力发现卡（需求 B）','<p>首轮回答之后，按问题意图推荐一个具体的高级能力，一键就能执行。</p><ul><li>只推一个，不铺满屏幕</li><li>说清楚要多久、能得到什么</li></ul>','对应指标：核心能力渗透率、D1 激活率。');
+    const [go,no]=c.querySelectorAll('button');
+    no.onclick=()=>{ if(!alive(run)) return; log('capability_card_dismiss'); c.remove(); ai('<p>好的，有需要随时说。</p>'); };
+    go.onclick=async()=>{
+      if(!alive(run)) return; go.disabled=no.disabled=true; log('capability_card_click');
+      user('生成深度研究'); log('agent_task_start',{type:'deep_research'});
+      const q=[100,91,80,71,64];
+      const p=await progress(['拆解问题','检索 42 个来源','交叉核对数据','撰写报告'],0,0,run,i=>setQuota(q[i+1]));
+      if(!p) return;
+      card('<div class="doc"><div class="ic">PDF</div><div><h4>宁德时代 vs 比亚迪 · 储能业务深度研究</h4><div class="sub">18 页 · 42 个来源 · 刚刚生成</div></div></div>');
+      log('agent_task_done',{type:'deep_research',quota_used:'36%'});
+      note('第 1 天 · Aha 时刻','<p>用户第一次看到 Kimi 和普通聊天机器人的区别。实验组顶部常驻额度条，用户从第一天就知道额度是会被用掉的。</p>','现状下额度藏在「设置 → 订阅」里，而且只显示百分比。用户感受不到额度在被消耗，到撞墙那一刻才第一次意识到。');
+      await sleep(400); if(!alive(run)) return;
+      const nx=card('<div class="sub">接下来两天，用户又做了 1 次深度研究和 1 份文档，额度剩 12%。</div><div class="row"><button class="btn primary">快进到第 3 天 →</button></div>','tint');
+      nx.querySelector('button').onclick=()=>scene2();
+    };
+  });
+}
+
+/* ---------- Scene 2: Day 3, quota wall ---------- */
+async function scene2(){
+  const run=++S.run; closeSheet(); chat.innerHTML=''; resetConsole(); setQuota(12);
+  sys('第 3 天');
+  card('<div class="doc"><div class="ic">PDF</div><div><h4>宁德时代 vs 比亚迪 · 储能业务深度研究</h4><div class="sub">18 页 · 2 天前</div></div></div>');
+  ai('<p>欢迎回来。上次的研究报告已保存在这里。</p>');
+  log('home_view',{day:'D3',quota_left:'12%'});
+  note('第 3 天 · 撞墙前一刻','<p>用户带着一个<b>有截止时间的真实任务</b>回来：要把研究做成组会 PPT。这是 7 天里付费意愿最高的时刻。</p>','切换右上方的实验组 / 对照组，对比两种处理方式。');
+  setInput('把这份研究做成 12 页 PPT，周五组会要用', async()=>{
+    user('把这份研究做成 12 页 PPT，周五组会要用');
+    log('agent_task_request',{type:'ppt',pages:12});
+    if(S.variant==='A') return control(run); else return treatment(run);
+  });
+}
+
+/* --- Control: current behaviour --- */
+async function control(run){
+  await sleep(600); if(!alive(run)) return;
+  toast('额度不足',true);
+  const c=card('<h4>你的额度已用完</h4><div class="sub">新任务无法开始。升级会员可获得更多额度。</div><div class="row"><button class="btn primary">查看会员</button></div>','warn');
+  log('paywall_impression',{trigger:'quota_insufficient',surface:'toast+inline',task:'ppt',progress:'0/12'});
+  note('对照组 · 现状','<p>帮助中心原文：额度用完时，进行中的任务可以完成，<b>新任务会提示额度不足</b>。</p><ul><li>没告诉用户这个任务需要多少额度、还差多少</li><li>任务一点都没开始，用户手里什么都没有</li><li>会员页是通用的五档对比，跟当前任务没关系</li><li>不付费的话没有任何退路，也没有回来的理由</li></ul>');
+  c.querySelector('button').onclick=()=>{
+    if(!alive(run)) return;
+    log('paywall_cta_click',{target:'plan_page'});
+    openSheet('<button class="x" aria-label="关闭">×</button><h3>会员计划</h3><div class="sub" style="font-size:12px;color:var(--muted)">按 Kimi 帮助中心 2026-10-19 截图整理（节选）</div><div style="overflow-x:auto"><table class="plans"><tr><th></th><th>Go</th><th>Plus</th><th>Pro</th></tr><tr><th>连续包月</th><td>¥49</td><td>¥99</td><td>¥199</td></tr><tr><th>Agent 额度</th><td>更多</td><td>2 倍</td><td>4 倍</td></tr><tr><th>并行任务</th><td>1</td><td>2</td><td>2</td></tr><tr><th>Kimi Code</th><td>—</td><td>支持</td><td>支持</td></tr><tr><th>Agent 集群</th><td>—</td><td>支持</td><td>支持</td></tr></table></div><div class="row"><button class="btn primary" data-p="49">开通 Go ¥49/月</button><button class="btn" data-p="99">Plus ¥99</button></div><div class="demo-note">新用户看到「2 倍额度」「Agent 集群」，很难换算成「我的 PPT 能不能做完」。</div>');
+    log('plan_page_view');
+    sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('paywall_dismiss',{saved_progress:'none'}); ai('<p style="color:var(--muted)">（用户关掉页面离开。任务没开始，也没有留下任何回来的理由。）</p>');
+      note('对照组 · 用户离开','<p>没付费的用户空手离开。这就是现状下转化和留存同时受伤的地方：转化没拿到，用户对产品的最后印象还是一次「被拦住」。</p>'); };
+    sheet.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{ log('paywall_cta_click',{plan:b.dataset.p==='49'?'go':'plus'}); pay(+b.dataset.p, b.dataset.p==='49'?'Go 连续包月':'Plus 连续包月', run, 0); });
+  };
+}
+
+/* --- Treatment: task continuation --- */
+async function treatment(run){
+  await typing(700); if(!alive(run)) return;
+  card('<div class="tag">开始前先估一下</div><h4>这份 PPT 预计需要约 30% 额度，你还剩 12%</h4><div class="split"><span class="have" style="width:40%"></span><span class="need" style="width:60%"></span></div><div class="legend"><span>剩余额度能做约 3 页</span><span>还差约 18%</span></div><div class="sub">先用剩下的额度把大纲和前 3 页做出来，你看看效果再决定。</div>','tint');
+  log('quota_precheck_show',{need:'30%',left:'12%'});
+  note('实验组 · 动手前先预估','<p>发任务时先告诉用户<b>这件事要多少额度、还差多少</b>，而不是等用完了才报错。</p>','额度现在按 token 计、只显示百分比，新用户换算不出来。预估卡把百分比翻译成「能做几页」。');
+  await sleep(600); if(!alive(run)) return;
+  const q=[12,8,4,0];
+  const p=await progress(['生成 12 页大纲','第 1 页：封面','第 2 页：2026 储能格局','第 3 页：宁德时代'],0,0,run,i=>setQuota(q[Math.min(i,3)]));
+  if(!p) return;
+  card('<h4>大纲 + 前 3 页已完成</h4><div class="slides"><div class="sl"><b>储能双雄</b>宁德时代 vs 比亚迪<br>组会 · 周五</div><div class="sl"><b>2026 格局</b>出货 / 份额 / 海外订单</div><div class="sl"><b>宁德时代</b>电芯技术与产能布局</div><div class="sl ghost">+9 页</div></div><div class="sub">已自动保存到「最近任务」</div>');
+  log('free_preview_done',{pages:'3/12'}); log('draft_saved',{task:'ppt'});
+  await sleep(700); if(!alive(run)) return;
+  openWall(run);
+}
+
+function fmtLeft(){
+  let s=Math.max(0,Math.floor((S.offerEnds-Date.now())/1000));
+  const d=Math.floor(s/86400); s%=86400; const h=Math.floor(s/3600); s%=3600; const m=Math.floor(s/60); s%=60;
+  return d+' 天 '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function openWall(run){
+  openSheet('<button class="x" aria-label="关闭">×</button><div class="tag">还差 9 页就完成了</div><h3>继续完成这份 PPT，赶上周五的组会</h3>'+
+  '<button class="opt rec" id="oPay"><span class="tag">推荐 · 新人专享</span><span class="t">开通 Go，首月 ¥19.9 <s>¥49/月</s></span><span class="d">马上续写剩下 9 页，约 2 分钟。按这份 PPT 的消耗估算，一个月的额度还够再做十几份同等任务。</span><span class="count" id="cd">新人价还剩 '+fmtLeft()+'</span></button>'+
+  '<button class="opt" id="oRemind"><span class="t">额度刷新时提醒我继续</span><span class="d">大纲和前 3 页已保存，不会丢。额度刷新后一键接着做。</span></button>'+
+  '<button class="opt" id="oLite"><span class="t">先给我文字版</span><span class="d">用普通对话把剩下 9 页的要点写出来，不含排版。</span></button>'+
+  '<div class="demo-note">首月价、倒计时和「十几份」的估算都是待实验校准的参数</div>');
+  S.timer=setInterval(()=>{ const e=document.getElementById('cd'); if(e) e.textContent='新人价还剩 '+fmtLeft(); },1000);
+  log('paywall_impression',{trigger:'quota_insufficient',surface:'task_sheet',task:'ppt',progress:'3/12',offer:'newbie_19.9'});
+  note('实验组 · 任务续航卡（需求 A 核心）','<ul><li><b>标题讲任务，不讲额度</b>：「还差 9 页」比「额度不足」更像一次推荐</li><li><b>只推一个档位</b>：按当前任务推荐 Go，不让新用户在五档里挑</li><li><b>新人首月价 + 截止时间</b>：和注册 7 天的窗口绑定，制造合理的决策时点</li><li><b>两条免费退路</b>：提醒继续、文字版，保护 D7 留存</li></ul>','护栏：「空手离开」比例必须下降；关闭率和退款率要盯住。');
+  sheet.querySelector('.x').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_dismiss',{saved_progress:'3/12'}); savedDraft(run,false);
+    note('实验组 · 关闭也不是空手离开','<p>即使直接关掉，前 3 页也已经保存在最近任务里。用户下次打开时，首页会显示这个没做完的任务。</p>','这是保护留存的关键：不付费的用户也带走了成果，并且有一个回来的理由。'); };
+  $('#oPay').onclick=()=>{ if(!alive(run)) return; log('paywall_cta_click',{plan:'go',offer:'newbie_first_month'}); pay(19.9,'Go · 新人首月',run,3); };
+  $('#oRemind').onclick=()=>{ if(!alive(run)) return; closeSheet(); log('paywall_fallback',{type:'remind_on_refresh'}); savedDraft(run,true); toast('已设置提醒，额度刷新时通知你');
+    note('实验组 · 免费退路：提醒继续','<p>不付费的用户也留下了一个<b>具体的回访理由</b>：一份做了一半、周五要用的 PPT。</p>','对应护栏指标：D7 留存。也可以单独看「提醒触达 → 回访 → 二次撞墙 → 付费」这条延迟转化链路。'); };
+  $('#oLite').onclick=async()=>{ if(!alive(run)) return; closeSheet(); log('paywall_fallback',{type:'lite_text'});
+    await typing(700); if(!alive(run)) return;
+    ai('<p><b>第 4–12 页要点（文字版）</b></p><ul><li>比亚迪：系统集成与成本</li><li>海外订单对比</li><li>技术路线：大电芯 / 长时储能</li><li>盈利能力与价格战</li><li>风险与观察指标 …</li></ul>');
+    savedDraft(run,false);
+    note('实验组 · 免费退路：文字版','<p>用普通对话能力兜底，任务不会卡死。用户拿到了内容，但没拿到排版好的 PPT，这个差距就是会员的价值。</p>'); };
+}
+function savedDraft(run, reminded){
+  const c=card('<div class="doc"><div class="ic">PPT</div><div><h4>储能双雄 · 组会 PPT（3/12 页）</h4><div class="sub">'+(reminded?'已设置提醒 · 额度刷新时通知你':'已保存在最近任务')+'</div></div></div><div class="row"><button class="btn">升级后继续</button></div>');
+  c.querySelector('button').onclick=()=>{ if(!alive(run)) return; log('draft_resume_click'); openWall(run); };
+}
+
+function pay(amount, plan, run, donePages){
+  openSheet('<button class="x" aria-label="关闭">×</button><h3>确认开通</h3><div class="card tint"><div class="t" style="display:flex;justify-content:space-between;font-weight:700"><span>'+plan+'</span><span>¥'+amount+'</span></div><div class="sub">'+(donePages?'次月起 ¥49/月，可随时取消自动续费':'连续包月，可随时取消自动续费')+'</div></div><div class="paymethod"><label><input type="radio" name="pm" id="pm1" checked>微信支付</label><label><input type="radio" name="pm" id="pm2">支付宝</label></div><button class="btn primary" id="payBtn" style="padding:10px;border-radius:12px">确认支付 ¥'+amount+'</button><div class="demo-note">演示环境，不会产生真实扣款</div>');
+  log('checkout_show',{plan:plan,amount:amount});
+  sheet.querySelector('.x').onclick=()=>{ closeSheet(); log('checkout_abandon'); if(S.variant==='B') savedDraft(run,false); };
+  $('#payBtn').onclick=async()=>{
+    if(!alive(run)) return;
+    closeSheet(); log('checkout_success',{plan:plan,amount:amount});
+    setQuota(100,'Go 会员 · 额度 100%'); toast('会员已生效');
+    if(S.variant==='B'){
+      note('实验组 · 付费后无缝续写','<p>付费成功后<b>直接接着做</b>，不用用户重新发起任务。从点击到拿到完整 PPT，中间没有断点。</p>','付费后体验决定次月续费，可以把「首月 Agent 任务数」作为续费的先行指标。');
+      log('task_resume',{from:'3/12'});
+      const p=await progress(['第 4–6 页','第 7–9 页','第 10–12 页','排版与配图'],0,0,run,i=>setQuota([97,93,90,88][i],'Go 会员 · 额度 '+[97,93,90,88][i]+'%'));
+      if(!p) return;
+      card('<div class="doc"><div class="ic">PPT</div><div><h4>储能双雄 · 组会 PPT</h4><div class="sub">12 页 · 已完成 · 可下载 PPTX</div></div></div>');
+      log('agent_task_done',{type:'ppt'});
+      ai('<p>PPT 已完成。会员额度这个月还很充足，你也可以试试：<b>把 PPT 转成演讲稿</b>，或者<b>设置每周储能行业简报</b>。</p>');
+    } else {
+      note('对照组 · 付费后','<p>付费后用户还得回到对话里<b>重新发起</b>任务。从决定付费到拿到结果，中间多了一次跳转和一次重试。</p>');
+      ai('<p style="color:var(--muted)">（用户回到对话，重新发送一遍 PPT 请求。）</p>');
+    }
+  };
+}
+
+/* ---------- wiring ---------- */
+function setVariant(v){
+  S.variant=v;
+  $('#vB').setAttribute('aria-pressed', v==='B'); $('#vA').setAttribute('aria-pressed', v==='A');
+  scene2();
+}
+$('#vB').onclick=()=>setVariant('B');
+$('#vA').onclick=()=>setVariant('A');
+$('#s1').onclick=()=>scene1();
+$('#s2').onclick=()=>scene2();
+mask.onclick=()=>{ const x=sheet.querySelector('.x'); if(x) x.click(); };
+scene2();
+})();
+</script>
+</body>
+</html>
